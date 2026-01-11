@@ -1,4 +1,3 @@
-
 <div align="center">
   <img src="public/img/glastor-logo.png" alt="Glastor Logo" width="120" />
   <h1>GLASTOR® — Professional Portfolio & AI Engineering Hub</h1>
@@ -45,7 +44,7 @@ npm install
 
 1. Crea un archivo `.env.local` y agrega tu clave de Gemini:
    ```
-   GEMINI_API_KEY=tu_clave_aqui
+   VITE_GEMINI_API_KEY=tu_clave_aqui
    ```
 2. Inicia el entorno de desarrollo:
    ```
