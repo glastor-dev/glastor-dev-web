@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Terminal from './components/Terminal';
@@ -150,6 +151,7 @@ const App: React.FC = () => {
         setTheme={setTheme}
         setDebugMode={setDebugMode}
       />
+      <SpeedInsights />
     </div>
   );
 };
