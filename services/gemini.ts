@@ -1,5 +1,4 @@
-
-import { GoogleGenAI, Type, FunctionDeclaration } from "@google/genai";
+import { Type, FunctionDeclaration } from "@google/genai";
 
 const SYSTEM_INSTRUCTION = `
 Eres el Núcleo de IA de GLASTOR® (Andrés Antonio Cardoso).
@@ -60,3 +59,17 @@ export const aiConfig = {
   tools: [{ functionDeclarations: controlTools }],
   temperature: 0.7,
 };
+
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({
+  apiKey: import.meta.env.VITE_GEMINI_API_KEY
+});
+
+export async function getGeminiResponse(prompt: string) {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+  });
+  return response.text;
+}

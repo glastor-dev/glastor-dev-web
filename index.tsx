@@ -1,7 +1,7 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './index.css';
 
 // Polyfill de seguridad para process.env en navegador
 // Evita que el acceso a process.env en AIChat.tsx rompa el renderizado inicial
