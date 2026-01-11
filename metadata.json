@@ -1,0 +1,8 @@
+{
+  "name": "GLASTOR® - Professional Portfolio",
+  "description": "A high-performance, interactive portfolio for a senior backend engineer and API architect, featuring a terminal interface, AI-powered chat, and detailed technical showcases.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

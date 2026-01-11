@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* index.css: estilos mínimos para evitar cortes y asegurar scroll completo */
+html, body, #root {
+  min-height: 100vh;
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--bg, #0a0a0a);
+  color: var(--text, #e5e7eb);
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+/* Asegura que los hijos no corten el scroll */
+main, .flex-grow {
+  flex: 1 1 auto;
+  min-height: 0;
+}
