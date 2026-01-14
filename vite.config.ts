@@ -48,16 +48,14 @@ export default defineConfig(({ mode }) => {
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
+          'react-is': require.resolve('react-is')
         }
       },
       optimizeDeps: {
         include: ['react-is']
       },
       build: {
-        chunkSizeWarningLimit: 2000,
-        rollupOptions: {
-          external: ['react-is']
-        }
+        chunkSizeWarningLimit: 2000
       }
     };
 });
