@@ -1,18 +1,26 @@
-# Guía de Contribución y Gobernanza
+---
+name: 🏗️ Solicitud de Cambios (Pull Request)
+about: Propón cambios al ecosistema de ingeniería.
+title: 'type(scope): descripción corta'
+labels: []
+assignees: ''
+---
 
-Bienvenido al ecosistema de este proyecto. Valoramos las contribuciones que priorizan la calidad técnica, la escalabilidad y el rigor arquitectónico. Para asegurar un flujo de trabajo eficiente y mantener la integridad del código base, hemos establecido protocolos detallados que todos los colaboradores deben seguir.
+## 📋 Resumen de Cambios
+<!-- Describe qué hace este PR y por qué es necesario. Vincula issues relacionados. -->
 
-## 🛠️ Protocolo de Colaboración
+## 🏗️ Tipo de Cambio
+- [ ] ✨ Nueva funcionalidad (`feat`)
+- [ ] 🐛 Corrección de bug (`fix`)
+- [ ] ♻️ Refactorización (`refactor`)
+- [ ] ⚡ Rendimiento (`perf`)
+- [ ] 📝 Documentación (`docs`)
 
-Antes de iniciar cualquier desarrollo, es imperativo consultar nuestra documentación técnica para alinearse con los estándares del proyecto:
+## ✅ Checklist de Calidad
+- [ ] Mi código sigue la guía de estilo del proyecto.
+- [ ] He realizado una auto-revisión de mi código.
+- [ ] He comentado las partes complejas (si aplica).
+- [ ] Mis cambios no generan nuevas advertencias (warnings).
 
-*   **Directrices de Contribución:** [Consultar CONTRIBUTING.md](../CONTRIBUTING.md)
-
-## ⚖️ Marcos Operativos y Seguridad
-
-La excelencia de este software se fundamenta en un entorno de respeto mutuo y seguridad proactiva. Le solicitamos revisar exhaustivamente los siguientes marcos operativos antes de su participación:
-
-*   **Código de Conducta:** [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) — Establece los estándares de profesionalismo y ética esperados en nuestra comunidad.
-*   **Política de Seguridad:** [SECURITY.md](./SECURITY.md) — Procedimientos oficiales para el reporte y la gestión responsable de vulnerabilidades.
-
-© 2026 Andrés Antonio Cardoso | Profesionalismo en Software Libre
+## 📸 Capturas de Pantalla (Opcional)
+<!-- Si aplica, adjunta evidencia visual de los cambios en la UI. -->

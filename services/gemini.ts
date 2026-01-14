@@ -1,26 +1,15 @@
-import { Type, FunctionDeclaration } from "@google/genai";
+import { FunctionDeclaration, Type } from "@google/genai";
 
 const SYSTEM_INSTRUCTION = `
-Eres el Núcleo de IA de GLASTOR® (Andrés Antonio Cardoso).
-Actúas como un Agente de Arquitectura de Sistemas y Backend.
+Eres el Agente de Arquitectura de GLASTOR®, un sistema avanzado de asistencia técnica e interfaz.
+Tu tono es profesional, técnico, conciso y con una estética 'cyberpunk' / futurista.
+Actúas como guía dentro de la plataforma GLASTOR.
 
-CONTEXTO DE ANDRÉS:
-- Senior Backend Engineer & Cloud Architect.
-- Especialista en Python (FastAPI/Django), Rust y Go.
-- Experto en automatización industrial y seguridad de APIs.
-- Experiencia en Nexperia, Aspid Cars, Route4Me.
-- Ubicación: Argentina (Marca GLASTOR® Registrada).
+Capacidades:
+1. Puedes navegar a diferentes secciones legales usando la herramienta 'navigateTo'.
+2. Puedes ajustar la configuración visual usando 'updateSystemTheme'.
 
-CAPACIDADES MULTIMODALES:
-- Tienes acceso a una Live API para comunicación por voz en tiempo real. 
-- Puedes procesar audio y devolver respuestas habladas naturales.
-- Eres técnico, directo y sofisticado.
-
-REGLAS DE CONTROL:
-1. Si el usuario solicita ver una sección, usa 'navigateTo'.
-2. Si el usuario pide cambiar el tema visual, usa 'updateSystemTheme'.
-3. En modo voz, sé conciso pero informativo.
-4. Mantén siempre una estética de alta ingeniería.
+Si el usuario pregunta sobre términos legales, privacidad o cookies, guíalos a la sección correspondiente.
 `;
 
 export const controlTools: FunctionDeclaration[] = [
@@ -28,48 +17,26 @@ export const controlTools: FunctionDeclaration[] = [
     name: 'navigateTo',
     parameters: {
       type: Type.OBJECT,
-      description: 'Navega a una sección específica de la página.',
+      description: 'Navega o hace scroll a una sección específica de la interfaz.',
       properties: {
         sectionId: {
           type: Type.STRING,
-          description: 'El ID de la sección: "experience", "architecture", "projects", "analytics".',
+          description: 'El ID de la sección destino (ej: \'terminos\', \'privacidad\', \'legal\', \'cookies\').',
         },
       },
       required: ['sectionId'],
     },
   },
-  {
-    name: 'updateSystemTheme',
-    parameters: {
-      type: Type.OBJECT,
-      description: 'Cambia el tema visual de la aplicación.',
-      properties: {
-        theme: {
-          type: Type.STRING,
-          description: 'El nombre del tema: "cyberpunk", "phosphor", "amber".',
-        },
-      },
-      required: ['theme'],
-    },
-  }
+  // La herramienta 'updateSystemTheme' puede ser añadida aquí si se implementa
+  // {
+  //   name: 'updateSystemTheme',
+  //   ...
+  // }
 ];
 
 export const aiConfig = {
   systemInstruction: SYSTEM_INSTRUCTION,
   tools: [{ functionDeclarations: controlTools }],
-  temperature: 0.7,
+  // La temperatura y otros parámetros de generación se pueden añadir aquí.
+  // temperature: 0.7,
 };
-
-import { GoogleGenAI } from "@google/genai";
-
-const ai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY
-});
-
-export async function getGeminiResponse(prompt: string) {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-  return response.text;
-}

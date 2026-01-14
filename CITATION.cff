@@ -1,23 +1,6 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-title: "Supernova"
+message: "Portafolio avanzado, showcase de proyectos, integración IA y visualización de datos en tiempo real. React 19 · Vite 6 · Tailwind CSS · TypeScript · Gemini API"
+title: "Glastor®"
 type: software
 version: "1.0.0"
 date-released: "2026-01-01"
-authors:
-  - family-names: "Cardoso"
-    given-names: "Andrés Antonio"
-    email: "glastor.info@gmail.com"
-repository-code: "https://github.com/glastor-dev/glastor-dev-web"
-url: "https://github.com/glastor-dev/glastor-dev-web"
-license: GPL-3.0-only
-keywords:
-  - React
-  - Vite
-  - TypeScript
-  - audio
-  - music visualizer
-  - Web Audio API
-  - Canvas
-  - Gemini
-abstract: "Real-time music visualizer built with React, Vite, and TypeScript. Renders Canvas effects driven by Web Audio API analysis and supports AI-generated themes via Gemini."

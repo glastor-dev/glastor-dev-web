@@ -1,116 +1,159 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslate } from './LanguageContext';
 
 const partners = [
-  { name: 'Nexperia', industry: 'Semiconductors', logo: 'NX', status: '0x44A' },
-  { name: 'Aspid Cars', industry: 'Automotive', logo: 'AC', status: '0x92F' },
-  { name: 'Rizin', industry: 'Motorsports', logo: 'RZ', status: '0x11B' },
-  { name: 'Route4Me', industry: 'Logistics', logo: 'R4', status: '0x77C' },
-  { name: 'Neovim', industry: 'Open Source', logo: 'NV', status: '0x001' },
-  { name: 'Glastor-AI', industry: 'Machine Learning', logo: 'GA', status: '0xEE2' },
-  { name: 'DeepScale', industry: 'Infrastructure', logo: 'DS', status: '0xFFF' },
+  { 
+    name: 'Nexperia', 
+    industryKey: 'semiconductors', 
+    logo: 'NX', 
+    img: 'https://camo.githubusercontent.com/575b6bc125c335c92e1028519a90acac870cea587b8808cbc5c1c12c2118d7de/68747470733a2f2f692e706f7374696d672e63632f6e72517a6e5964322f6e657870657269612d6c6f676f2e706e67',
+    color: '#ff6b00',
+    span: 'md:col-span-2 md:row-span-2'
+  },
+  { 
+    name: 'Aspid Cars', 
+    industryKey: 'automotive', 
+    logo: 'AC', 
+    img: 'https://camo.githubusercontent.com/e763c77aa984ce5328e93867dcebed291c854e5d0be590a3d9cbcd97658a9195/68747470733a2f2f692e706f7374696d672e63632f463174746d7144482f41737069642e706e67',
+    color: '#ffffff',
+    span: 'md:col-span-2'
+  },
+  { 
+    name: 'Rizin', 
+    industryKey: 'motorsports', 
+    logo: 'RZ', 
+    img: '/img/rizin.png',
+    color: '#e91e63',
+    span: 'md:col-span-1'
+  },
+  { 
+    name: 'Route4Me', 
+    industryKey: 'logistics', 
+    logo: 'R4', 
+    img: '/img/route4me-logo.png',
+    color: '#007aff',
+    span: 'md:col-span-1'
+  },
+  { 
+    name: 'Neovim', 
+    industryKey: 'opensource', 
+    logo: 'NV', 
+    img: '/img/neovim-logo.png',
+    color: '#57a143',
+    span: 'md:col-span-1'
+  },
+  { 
+    name: 'FENETRE', 
+    industryKey: 'ml', 
+    logo: 'GA', 
+    img: '/img/logo.png',
+    color: '#00f2ff',
+    span: 'md:col-span-2'
+  },
+  { 
+    name: 'Fathom Analytics', 
+    industryKey: 'analytics', 
+    logo: 'FA', 
+    img: 'https://automation.vuejs.org/images/fathom_analytics.svg',
+    color: '#8e44ad',
+    span: 'md:col-span-1'
+  },
 ];
 
 const TrustSection: React.FC = () => {
-  // Triplemos la lista para asegurar que el scroll nunca muestre huecos en pantallas anchas
-  const fullList = [...partners, ...partners, ...partners];
+  const { t } = useTranslate();
 
   return (
-    <div className="py-24 relative overflow-hidden bg-black/20">
-      {/* Background decoration - Grid Lines */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none" 
-           style={{ backgroundImage: 'radial-gradient(var(--primary) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+    <section className="py-24 relative overflow-hidden">
+      {/* Background FX */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(var(--primary-rgb),0.05),transparent_70%)] pointer-events-none"></div>
       
-      <div className="mb-16 flex flex-col items-center text-center px-4 relative z-10">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--primary)]"></div>
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.5em] text-gray-500 flex items-center gap-2">
-            Strategic <span className="text-[var(--primary)]">Partnerships</span> & Integrations
-          </h3>
-          <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--primary)]"></div>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="mb-20 flex flex-col items-center text-center">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--primary)]"></div>
+            <h3 className="text-[12px] font-black uppercase tracking-[0.5em] text-gray-400">
+              {t('trust.strategic')} <span className="text-white">{t('trust.partnerships')}</span>
+            </h3>
+            <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--primary)]"></div>
+          </div>
+          <p className="text-lg text-gray-200 max-w-2xl font-light italic leading-relaxed">
+            "{t('trust.title')}"
+          </p>
         </div>
-        <p className="text-sm text-gray-400 max-w-xl font-light italic leading-relaxed">
-          "Arquitecturas validadas bajo protocolos de alta disponibilidad para líderes industriales."
-        </p>
-      </div>
 
-      <div className="relative w-full overflow-hidden">
-        {/* Edge Masks for smooth fade out */}
-        <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-[var(--bg)] to-transparent z-20 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-[var(--bg)] to-transparent z-20 pointer-events-none"></div>
-
-        {/* Marquee Container with forced horizontal layout */}
-        <div className="flex w-max animate-marquee whitespace-nowrap">
-          {fullList.map((partner, idx) => (
+        {/* Bento Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[160px]">
+          {partners.map((partner, idx) => (
             <div 
-              key={idx} 
-              className="inline-flex mx-6 flex-shrink-0 w-72 group/card relative"
+              key={idx}
+              className={`${partner.span} group relative bg-[#0a0a0a] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-700 hover:border-[var(--primary)]/30 hover:-translate-y-1 shadow-2xl flex flex-col items-center justify-center p-8`}
             >
-              {/* Card Body */}
-              <div className="w-full bg-[#0a0a0a] border border-white/5 rounded-lg p-5 flex items-center gap-5 transition-all duration-500 group-hover/card:border-[var(--primary)]/40 group-hover/card:bg-[#0f0f0f] relative overflow-hidden">
+              {/* Dynamic Aura */}
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none"
+                style={{ 
+                  background: `radial-gradient(circle at center, ${partner.color}, transparent 70%)` 
+                }}
+              ></div>
+              
+              {/* Logo Container */}
+              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-4 group-hover:scale-105 transition-transform duration-500">
+                <div className="relative w-full h-full max-h-[100px] flex items-center justify-center">
+                  <img 
+                    src={partner.img} 
+                    alt={partner.name} 
+                    className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700 drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                  />
+                  {/* Highlight Glow */}
+                  <div 
+                    className="absolute inset-0 blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-700"
+                    style={{ backgroundColor: partner.color }}
+                  ></div>
+                </div>
                 
-                {/* Circuit decorations */}
-                <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/10 group-hover/card:border-[var(--primary)]/30 rounded-tr-lg"></div>
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-white/10 group-hover/card:border-[var(--primary)]/30 rounded-bl-lg"></div>
-
-                {/* Logo Box with Scale and Tooltip */}
-                <div className="relative group/logo">
-                  <div className="w-14 h-14 rounded bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 relative transition-transform duration-500 group-hover/card:scale-110 group-hover/card:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
-                    <span className="text-xl font-black mono text-white/20 group-hover/card:text-[var(--primary)] transition-colors">
-                      {partner.logo}
-                    </span>
-                    {/* Status LED */}
-                    <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] group-hover/card:animate-pulse"></div>
-                  </div>
-
-                  {/* Tooltip Technical Style */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 opacity-0 group-hover/card:opacity-100 transition-all duration-300 pointer-events-none z-30">
-                    <div className="bg-[#050505] border border-[var(--primary)]/50 px-3 py-2 rounded shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center">
-                       <div className="text-[9px] mono font-black text-white uppercase tracking-tighter truncate max-w-[120px]">
-                         {partner.name}
-                       </div>
-                       <div className="text-[7px] mono text-[var(--primary)] font-bold uppercase tracking-widest mt-0.5">
-                         {partner.industry}
-                       </div>
-                       {/* Arrow */}
-                       <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[var(--primary)]/50"></div>
-                    </div>
-                  </div>
+                {/* Meta Info (Hidden on mobile if card is small) */}
+                <div className="flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="text-[10px] font-black mono text-white uppercase tracking-widest">{partner.name}</span>
+                  <span className="text-[8px] mono text-gray-500 uppercase mt-0.5" style={{ color: `${partner.color}99` }}>{t(`industries.${partner.industryKey}`)}</span>
                 </div>
-
-                {/* Info */}
-                <div className="flex flex-col overflow-hidden">
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-white tracking-tight truncate group-hover/card:text-[var(--primary)] transition-colors">
-                      {partner.name}
-                    </h4>
-                    <span className="text-[7px] mono text-emerald-500/50 hidden group-hover/card:block animate-in fade-in slide-in-from-left-2">
-                      {partner.status}
-                    </span>
-                  </div>
-                  <p className="text-[9px] uppercase tracking-widest text-gray-500 font-mono mt-1">
-                    {partner.industry}
-                  </p>
-                </div>
-
-                {/* Interactive Scanline on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--primary)]/5 to-transparent -translate-y-full group-hover/card:translate-y-full transition-transform duration-1000 ease-in-out"></div>
               </div>
+
+              {/* Technical Scanline */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--primary)]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </div>
           ))}
-        </div>
-      </div>
 
-      {/* Industrial Stats Footer */}
-      <div className="mt-20 container mx-auto px-4 max-w-4xl">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-sm">
-            <TrustStat label="Project Lifetime" value="14Y" />
-            <TrustStat label="System Uptime" value="99.9%" />
-            <TrustStat label="Client Retention" value="92%" />
-            <TrustStat label="Stack Precision" value="High" />
+          {/* Call to Action Tile */}
+          <div className="md:col-span-1 bg-[var(--primary)]/5 border border-[var(--primary)]/20 rounded-[2rem] flex flex-col items-center justify-center p-6 text-center group hover:bg-[var(--primary)]/10 transition-all">
+            <span className="text-[8px] mono font-bold text-[var(--primary)] uppercase tracking-widest mb-2">{t('trust.build_with_me')}</span>
+            <span className="text-[10px] text-white mono leading-tight">{t('trust.handshake')}</span>
+            <div className="mt-4 w-8 h-8 rounded-full border border-[var(--primary)]/30 flex items-center justify-center animate-pulse group-hover:scale-125 transition-transform">
+              <svg className="w-4 h-4 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Metadata Footer */}
+        <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16 opacity-30 group">
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] mono font-bold text-white">{t('trust.uptime_label')}</span>
+            <span className="text-[8px] mono text-gray-500 mt-1">{t('trust.verified')}</span>
+          </div>
+          <div className="flex flex-col items-center border-l border-white/10 pl-8 md:pl-16">
+            <span className="text-[10px] mono font-bold text-white">{t('trust.precision_label')}</span>
+            <span className="text-[8px] mono text-gray-500 mt-1">{t('trust.industrial')}</span>
+          </div>
+          <div className="flex flex-col items-center border-l border-white/10 pl-8 md:pl-16">
+            <span className="text-[10px] mono font-bold text-white">{t('trust.sync_label')}</span>
+            <span className="text-[8px] mono text-gray-500 mt-1">12_JAN_2026_16:04</span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -173,7 +216,7 @@ const TrustStat: React.FC<{ label: string; value: string }> = ({ label, value })
       <span className="text-2xl font-black mono text-white group-hover:text-[var(--primary)] transition-colors min-w-[3ch] text-center">
         {displayValue}
       </span>
-      <span className="text-[8px] uppercase tracking-[0.3em] text-gray-600 font-bold mt-1">
+      <span className="text-[12px] uppercase tracking-[0.3em] text-gray-200 font-bold mt-1">
         {label}
       </span>
     </div>

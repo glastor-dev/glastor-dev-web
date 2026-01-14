@@ -1,0 +1,16 @@
+AVISO DE COOKIES
+
+Este ecosistema utiliza cookies para potenciar la Developer Experience (DX). Bajo nuestro estándar "Zero-Intrusion", el rastreo analítico permanece desactivado por defecto.
+
+Legislación aplicable:
+- En estricto cumplimiento de la Ley 25.326 (Argentina) y GDPR (UE), requerimos tu autorización explícita para activar métricas de rendimiento.
+
+Tipos de cookies:
+- Core Engine (Esenciales): necesarias para la integridad de la sesión.
+- Analytics Framework (Opcionales): telemetría para optimización de flujos.
+
+Gestión de cookies:
+- Selecciona "Habilitar Telemetría" para contribuir a la mejora del ecosistema o "Solo Esenciales" para navegar sin rastreo.
+- Puedes auditar tus preferencias en cualquier momento desde el footer.
+
+Fecha de última actualización: 11/01/2026

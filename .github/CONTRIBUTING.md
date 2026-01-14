@@ -1,6 +1,12 @@
-# 🌌 Ingeniería y Estándares de Contribución
+# 🌌 Protocolos de Ingeniería y Guía de Contribución
 
 Gracias por sumarte a la misión de escalar el ecosistema de `**GLASTOR-DEV** la division de desarrollo de GLASTOR®`. Valoramos la excelencia técnica, el rigor arquitectónico y el compromiso con la calidad del software. Esta guía no es solo un conjunto de reglas, sino un marco de trabajo diseñado para optimizar la **Developer Experience (DX)** y garantizar la integridad del core.
+
+## 🏗️ Filosofía de Desarrollo
+Priorizamos la **Developer Experience (DX)** y la **Excelencia Técnica** sobre la velocidad de entrega.
+- **Zero-Intrusion:** Respetamos la privacidad del usuario final por defecto.
+- **Atomic Design:** La UI debe ser modular y escalable.
+- **Type Safety:** El uso de TypeScript estricto es mandatorio.
 
 ## 🛠 Gestión Estratégica de Incidencias
 
@@ -32,27 +38,32 @@ Implementamos un flujo de CI/CD riguroso para proteger la estabilidad de `main`:
    ```bash
    git checkout -b feature/amazing-feature
    ```
-2. **Ciclo de Implementación**
+
+2. **Protocolo de Commits (Conventional Commits)**
+   Seguimos estrictamente el estándar para automatizar el versionado semántico.
+   
+   | Tipo | Descripción | Ejemplo |
+   | :--- | :--- | :--- |
+   | `feat` | Nueva funcionalidad | `feat: implementar sistema de telemetría` |
+   | `fix` | Corrección de errores | `fix: error de hidratación en SSR` |
+   | `docs` | Documentación | `docs: actualizar política de privacidad` |
+   | `perf` | Rendimiento | `perf: optimizar carga de fuentes` |
+   | `chore` | Mantenimiento | `chore: actualizar dependencias` |
+
+3. **Ciclo de Implementación**
    - Cumplimiento estricto del *Clean Code*.
    - Cobertura de tests unitarios y de integración.
    - Actualización sincrónica de la documentación.
-3. **Validación de Estática (Linting)**
+4. **Validación Estática (Linting)**
    Garantiza la consistencia del estilo antes del commit:
    ```bash
    npm run lint --if-present
    ```
-4. **Generación de Artefactos**
+5. **Generación de Artefactos**
    Verifica que el build sea exitoso en un entorno local:
    ```bash
    npm run build
    ```
-5. **Protocolo de Commits (SemVer)**
-   Adoptamos *Conventional Commits* para una trazabilidad automatizada:
-   ```bash
-   git commit -m "feat: implement robust state management for supernova"
-   ```
-   *Estándares: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `chore:`.*
-
 6. **Sincronización y Push**
    ```bash
    git push origin feature/amazing-feature
@@ -62,6 +73,7 @@ Implementamos un flujo de CI/CD riguroso para proteger la estabilidad de `main`:
 - **Atomicidad:** Un cambio, una responsabilidad por PR.
 - **Referenciación:** Vincula automáticamente mediante `#issue-number`.
 - **Changelog:** Es mandatorio registrar los cambios en `CHANGELOG.md`.
+- **Definition of Done:** Sin errores de linter, tipos estrictos y build exitoso.
 
 ## 💻 Setup del Entorno de Ingeniería
 

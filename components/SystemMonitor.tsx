@@ -25,8 +25,8 @@ const SystemMonitor: React.FC = () => {
   return (
     <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">Service Latency (ms)</h3>
-        <span className="text-[10px] mono text-emerald-400 px-2 py-0.5 bg-emerald-400/10 rounded">Live: 24ms</span>
+        <h3 className="text-base font-bold uppercase tracking-[0.2em] text-gray-100">Service Latency (ms)</h3>
+        <span className="text-[12px] mono text-emerald-400 px-2 py-0.5 bg-emerald-400/20 rounded">Live: 24ms</span>
       </div>
       
       <div className="h-24 min-h-[96px] w-full">

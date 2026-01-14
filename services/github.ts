@@ -20,10 +20,19 @@ export async function fetchUserRepos(username: string) {
       'TypeScript': '#3178c6', 'JavaScript': '#f1e05a', 'C++': '#f34b7d', 'Shell': '#89e051'
     };
     
+    const pinnedNames = ['supernova', 'kraken', 'qr-pro', 'legacy-lab'];
+    
     return data
       .filter((repo: any) => !repo.fork && !repo.archived)
-      .sort((a: any, b: any) => (b.stargazers_count * 2 + b.forks_count) - (a.stargazers_count * 2 + a.forks_count))
-      .slice(0, 12)
+      .sort((a: any, b: any) => {
+        const aPinned = pinnedNames.indexOf(a.name.toLowerCase());
+        const bPinned = pinnedNames.indexOf(b.name.toLowerCase());
+        if (aPinned !== -1 && bPinned !== -1) return aPinned - bPinned;
+        if (aPinned !== -1) return -1;
+        if (bPinned !== -1) return 1;
+        return (b.stargazers_count * 2 + b.forks_count) - (a.stargazers_count * 2 + a.forks_count);
+      })
+      .slice(0, 10)
       .map((repo: any) => ({
         name: repo.name,
         desc: repo.description || "Arquitectura de sistemas de alto rendimiento.",

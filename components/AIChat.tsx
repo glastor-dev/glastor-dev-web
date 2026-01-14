@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI, Modality, LiveServerMessage } from '@google/genai';
+import { GoogleGenAI, Modality, LiveServerMessage } from '@google/genai'; // Se mantiene para tipos, pero no para instanciación con API Key
 import { aiConfig } from '../services/gemini';
 import { ChatMessage } from '../types';
 
@@ -60,6 +60,7 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
   const [signalStrength, setSignalStrength] = useState(98);
   
   const [liveInput, setLiveInput] = useState("");
+  const mediaStreamRef = useRef<MediaStream | null>(null);
   const [liveOutput, setLiveOutput] = useState("");
   
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -104,6 +105,10 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
     inputAudioCtxRef.current?.close();
     outputAudioCtxRef.current?.close();
     sourcesRef.current.forEach(s => { try { s.stop(); } catch(e) {} });
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
     sourcesRef.current.clear();
   };
 
@@ -111,30 +116,44 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
     try {
       setIsConnecting(true);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
       
       const inCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
       const outCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
       inputAudioCtxRef.current = inCtx;
       outputAudioCtxRef.current = outCtx;
 
-      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY || "" });
+      // 🛑 ADVERTENCIA DE SEGURIDAD CRÍTICA 🛑
+      // La siguiente línea expone tu clave de API en el frontend.
+      // La funcionalidad de voz en tiempo real requiere una conexión persistente (WebSocket)
+      // que no se puede securizar fácilmente a través de una API serverless estándar de Vercel.
+      // Para una implementación segura en producción, necesitarías un backend dedicado (ej. un servidor Node.js)
+      // que gestione la conexión con la API de Gemini y se comunique con tu frontend.
+      //
+      // La funcionalidad ha sido deshabilitada temporalmente para evitar la exposición de la clave.
+      // Para probarla, descomenta la siguiente línea y asegúrate de tener una variable de entorno
+      // NEXT_PUBLIC_API_KEY configurada, pero NUNCA despliegues esto a producción.
+      
+      // const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_API_KEY || "" });
+      
+      // Lanzamos un error para detener la ejecución y mostrar el problema.
+      throw new Error("La funcionalidad de voz en vivo no es segura en esta configuración y ha sido deshabilitada. Revisa los comentarios en AIChat.tsx.");
+
       const sessionPromise = ai.live.connect({
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         callbacks: {
-          onopen: () => {
+          onopen: async () => {
             setIsLive(true);
             setIsConnecting(false);
+            
+            await inCtx.audioWorklet.addModule('/audio-processor.js');
+            const workletNode = new AudioWorkletNode(inCtx, 'audio-processor');
             const source = inCtx.createMediaStreamSource(stream);
-            const processor = inCtx.createScriptProcessor(4096, 1, 1);
-            processor.onaudioprocess = (e) => {
-              const inputData = e.inputBuffer.getChannelData(0);
-              const int16 = new Int16Array(inputData.length);
-              for (let i = 0; i < inputData.length; i++) int16[i] = inputData[i] * 32768;
-              const pcmBlob = { data: encode(new Uint8Array(int16.buffer)), mimeType: 'audio/pcm;rate=16000' };
+            source.connect(workletNode);
+            workletNode.port.onmessage = (event) => {
+              const pcmBlob = { data: encode(new Uint8Array(event.data)), mimeType: 'audio/pcm;rate=16000' };
               sessionPromise.then(session => session.sendRealtimeInput({ media: pcmBlob }));
             };
-            source.connect(processor);
-            processor.connect(inCtx.destination);
           },
           onmessage: async (message: LiveServerMessage) => {
             if (message.serverContent?.outputTranscription) {
@@ -186,6 +205,7 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
       });
       sessionRef.current = await sessionPromise;
     } catch (err) {
+      console.error("Error al iniciar el chat de voz:", err);
       stopLive();
     }
   };
@@ -198,19 +218,24 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
     setMessages(prev => [...prev, { role: 'user', text: userText }]);
     setIsTyping(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: [...messages, { role: 'user', text: userText }].map(m => ({
-          role: m.role,
-          parts: [{ text: m.text }]
-        })),
-        config: aiConfig,
+      const apiResponse = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [...messages, { role: 'user', text: userText }]
+        }),
       });
+
+      if (!apiResponse.ok) throw new Error(`Error en la API: ${apiResponse.statusText}`);
+
+      const response = await apiResponse.json();
+
       if (response.functionCalls) {
         for (const fc of response.functionCalls) handleToolCall(fc);
       }
-      setMessages(prev => [...prev, { role: 'model', text: response.text || "Comando ejecutado." }]);
+      setMessages(prev => [...prev, { role: 'model', text: response.text || "Protocolo ejecutado." }]);
     } catch (err) {
       setMessages(prev => [...prev, { role: 'model', text: "Error de enlace neuronal." }]);
     } finally {
@@ -219,10 +244,10 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[550px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-[var(--primary)]/30 group">
+    <div className="flex flex-col h-full min-h-[450px] md:min-h-[550px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-[var(--primary)]/30 group">
       
       {/* HEADER DE TELEMETRÍA AVANZADA */}
-      <div className="p-4 bg-white/[0.03] border-b border-white/10 relative overflow-hidden">
+      <div className="p-3 md:p-4 bg-white/[0.03] border-b border-white/10 relative overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Indicador de Estado Multi-LED */}
@@ -273,7 +298,7 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
       </div>
 
       {/* ÁREA DE MENSAJES */}
-      <div ref={scrollRef} className="flex-grow overflow-y-auto p-6 space-y-6 custom-scrollbar relative">
+      <div ref={scrollRef} className="flex-grow overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6 custom-scrollbar relative">
         {isLive && (
           <div className="flex flex-col items-center justify-center h-full space-y-8 animate-in fade-in zoom-in duration-500">
             <div className="flex gap-1.5 items-end h-24 w-full justify-center">
@@ -297,7 +322,7 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
 
         {!isLive && messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`group relative max-w-[85%] p-5 rounded-3xl text-sm leading-relaxed ${
+            <div className={`group relative max-w-[90%] md:max-w-[85%] p-4 md:p-5 rounded-2xl md:rounded-3xl text-xs md:text-sm leading-relaxed ${
               m.role === 'user' ? 'bg-[var(--primary)] text-black font-bold rounded-br-none shadow-xl' : 'bg-white/5 text-gray-300 rounded-bl-none border border-white/5 backdrop-blur-sm'
             }`}>
               <div className="whitespace-pre-wrap">{m.text}</div>
@@ -322,18 +347,18 @@ const AIChat: React.FC<AIChatProps> = ({ setTheme }) => {
       </div>
 
       {/* INPUT DE COMANDOS */}
-      <form onSubmit={handleSend} className="p-4 bg-black/40 border-t border-white/10 flex gap-3 relative">
+      <form onSubmit={handleSend} className="p-3 md:p-4 bg-black/40 border-t border-white/10 flex gap-2 md:gap-3 relative">
         <input 
           type="text" 
           value={input}
           disabled={isLive}
           onChange={(e) => setInput(e.target.value)}
           placeholder={isLive ? "Escuchando señal..." : "Ingrese comando o consulta..."}
-          className="flex-grow bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-xs outline-none focus:border-[var(--primary)]/50 transition-all mono text-white disabled:opacity-30 placeholder:text-gray-700"
+          className="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-3 md:px-5 md:py-4 text-base md:text-xs outline-none focus:border-[var(--primary)]/50 transition-all mono text-white disabled:opacity-30 placeholder:text-gray-700"
         />
         <button 
           disabled={isTyping || isLive}
-          className="w-12 h-12 flex items-center justify-center bg-[var(--primary)] text-black rounded-xl hover:brightness-110 disabled:opacity-30 transition-all shadow-lg active:scale-95"
+          className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[var(--primary)] text-black rounded-xl hover:brightness-110 disabled:opacity-30 transition-all shadow-lg active:scale-95"
         >
           <svg className="w-5 h-5 transform rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

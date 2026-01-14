@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+      <!-- Favicons -->
+      <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+      <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLASTOR® — Ingeniería de Backend y Arquitectura</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Portafolio profesional, showcase de proyectos, integración IA y visualización de datos en tiempo real. Backend, DevOps y arquitectura avanzada.">
+    <meta name="keywords" content="Glastor, Backend, Portfolio, React, Vite, TypeScript, Tailwind, Gemini, DevOps, Ingeniería, IA, Visualización, Open Source">
+    <meta name="author" content="Andrés Antonio Cardoso">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="GLASTOR® — Ingeniería de Backend y Arquitectura" />
+    <meta property="og:description" content="Portafolio profesional, showcase de proyectos, integración IA y visualización de datos en tiempo real." />
+    <meta property="og:image" content="/img/glastor-logo.png" />
+    <meta property="og:url" content="https://glastor-dev-web.vercel.app" />
+    <meta property="og:type" content="website" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GLASTOR® — Ingeniería de Backend y Arquitectura" />
+    <meta name="twitter:description" content="Portafolio profesional, showcase de proyectos, integración IA y visualización de datos en tiempo real." />
+    <meta name="twitter:image" content="/img/glastor-logo.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --accent: #8b5cf6;
+            --bg: #0a0a0a;
+            --surface: #111;
+            --text: #e5e7eb;
+            --glow: rgba(59, 130, 246, 0.3);
+        }
+
+        [data-theme='phosphor'] {
+            --primary: #22c55e;
+            --accent: #16a34a;
+            --bg: #050805;
+            --surface: #0a0f0a;
+            --text: #4ade80;
+            --glow: rgba(34, 197, 94, 0.2);
+        }
+
+        [data-theme='amber'] {
+            --primary: #f59e0b;
+            --accent: #d97706;
+            --bg: #080500;
+            --surface: #0f0a00;
+            --text: #fbbf24;
+            --glow: rgba(245, 158, 11, 0.2);
+        }
+
+        html {
+            scroll-padding-top: 5rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+            margin: 0;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Reveal animation with safe initial state */
+        .reveal {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
+        }
+
+        .reveal.active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Fallback: Si JS no carga, mostramos el contenido tras 3 segundos */
+        .js-error-fallback .reveal {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-100% / 3)); }
+        }
+
+        .animate-marquee {
+          display: flex;
+          flex-direction: row;
+          width: max-content;
+          animation: marquee 40s linear infinite;
+        }
+
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+
+        .data-packet {
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          background: var(--primary);
+          border-radius: 50%;
+          box-shadow: 0 0 8px var(--primary);
+          animation: flow 3s linear infinite;
+        }
+
+        @keyframes flow {
+          0% { left: 0%; opacity: 0; }
+          20% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { left: 100%; opacity: 0; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+    <!-- Punto de entrada explícito -->
+    <script type="module" src="index.tsx"></script>
+    <script>
+      // Detección de errores de carga de JS
+      setTimeout(() => {
+        if (!document.getElementById('root').hasChildNodes()) {
+          document.body.classList.add('js-error-fallback');
+          console.warn('React boot timeout. Content revealed for accessibility.');
+        }
+      }, 3500);
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

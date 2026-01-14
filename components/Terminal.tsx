@@ -77,7 +77,7 @@ const Terminal: React.FC = () => {
         response = (
           <div className="flex flex-col md:flex-row gap-4 md:gap-8 py-2 animate-in fade-in duration-700 overflow-hidden">
             {/* Logo Responsivo */}
-            <div className="text-[#1793d1] font-bold leading-none mono text-[8px] md:text-[10px] shrink-0">
+            <div className="text-[#1793d1] font-bold leading-none mono text-[12px] md:text-[14px] shrink-0">
               <pre className="hidden md:block">
 {`                   -\`
                   .o+o.
@@ -143,18 +143,18 @@ const Terminal: React.FC = () => {
             <div className="grid grid-cols-1 gap-2">
               <div className="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 transition-colors cursor-pointer group">
                 <span className="text-white font-bold">01. GLASTOR_Core</span>
-                <span className="text-[10px] text-emerald-500 mono">[STABLE]</span>
+                <span className="text-[12px] text-emerald-400 mono">[STABLE]</span>
               </div>
               <div className="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 transition-colors cursor-pointer group">
                 <span className="text-white font-bold">02. Neural_API_V4</span>
-                <span className="text-[10px] text-blue-400 mono">[ACTIVE]</span>
+                <span className="text-[12px] text-blue-400 mono">[ACTIVE]</span>
               </div>
               <div className="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 transition-colors cursor-pointer group">
                 <span className="text-white font-bold">03. Arch_Portfolio</span>
-                <span className="text-[10px] text-purple-400 mono">[LATEST]</span>
+                <span className="text-[12px] text-purple-400 mono">[LATEST]</span>
               </div>
             </div>
-            <p className="text-[9px] text-gray-500 italic">Tip: Scrolea hacia abajo para ver el Grid completo de 25 repositorios.</p>
+            <p className="text-[12px] text-gray-200 italic">Tip: Scrolea hacia abajo para ver el Grid completo de 25 repositorios.</p>
           </div>
         );
         break;
@@ -221,10 +221,10 @@ const Terminal: React.FC = () => {
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
             <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
           </div>
-          <div className="flex items-center gap-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">
+          <div className="flex items-center gap-2 text-gray-200 text-[12px] uppercase font-black tracking-widest">
             <span className="text-[#1793d1]">archlinux</span>@glastor-dev: ~
           </div>
-          <div className="text-[9px] text-[#1793d1]/40 font-bold">ZSH</div>
+          <div className="text-[12px] text-[#1793d1]/70 font-bold">ZSH</div>
         </div>
         {/* Terminal Screen */}
         <div ref={scrollRef} className="p-6 min-h-[200px] max-h-[700px] overflow-y-auto space-y-2 custom-scrollbar relative bg-[#0c0c0c] scroll-smooth">
@@ -327,7 +327,7 @@ const PromptDisplay: React.FC<{ cmd?: string }> = ({ cmd }) => {
 
         {/* Path Segment */}
         <div className="relative ml-2 hidden sm:block">
-          <span className="bg-white/5 text-gray-300 px-3 py-0.5 text-[9px] font-bold italic z-20 flex items-center gap-2">
+          <span className="bg-white/10 text-gray-100 px-3 py-0.5 text-[12px] font-bold italic z-20 flex items-center gap-2">
             ~/glastor
             <span className="text-[#1793d1] text-[7px] font-black">git:(main)</span>
           </span>

@@ -1,9 +1,15 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useTranslate } from './LanguageContext';
+import { CookiesConfigContext } from './CookiesBanner';
+import { useLegal } from './LegalContext';
+import PerformanceDiagnostic from './PerformanceDiagnostic';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslate();
   const [uptime, setUptime] = useState('00:00:00:00');
   const [currentYear] = useState(new Date().getFullYear());
+  const { openLegal } = useLegal();
+  const cookiesConfig = useContext(CookiesConfigContext);
 
   useEffect(() => {
     // Simulación de contador de Uptime desde una fecha de inicio ficticia
@@ -36,26 +42,32 @@ const Footer: React.FC = () => {
           {/* Column 1: Core Branding & Identity */}
           <div className="lg:col-span-5 space-y-8">
              <div className="flex flex-col items-start gap-1">
-                <img src="/img/glastor-logo.png" alt="Glastor Logo" className="w-20 h-20 object-contain" />
-               <p className="text-[10px] text-[var(--primary)] mono font-bold uppercase tracking-[0.3em] mt-1">Backend_Engineering_Kernels</p>
+                <img src="/img/GLASTOR-SVG.svg" alt="Glastor Logo" className="w-32 h-14 object-contain -ml-2" />
+               <p className="text-[10px] text-[var(--primary)] mono font-bold uppercase tracking-[0.3em] mt-1">{t('footer.branding_mission')}</p>
              </div>
 
              <p className="text-gray-500 text-sm leading-relaxed max-w-md font-light">
-               Desarrollando la infraestructura crítica que sostiene ecosistemas digitales de alto impacto. 
-               Arquitectura de sistemas basada en protocolos de redundancia y seguridad ofensiva.
+               {t('footer.tagline')}
              </p>
 
              <div className="flex flex-col gap-4 p-5 bg-white/[0.02] border border-white/5 rounded-2xl backdrop-blur-sm">
                 <div className="flex items-center justify-between text-[10px] mono text-gray-400 font-bold uppercase tracking-widest">
-                   <span>System_Uptime</span>
+                   <span>{t('footer.uptime_label')}</span>
                    <span className="text-[var(--primary)]">{uptime}</span>
                 </div>
+                <button
+                  onClick={() => cookiesConfig?.openConfig()}
+                  className="mt-4 px-4 py-2 bg-[var(--primary)] text-black rounded-lg text-xs font-bold hover:bg-white transition self-start"
+                  aria-label={t('footer.config_cookies')}
+                >
+                  {t('footer.config_cookies')}
+                </button>
                 <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                    <div className="h-full bg-[var(--primary)] w-full animate-[pulse_2s_infinite]"></div>
                 </div>
                 <div className="flex justify-between text-[8px] mono text-gray-600 font-black">
-                   <span>BOOT_DATE: 01_JAN_2010</span>
-                   <span>REGION: AR_NODE_ALPHA</span>
+                   <span>{t('footer.boot_date')}</span>
+                   <span>{t('footer.region')}</span>
                 </div>
              </div>
           </div>
@@ -64,13 +76,13 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-3 space-y-6">
             <h4 className="text-white text-xs font-black uppercase tracking-[0.4em] mb-8 flex items-center gap-2">
                <span className="w-1 h-1 bg-[var(--primary)] rounded-full"></span>
-               Directory_Map
+               {t('footer.directory_title')}
             </h4>
             <ul className="space-y-4 text-sm mono">
               <FooterLink href="#experience" label="/usr/local/bin/stack" />
+              <FooterLink href="#roadmap" label="/var/log/roadmap" />
               <FooterLink href="#architecture" label="/var/www/architecture" />
               <FooterLink href="#projects" label="/home/glastor/projects" />
-              <FooterLink href="#analytics" label="/mnt/external/analytics" />
             </ul>
           </div>
 
@@ -78,16 +90,22 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-4 space-y-8">
             <div className="p-6 bg-gradient-to-br from-white/[0.03] to-transparent border border-white/10 rounded-3xl relative">
                <div className="absolute -top-3 left-6 px-3 bg-[#050505] text-[9px] mono font-bold text-[var(--primary)] uppercase tracking-widest">
-                 Compliance_Seal
+                 {t('footer.compliance_seal')}
                </div>
                <div className="space-y-4">
                   <p className="text-[11px] text-gray-500 leading-relaxed italic">
-                    "La propiedad intelectual de los sistemas diseñados bajo la marca GLASTOR® se rige bajo los protocolos de libertad de software y registros de marca INPI."
+                    {t('footer.legal_disclaimer')}
                   </p>
-                  <div className="flex flex-col gap-1">
-                     <span className="text-[10px] text-white mono font-black">INPI_ARGENTINA: 4559568 / 4559567</span>
-                     <span className="text-[10px] text-gray-600 mono">GPL v3.0 Software Freedom Conservancy</span>
+                  <div className="flex flex-col gap-1 mb-2">
+                    <span className="text-[10px] text-white mono font-black">{t('footer.inpi_info')}</span>
+                    <span className="text-[10px] text-gray-600 mono">{t('footer.gpl_info')}</span>
                   </div>
+                  <ul className="flex flex-col gap-1 mt-2">
+                    <FooterLink label={t('footer.legal')} onClick={() => openLegal('legal')} />
+                    <FooterLink label={t('footer.terms')} onClick={() => openLegal('terminos')} />
+                    <FooterLink label={t('footer.privacy')} onClick={() => openLegal('privacidad')} />
+                    <FooterLink label={t('footer.cookies')} onClick={() => openLegal('cookies')} />
+                  </ul>
                </div>
             </div>
 
@@ -113,20 +131,38 @@ const Footer: React.FC = () => {
 
         {/* Bottom Bar: Telemetry Info */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all">
-             <img src="https://i.postimg.cc/PxWYdHPN/gplv3-with-text-136x68.png" alt="GPLv3" className="h-6" />
-             <div className="h-4 w-px bg-white/20"></div>
-             <div className="flex flex-col">
-                <span className="text-[8px] text-white mono font-bold">GL-CORE-V3</span>
-                <span className="text-[7px] text-gray-500 mono">Kernel_Stable_v3.2.1</span>
+          <div className="flex flex-wrap items-center gap-4 md:gap-8 opacity-60 hover:opacity-100 transition-all">
+             <div className="flex items-center gap-4 border-r border-white/10 pr-4 md:pr-8">
+               <img src="https://i.postimg.cc/PxWYdHPN/gplv3-with-text-136x68.png" alt="GPLv3" className="h-8" />
+               <div className="flex flex-col">
+                 <span className="text-[12px] text-white mono font-bold leading-tight">GL-CORE-V3</span>
+                 <span className="text-[9px] text-gray-500 mono leading-tight">Stable_v3.2.1</span>
+               </div>
              </div>
-          </div>
+             <PerformanceDiagnostic />
+           </div>
           
-          <div className="text-center md:text-right">
-             <p className="text-gray-600 text-[10px] mono uppercase tracking-[0.3em]">
-               © {currentYear} ANDRÉS ANTONIO CARDOSO. <span className="text-white font-black">ALL_RIGHTS_RESERVED.</span>
-             </p>
-             <p className="text-gray-800 text-[8px] mono mt-1">Sincronización de canal seguro vía AES-256-GCM</p>
+          <div className="flex flex-col md:flex-row items-center md:items-end gap-2 md:gap-4 md:justify-end text-center md:text-right">
+            <div>
+              <p className="text-gray-600 text-[10px] mono uppercase tracking-[0.3em]">
+                © {currentYear} GLASTOR. <span className="text-white font-black">{t('footer.rights')}</span>
+              </p>
+               <p className="text-gray-800 text-[11px] md:text-[12px] mono mt-1">{t('footer.secure_channel')}</p>
+            </div>
+            <a
+              href="http://qr.afip.gob.ar/?qr=NJzaKjxSmLLLxv6I0U-Blg,,"
+              target="_F960AFIPInfo"
+              rel="noopener noreferrer"
+              className="inline-block"
+              aria-label="Data Fiscal - AFIP"
+            >
+              <img
+                src="http://www.afip.gob.ar/images/f960/DATAWEB.jpg"
+                alt="Data Fiscal AFIP"
+                className="h-16 w-auto md:h-20 object-contain ml-auto"
+                style={{ minWidth: '60px' }}
+              />
+            </a>
           </div>
         </div>
       </div>
@@ -136,15 +172,25 @@ const Footer: React.FC = () => {
   );
 };
 
-const FooterLink: React.FC<{ href: string; label: string }> = ({ href, label }) => (
+const FooterLink: React.FC<{ href?: string; label: string; onClick?: () => void }> = ({ href, label, onClick }) => (
   <li>
-    <a 
-      href={href} 
-      className="text-gray-500 hover:text-[var(--primary)] transition-all flex items-center gap-2 group"
-    >
-      <span className="text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-all font-black">❯</span>
-      <span className="group-hover:translate-x-1 transition-transform">{label}</span>
-    </a>
+    {onClick ? (
+      <button 
+        onClick={onClick}
+        className="text-gray-500 hover:text-[var(--primary)] transition-all flex items-center gap-2 group w-full text-left focus:outline-none"
+      >
+        <span className="text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-all font-black">❯</span>
+        <span className="group-hover:translate-x-1 transition-transform">{label}</span>
+      </button>
+    ) : (
+      <a 
+        href={href} 
+        className="text-gray-500 hover:text-[var(--primary)] transition-all flex items-center gap-2 group"
+      >
+        <span className="text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-all font-black">❯</span>
+        <span className="group-hover:translate-x-1 transition-transform">{label}</span>
+      </a>
+    )}
   </li>
 );
 
@@ -159,6 +205,7 @@ const SocialIcon: React.FC<{ icon: string; href: string }> = ({ icon, href }) =>
     }
   };
 
+  const cookiesConfig = useContext(CookiesConfigContext);
   return (
     <a 
       href={href} 

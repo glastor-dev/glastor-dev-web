@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchUserRepos } from '../services/github';
+import { useTranslate } from './LanguageContext';
 
 interface Project {
   name: string;
@@ -22,6 +23,7 @@ const ProjectGrid: React.FC = () => {
   const [error, setError] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { t } = useTranslate();
 
   // Calculate freshness
   const freshness = useMemo(() => {
@@ -41,7 +43,7 @@ const ProjectGrid: React.FC = () => {
     const repos = await fetchUserRepos('glastor-dev');
     
     if (repos) {
-      setProjects(repos);
+      setProjects(repos.slice(0, 4));
       setError(false);
       setLastSyncedAt(new Date());
     } else {
@@ -112,14 +114,14 @@ const ProjectGrid: React.FC = () => {
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--primary)] mono">
-                Github_Telemetry_Link
+                {t('projects.telemetry')}
               </span>
               <span className={`text-[8px] mono font-bold px-1 rounded ${isSyncing ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-gray-500'}`}>
                 {isSyncing ? 'BUSY' : freshness}
               </span>
             </div>
             <span className="text-[8px] text-gray-500 mono uppercase tracking-widest mt-0.5">
-              Source: api.github.com/glastor-dev
+              {t('projects.source')}: api.github.com/glastor-dev
             </span>
           </div>
         </div>
@@ -155,7 +157,7 @@ const ProjectGrid: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             <span className="text-[10px] mono font-black uppercase text-gray-500 group-hover:text-white">
-              Sync_Now
+              {t('projects.sync_now')}
             </span>
           </button>
         </div>
@@ -181,7 +183,7 @@ const ProjectGrid: React.FC = () => {
                <div className="bg-[#0a0a0a]/90 border border-[var(--primary)]/30 px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-4">
                   <div className="w-5 h-5 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] mono font-black text-white uppercase tracking-[0.2em]">Updating_Cache</span>
+                    <span className="text-[10px] mono font-black text-white uppercase tracking-[0.2em]">{t('projects.updating')}</span>
                     <span className="text-[8px] mono text-gray-500 uppercase">Synchronizing_GitHub_Payload...</span>
                   </div>
                </div>
@@ -218,16 +220,23 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
           </svg>
         </div>
+
         <div className="flex gap-5">
           <div className="flex flex-col items-center gap-1 group/stat">
             <div className="flex items-center gap-1 text-[11px] mono text-gray-500 group-hover/stat:text-yellow-500 transition-colors font-bold">
-              <span>★</span> {project.stars}
+              <svg className="w-3 h-3 group-hover/stat:animate-spin" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+              {project.stars}
             </div>
             <span className="text-[7px] mono text-gray-700 uppercase font-black tracking-tighter">STARS</span>
           </div>
           <div className="flex flex-col items-center gap-1 group/stat">
             <div className="flex items-center gap-1 text-[11px] mono text-gray-500 group-hover/stat:text-blue-400 transition-colors font-bold">
-              <span>⑂</span> {project.forks}
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 11V3m0 0l-4 4m4-4l4 4m-4 14v-8m0 8l-4-4m4 4l4-4" />
+              </svg>
+              {project.forks}
             </div>
             <span className="text-[7px] mono text-gray-700 uppercase font-black tracking-tighter">FORKS</span>
           </div>

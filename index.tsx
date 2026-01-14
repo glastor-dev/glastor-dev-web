@@ -13,6 +13,8 @@ if (typeof (window as any).process === 'undefined') {
   };
 }
 
+import { LanguageProvider } from './components/LanguageContext';
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error("Could not find root element to mount to");
@@ -22,7 +24,9 @@ try {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <App />
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
     </React.StrictMode>
   );
   console.log('GLASTOR-OS: Kernel React montado correctamente.');

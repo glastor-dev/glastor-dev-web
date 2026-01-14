@@ -1,0 +1,20 @@
+class AudioProcessor extends AudioWorkletProcessor {
+  constructor() {
+    super();
+  }
+
+  process(inputs, outputs, parameters) {
+    const input = inputs[0];
+    if (input.length > 0) {
+      const inputData = input[0]; // Float32Array
+      const int16 = new Int16Array(inputData.length);
+      for (let i = 0; i < inputData.length; i++) {
+        int16[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32768));
+      }
+      this.port.postMessage(int16.buffer, [int16.buffer]);
+    }
+    return true; // Keep processor alive
+  }
+}
+
+registerProcessor('audio-processor', AudioProcessor);

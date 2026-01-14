@@ -1,7 +1,9 @@
-
 import React from 'react';
+import { useTranslate } from './LanguageContext';
 
 const Hero: React.FC = () => {
+  const { t } = useTranslate();
+
   return (
     <div className="relative pt-12 pb-8">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-500/10 blur-[120px] rounded-full -z-10"></div>
@@ -9,25 +11,23 @@ const Hero: React.FC = () => {
       <div className="max-w-4xl space-y-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest">
           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-          @glastor-dev en GitHub
+          {t('hero.github_link')}
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-          Arquitecto de <span className="gradient-text">APIs</span> &<br />
-          Sistemas Distribuidos.
+        <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white transition-opacity duration-300">
+          {t('hero.title_part1')} <span className="gradient-text">{t('hero.title_part2')}</span><br />
+          {t('hero.title_part3')}
         </h1>
         
-        <p className="text-xl text-gray-400 max-w-2xl font-light">
-          Especializado en el ecosistema Python (FastAPI/Django), 
-          automatización industrial, DevOps y seguridad informática. 
-          Construyendo el futuro del backend, commit a commit.
+        <p className="text-xl text-gray-400 max-w-2xl font-light leading-relaxed">
+          {t('hero.description')}
         </p>
 
         <div className="flex flex-wrap gap-3 pt-4">
-          <Badge text="Python Expert" color="blue" />
-          <Badge text="DevOps & CI/CD" color="purple" />
-          <Badge text="API Security" color="green" />
-          <Badge text="Docker Orchestration" color="cyan" />
+          <Badge text={t('hero.badges.python')} color="blue" />
+          <Badge text={t('hero.badges.devops')} color="purple" />
+          <Badge text={t('hero.badges.security')} color="green" />
+          <Badge text={t('hero.badges.docker')} color="cyan" />
         </div>
       </div>
     </div>

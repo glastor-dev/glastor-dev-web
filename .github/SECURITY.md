@@ -1,18 +1,24 @@
-# 🏛️ Ingeniería de Colaboración y Gobernanza
+# 🛡️ Política de Seguridad y Divulgación de Vulnerabilidades
 
-El éxito de un sistema escalable no reside únicamente en su implementación, sino en la rigurosidad de sus procesos de gobernanza. Este ecosistema está diseñado para ingenieros que priorizan el rendimiento, la mantenibilidad y la arquitectura de vanguardia.
+Tomamos la seguridad de nuestro ecosistema de ingeniería muy en serio. Agradecemos a la comunidad de investigadores de seguridad por ayudarnos a mantener la integridad de nuestra infraestructura.
 
-## 🚀 Optimización del Ciclo de Vida de Desarrollo (DX)
+## 📦 Versiones Soportadas
 
-Para garantizar un flujo de CI/CD sin fricciones y proteger la integridad de la base de código, es imperativo seguir nuestros protocolos técnicos de estandarización antes de realizar cualquier commit:
+Solo proporcionamos parches de seguridad para las versiones estables más recientes del core.
 
-* **Directrices de Contribución:** [Consultar CONTRIBUTING.md](../CONTRIBUTING.md) — Optimiza tu impacto técnico alineándote con nuestros estándares de revisión y calidad de código.
+| Versión | Estado | Mantenimiento de Seguridad |
+| :--- | :--- | :--- |
+| `1.x.x` | **Estable** | ✅ Soportado activamente |
+| `< 1.0.0` | Deprecado | ❌ Fin de vida útil (EOL) |
 
-## 🛡️ Resiliencia y Seguridad Proactiva
+## 🐞 Proceso de Reporte (Divulgación Responsable)
 
-La excelencia operativa se fundamenta en un entorno de seguridad robusto y un compromiso innegociable con la ética profesional. Antes de interactuar con el ecosistema, es obligatorio revisar nuestros marcos operativos:
+Si descubres una vulnerabilidad de seguridad, te pedimos que **NO abras un issue público**. Esto podría poner en riesgo a los usuarios del sistema antes de que tengamos una solución.
 
-* **Código de Conducta:** [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) — Establece los parámetros de profesionalismo y colaboración técnica esperados en nuestra infraestructura social.
-* **Política de Seguridad:** [SECURITY.md](./SECURITY.md) — Protocolos oficiales para la gestión responsable de vulnerabilidades y el hardening del sistema.
+1.  **Contacto Privado:** Envía un correo electrónico a contacto@glastor.xyz.
+2.  **Cifrado (Opcional):** Si el reporte contiene datos sensibles, utiliza nuestra clave PGP pública (si está disponible).
+3.  **Respuesta:** Nuestro equipo de ingeniería acusará recibo en un plazo máximo de 48 horas.
+
+Nos comprometemos a publicar un post-mortem transparente una vez resuelta la incidencia.
 
 © 2010-2026 Andrés Antonio Cardoso — Todos los derechos reservados

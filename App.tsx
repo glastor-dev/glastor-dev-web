@@ -1,156 +1,184 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { useTranslate } from './components/LanguageContext';
+import { Analytics } from '@vercel/analytics/react';
 import Header from './components/Header';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LegalTabs from './components/LegalTabs';
+import LegalPage from './LegalPage';
+import { LegalProvider, useLegal, legalTabs, StyledMarkdown } from './components/LegalContext';
+import Modal from './components/Modal';
+import CookiesBanner, { CookiesConfigContext } from './components/CookiesBanner';
 import Hero from './components/Hero';
-import Terminal from './components/Terminal';
 import TechStack from './components/TechStack';
-import ProjectGrid from './components/ProjectGrid';
-import AIChat from './components/AIChat';
-import StatsSection from './components/StatsSection';
-import ArchitectureDiagram from './components/ArchitectureDiagram';
 import SystemMonitor from './components/SystemMonitor';
-import TrustSection from './components/TrustSection';
 import Footer from './components/Footer';
 import CommandPalette from './components/CommandPalette';
-import KernelStatusBar from './components/KernelStatusBar';
+import LiveStatsPanel from './components/LiveStatsPanel';
+import { fetchUserRepos } from './services/github';
+
+// Lazy loaded heavy components
+const AIChat = lazy(() => import('./components/AIChat'));
+const StatsSection = lazy(() => import('./components/StatsSection'));
+const ArchitectureDiagram = lazy(() => import('./components/ArchitectureDiagram'));
+const BentoRoadmap = lazy(() => import('./components/BentoRoadmap'));
+const Terminal = lazy(() => import('./components/Terminal'));
+const ProjectGrid = lazy(() => import('./components/ProjectGrid'));
+const TrustSection = lazy(() => import('./components/TrustSection'));
+
+const Skeleton: React.FC<{ height?: string; className?: string }> = ({ height = "200px", className = "" }) => (
+  <div className={`w-full bg-white/[0.02] border border-white/5 rounded-3xl animate-pulse transition-all duration-500 ${className}`} style={{ height }}></div>
+);
+
+const LegalModalContainer: React.FC = () => {
+  const { isOpen, closeLegal, activeTabId } = useLegal();
+  const currentTab = legalTabs.find(t => t.id === activeTabId) || legalTabs[0];
+
+  return (
+    <Modal open={isOpen} onClose={closeLegal} title={currentTab.title}>
+      <StyledMarkdown content={currentTab.md} />
+    </Modal>
+  );
+};
 
 const App: React.FC = () => {
-  const [debugMode, setDebugMode] = useState(false);
+  const { t } = useTranslate();
+  const [forceShowConfig, setForceShowConfig] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('glastor-theme') || 'cyberpunk');
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme);
+    if (theme === 'cyberpunk') {
+      document.body.removeAttribute('data-theme');
+    } else {
+      document.body.setAttribute('data-theme', theme);
+    }
     localStorage.setItem('glastor-theme', theme);
   }, [theme]);
 
-  // Robust intersection observer for "reveal" effects
+  useEffect(() => {
+    fetchUserRepos('glastor-dev').then((repos) => {
+      if (repos) setProjects(repos);
+    });
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('active');
-          // Una vez activado, dejamos de observar para ahorrar recursos
           observer.unobserve(entry.target);
         }
       });
     }, { 
-      threshold: 0.05, // Umbral más bajo para asegurar activación temprana
+      threshold: 0.05,
       rootMargin: "0px 0px -50px 0px" 
     });
-
-    // Pequeño delay para asegurar que el DOM está listo
+    
     const timeout = setTimeout(() => {
       const elements = document.querySelectorAll('.reveal');
       elements.forEach(el => observer.observe(el));
-      
-      // Fallback: Si después de 2 segundos no se ha activado el primero, activamos todo
-      setTimeout(() => {
-        if (elements.length > 0 && !elements[0].classList.contains('active')) {
-          elements.forEach(el => el.classList.add('active'));
-        }
-      }, 2000);
     }, 100);
-
-    return () => {
-      clearTimeout(timeout);
-      observer.disconnect();
-    };
+    
+    return () => clearTimeout(timeout);
   }, []);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsPaletteOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  const openConfig = () => setForceShowConfig(true);
 
   return (
-    <div className={`min-h-screen flex flex-col pt-6 selection:bg-blue-500/30 ${debugMode ? 'debug-grid' : ''}`}>
-      <KernelStatusBar />
-      <Header 
-        debugMode={debugMode} 
-        setDebugMode={setDebugMode} 
-        theme={theme} 
-        setTheme={setTheme} 
-        openPalette={() => setIsPaletteOpen(true)}
-      />
-      
-      <main className="flex-grow container mx-auto px-4 md:px-8 py-8 space-y-40">
-        <section className="reveal">
-          <Hero />
-        </section>
-        
-        <div id="experience" className="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-3xl font-bold mono mb-4">
-                <span className="text-[var(--primary)]">~/</span>backend_arch
-              </h2>
-              <p className="text-gray-400 leading-relaxed max-w-2xl text-lg">
-                Ingeniero especializado en infraestructuras robustas con Python. 
-                Arquitecto de APIs escalables, pipelines de CI/CD automatizados y entornos reproducibles con Docker. 
-              </p>
-            </div>
-            <TechStack />
-            <SystemMonitor />
-          </div>
-          <Terminal />
-        </div>
+    <LegalProvider>
+      <CookiesConfigContext.Provider value={{ openConfig }}>
+        <BrowserRouter>
+          <CookiesBanner forceShowConfig={forceShowConfig} />
+          <Analytics />
+          <Header openPalette={() => setIsPaletteOpen(true)} theme={theme} setTheme={setTheme} />
+          <Routes>
+            <Route path="/legal" element={<LegalPage tab="legal" />} />
+            <Route path="/terminos" element={<LegalPage tab="terminos" />} />
+            <Route path="/privacidad" element={<LegalPage tab="privacidad" />} />
+            <Route path="/cookies" element={<LegalPage tab="cookies" />} />
+            <Route path="*" element={
+              <main className="container mx-auto px-4 md:px-8 py-8 space-y-40">
+                <section id="experience" className="reveal">
+                  <Hero />
+                </section>
+                
+                <section id="roadmap" className="reveal">
+                   <Suspense fallback={<Skeleton height="550px" />}>
+                     <BentoRoadmap />
+                   </Suspense>
+                </section>
 
-        <section id="architecture" className="reveal space-y-12">
-          <div className="text-center max-w-3xl mx-auto space-y-4">
-            <h2 className="text-4xl font-bold mono uppercase tracking-tight">Diseño de <span className="text-[var(--primary)]">Sistemas</span></h2>
-            <p className="text-gray-500 italic font-light">"La redundancia es el seguro de vida de la disponibilidad."</p>
-          </div>
-          <ArchitectureDiagram />
-        </section>
+                <section id="architecture" className="reveal">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    <div className="space-y-8">
+                      <h2 className="text-3xl md:text-4xl font-bold mono mb-2 text-white tracking-tight">
+                        <span className="text-[var(--primary)]">~/</span>{t('app.backend_arch')}
+                      </h2>
+                      <p className="text-gray-300 text-lg max-w-2xl font-light leading-relaxed">
+                        {t('app.backend_desc')}
+                      </p>
+                      <TechStack />
+                      <div className="mt-8">
+                        <SystemMonitor />
+                      </div>
+                    </div>
+                    <div className="shadow-2xl rounded-2xl bg-black/80 border border-white/10 p-4 min-h-[400px]">
+                      <Suspense fallback={<Skeleton height="400px" />}>
+                        <Terminal />
+                      </Suspense>
+                    </div>
+                  </div>
+                </section>
 
-        <section id="projects" className="reveal">
-          <div className="flex items-center justify-between mb-12">
-            <div className="flex items-center gap-4">
-              <h2 className="text-3xl font-bold mono uppercase tracking-tight">
-                <span className="text-[var(--accent)]">01.</span> Pipeline_Proyectos
-              </h2>
-              <div className="flex items-center gap-2 px-3 py-1 bg-[#161b22] border border-[#30363d] rounded-full text-sm font-bold shadow-lg">
-                 <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path>
-                 </svg>
-                 <span className="text-white">Repositories</span>
-                 <span className="bg-[#30363d] text-[#c9d1d9] px-2 py-0.5 rounded-full text-[10px] tabular-nums">25</span>
-              </div>
-            </div>
-          </div>
-          <ProjectGrid />
-        </section>
+                <section id="projects" className="reveal">
+                  <Suspense fallback={<Skeleton height="800px" />}>
+                    <ProjectGrid />
+                  </Suspense>
+                </section>
 
-        <section id="analytics" className="reveal grid grid-cols-1 lg:grid-cols-3 gap-8">
-           <div className="lg:col-span-2">
-              <StatsSection />
-           </div>
-           <div className="lg:col-span-1 h-full">
-              <AIChat setTheme={setTheme} />
-           </div>
-        </section>
+                <section className="reveal">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    <div className="space-y-12">
+                      <Suspense fallback={<Skeleton height="350px" />}>
+                        <StatsSection />
+                      </Suspense>
+                    </div>
+                    <div className="shadow-2xl rounded-2xl bg-black/80 border border-white/10 p-4 flex flex-col">
+                      <Suspense fallback={<Skeleton height="500px" />}>
+                        <AIChat />
+                      </Suspense>
+                      <LiveStatsPanel />
+                    </div>
+                  </div>
+                </section>
 
-        <section className="reveal">
-          <TrustSection />
-        </section>
-      </main>
+                <section className="reveal">
+                  <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold mono uppercase tracking-tight text-white italic">
+                      {t('app.systems_design_p1')} <span className="text-[var(--primary)]">{t('app.systems_design_p2')}</span>
+                    </h2>
+                    <p className="text-gray-400 italic font-light mt-3">"{t('app.vibe_quote')}"</p>
+                  </div>
+                  <Suspense fallback={<Skeleton height="400px" />}>
+                    <ArchitectureDiagram />
+                  </Suspense>
+                </section>
 
-      <Footer />
-
-      <CommandPalette 
-        isOpen={isPaletteOpen} 
-        onClose={() => setIsPaletteOpen(false)} 
-        setTheme={setTheme}
-        setDebugMode={setDebugMode}
-      />
-    </div>
+                <section className="reveal pb-20">
+                  <Suspense fallback={<Skeleton height="300px" />}>
+                    <TrustSection />
+                  </Suspense>
+                </section>
+              </main>
+            } />
+          </Routes>
+          <Footer />
+          <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} projects={projects} />
+          <LegalModalContainer />
+        </BrowserRouter>
+      </CookiesConfigContext.Provider>
+    </LegalProvider>
   );
 };
 

@@ -1,0 +1,30 @@
+name: 🚀 Engineering Lifecycle (CI)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  quality-gate:
+    name: 🛡️ Quality Gate & Build Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗️ Checkout Source
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🔍 Static Analysis (Linting)
+        run: npm run lint
+
+      - name: 🏗️ Build Architecture
+        run: npm run build
