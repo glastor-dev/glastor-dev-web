@@ -47,18 +47,11 @@ export default defineConfig(({ mode }) => {
       ],
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
-          'react-is': require.resolve('react-is')
+          '@': path.resolve(__dirname, '.')
         }
-      },
-      optimizeDeps: {
-        include: ['react-is']
       },
       build: {
-        chunkSizeWarningLimit: 2000,
-        rollupOptions: {
-          external: ['react-is', 'recharts/node_modules/react-is']
-        }
+        chunkSizeWarningLimit: 2000
       }
     };
 });
