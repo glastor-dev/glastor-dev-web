@@ -1,8 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { aiConfig } from '../services/gemini';
-
-// En Vercel con Vite, usamos tipos estándar o 'any' si no queremos instalar @types/node explícitamente para esto.
-// Vercel inyecta req y res automáticamente.
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const apiKey = process.env.GEMINI_API_KEY;
 
@@ -12,7 +10,7 @@ if (!apiKey) {
 
 const ai = new GoogleGenAI({ apiKey });
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Configurar CORS si es necesario, aunque en el mismo dominio (Vercel) no suele hacer falta.
   
   if (req.method !== 'POST') {
@@ -27,7 +25,7 @@ export default async function handler(req: any, res: any) {
     }
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash', // Asegúrate de usar un modelo válido y disponible
+      model: 'gemini-1.5-flash-latest',
       contents: messages.map((m: { role: string; text: string; }) => ({
         role: m.role,
         parts: [{ text: m.text }]
