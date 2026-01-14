@@ -55,7 +55,10 @@ export default defineConfig(({ mode }) => {
         include: ['react-is']
       },
       build: {
-        chunkSizeWarningLimit: 2000
+        chunkSizeWarningLimit: 2000,
+        rollupOptions: {
+          external: ['react-is', 'recharts/node_modules/react-is']
+        }
       }
     };
 });
