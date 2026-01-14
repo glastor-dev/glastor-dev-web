@@ -50,8 +50,14 @@ export default defineConfig(({ mode }) => {
           '@': path.resolve(__dirname, '.'),
         }
       },
+      optimizeDeps: {
+        include: ['react-is']
+      },
       build: {
-        chunkSizeWarningLimit: 2000
+        chunkSizeWarningLimit: 2000,
+        rollupOptions: {
+          external: []
+        }
       }
     };
 });
