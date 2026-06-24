@@ -1,0 +1,479 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'quill/dist/quill.snow.css';
+
+/* Custom styles for modern, high-contrast look & feel */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #000000; /* Absolute base background (Vue Black) */
+  color: #a1a1aa; /* text-zinc-400 for descriptions */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff; /* White for headers */
+}
+
+*:focus-visible {
+  outline: 2px solid #41BF84 !important; /* Glastor green (Vue) focus ring */
+  outline-offset: 4px;
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Force Variable Font width axis to make Archivo look extremely wide (like Monument Extended) */
+.font-display {
+  font-variation-settings: "wdth" 125;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Toast animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.toast-animate {
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Page entrance animations */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: fadeSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* MARQUEE LOOP ANIMATION FOR HERO ENGINE */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: flex;
+  min-width: 200%;
+  animation: marquee 25s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* BUTTON SHIMMER GLINT (Awwwards design choice) */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: none;
+}
+.btn-shimmer:hover::before {
+  left: 150%;
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* FLOATING NODES FOR SCENIC DEPTH */
+@keyframes floatSlower {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+.float-node-slower {
+  animation: floatSlower 12s ease-in-out infinite;
+}
+
+/* PREMIUM ADVANCED GLASS CARDS */
+.hover-card-premium {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-card-premium:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+}
+
+/* SUBTLE DIGITAL DISGNOSTICS LINES */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  opacity: 0.28;
+}
+
+/* STAGGERED ENTRANCES FOR CINEMATIC INTRO */
+@keyframes staggerFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.stagger-in-1 { animation: staggerFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.stagger-in-2 { animation: staggerFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; }
+.stagger-in-3 { animation: staggerFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+
+/* Custom Amber-650 support classes for premium catalog alert tags (Now mapped to Forest Green) */
+.text-amber-650 {
+  color: #01260E !important;
+}
+.bg-amber-650 {
+  background-color: #01260E !important;
+}
+.border-amber-650 {
+  border-color: #01260E !important;
+}
+
+/* --- VUE-INSPIRED CUSTOM GRADIENTS --- */
+.bg-gradient-brand {
+  background: linear-gradient(90deg, #01260E, #41BF84) !important;
+}
+.bg-gradient-steel {
+  background: linear-gradient(90deg, #000000, #2F4659) !important;
+}
+.bg-gradient-cinematic {
+  background: linear-gradient(135deg, #01260E, #2F4659) !important;
+}
+
+/* Experiential Equalizer Wave */
+@keyframes equalizer {
+  0% {
+    height: 4px;
+    opacity: 0.5;
+  }
+  100% {
+    height: 16px;
+    opacity: 1;
+  }
+}
+
+/* Scrolled state transitions & backdrop backup */
+nav.scrolled {
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+}
+
+/* ==========================================================================
+   WCAG LEVEL AAA HIGH CONTRAST OVERRIDES
+   - Normal text requires >= 7:1 contrast ratio
+   - Large text requires >= 4.5:1 contrast ratio
+   ========================================================================== */
+
+/* 1. DARK THEME CONTRAST BOOSTING (Backgrounds: #080808 / #050505) */
+.dark-theme {
+  --w-aaa-text-base: #f4f4f5; /* zinc-100 */
+  --w-aaa-text-muted: #d4d4d8; /* zinc-300: contrast 11.2:1 with #050505 */
+  --w-aaa-text-extra-muted: #bebebe; /* zinc-250: contrast 7.8:1 with #050505 */
+  --w-aaa-accent-amber: #fbbf24; /* amber-400: contrast 8.5:1 */
+  --w-aaa-accent-indigo: #c7d2fe; /* indigo-200: contrast 12.3:1 */
+  --w-aaa-accent-emerald: #6ee7b7; /* emerald-300: contrast 8.6:1 */
+  --w-aaa-accent-orange: #fed7aa; /* orange-200: contrast 9:1 */
+}
+
+.dark-theme .text-zinc-650,
+.dark-theme .text-zinc-655,
+.dark-theme .text-zinc-700,
+.dark-theme .text-zinc-750,
+.dark-theme .text-zinc-800,
+.dark-theme .text-zinc-805,
+.dark-theme .text-zinc-850 {
+  color: var(--w-aaa-text-extra-muted) !important;
+}
+
+.dark-theme .text-zinc-600,
+.dark-theme .text-zinc-500 {
+  color: var(--w-aaa-text-muted) !important;
+}
+
+.dark-theme .text-zinc-400,
+.dark-theme .text-zinc-450 {
+  color: var(--w-aaa-text-base) !important;
+}
+
+.dark-theme .text-amber-500,
+.dark-theme .text-amber-600,
+.dark-theme .text-amber-650,
+.dark-theme .text-amber-700 {
+  color: var(--w-aaa-accent-amber) !important;
+}
+
+.dark-theme .text-indigo-400,
+.dark-theme .text-indigo-500,
+.dark-theme .text-indigo-600,
+.dark-theme .text-indigo-700,
+.dark-theme .text-indigo-805 {
+  color: var(--w-aaa-accent-indigo) !important;
+}
+
+.dark-theme .text-emerald-500,
+.dark-theme .text-emerald-600,
+.dark-theme .text-emerald-700,
+.dark-theme .text-emerald-800,
+.dark-theme .text-emerald-850 {
+  color: var(--w-aaa-accent-emerald) !important;
+}
+
+.dark-theme .text-orange-600 {
+  color: var(--w-aaa-accent-orange) !important;
+}
+
+
+/* 2. LIGHT THEME CONTRAST BOOSTING (Backgrounds: #ffffff / #fafafa) */
+.light-theme {
+  --w-aaa-text-dark: #18181b; /* zinc-900: contrast >15:1 */
+  --w-aaa-text-medium: #27272a; /* zinc-800: contrast 11.5:1 */
+  --w-aaa-text-gray: #3f3f46; /* zinc-700: contrast 8.3:1 */
+  --w-aaa-text-subtle: #4b5563; /* zinc-600: contrast 7.37:1 */
+  --w-aaa-light-amber: #713f12; /* amber-900: contrast 9.6:1 */
+  --w-aaa-light-indigo: #312e81; /* indigo-900: contrast 12.1:1 */
+  --w-aaa-light-emerald: #064e3b; /* emerald-900: contrast 11.4:1 */
+  --w-aaa-light-orange: #7c2d12; /* orange-900: contrast 9.9:1 */
+}
+
+/* Redefining grey classes to satisfy minimum 7:1 with white bg */
+.light-theme .text-zinc-300,
+.light-theme .text-zinc-350 {
+  color: var(--w-aaa-text-subtle) !important;
+}
+
+.light-theme .text-zinc-400,
+.light-theme .text-zinc-450,
+.light-theme .text-zinc-500 {
+  color: var(--w-aaa-text-gray) !important;
+}
+
+.light-theme .text-zinc-550,
+.light-theme .text-zinc-600,
+.light-theme .text-zinc-650,
+.light-theme .text-zinc-655 {
+  color: var(--w-aaa-text-medium) !important;
+}
+
+.light-theme .text-zinc-700,
+.light-theme .text-zinc-750,
+.light-theme .text-zinc-800,
+.light-theme .text-zinc-805,
+.light-theme .text-zinc-850,
+.light-theme .text-zinc-900 {
+  color: var(--w-aaa-text-dark) !important;
+}
+
+/* Redefining highlight colors to achieve >7:1 text contrast on light bg */
+.light-theme .text-amber-500,
+.light-theme .text-amber-600,
+.light-theme .text-amber-650,
+.light-theme .text-amber-700 {
+  color: var(--w-aaa-light-amber) !important;
+}
+
+.light-theme .text-indigo-400,
+.light-theme .text-indigo-500,
+.light-theme .text-indigo-600,
+.light-theme .text-indigo-700,
+.light-theme .text-indigo-805 {
+  color: var(--w-aaa-light-indigo) !important;
+}
+
+.light-theme .text-emerald-400,
+.light-theme .text-emerald-500,
+.light-theme .text-emerald-600,
+.light-theme .text-emerald-700,
+.light-theme .text-emerald-800,
+.light-theme .text-emerald-850 {
+  color: var(--w-aaa-light-emerald) !important;
+}
+
+.light-theme .text-orange-600 {
+  color: var(--w-aaa-light-orange) !important;
+}
+
+/* Button & interactive accent elements contrast enhancement */
+.light-theme .bg-zinc-100 {
+  background-color: #e4e4e7 !important; /* zinc-200 */
+}
+.light-theme .hover\:bg-zinc-100:hover {
+  background-color: #e4e4e7 !important;
+}
+
+/* ==========================================================================
+   INTERACTIVE 3D EFFECTS & AMBIENT MOUSE GLOW (Awwwards/FWA Standard)
+   ========================================================================== */
+
+.container-3d {
+  perspective: 1200px;
+}
+
+.tilt-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+
+/* Mouse cursor follower glow orb for premium spatial depth */
+.mouse-glow-bg {
+  position: fixed;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, rgba(239, 68, 68, 0.015) 45%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1; /* Under cards but over background colors */
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  opacity: 0.85;
+}
+
+.light-theme .mouse-glow-bg {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, rgba(165, 180, 252, 0.01) 50%, rgba(0,0,0,0) 70%);
+  opacity: 0.75;
+}
+
+.bezel-core {
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .bezel-core {
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.65), 0 8px 32px rgba(0, 0, 0, 0.02);
+}
+
+/* ==========================================================================
+   GLASTOR CUSTOM UTILITIES (PLAN.md / DESIGN_RULES.md)
+   ========================================================================== */
+
+/* Transición de clip-path para page transitions */
+.clip-reveal { 
+  clip-path: inset(0 0 100% 0); 
+  transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clip-reveal-active { 
+  clip-path: inset(0 0 0 0); 
+}
+
+/* Gradiente animado para borders */
+@keyframes border-glow {
+  0% { border-color: rgba(255, 255, 255, 0.1); }
+  50% { border-color: #41BF84; box-shadow: 0 0 15px rgba(65, 191, 132, 0.25); }
+  100% { border-color: rgba(255, 255, 255, 0.1); }
+}
+
+.animate-border-glow {
+  animation: border-glow 3s infinite alternate;
+}
+
+/* Hero Background Image Handling (1920x1080) */
+.hero-bg-1920 {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  min-height: 100vh;
+  /* Support for 1920x1080 aspect ratio bounds */
+  aspect-ratio: 16 / 9;
+}
+
+@supports not (aspect-ratio: 16 / 9) {
+  .hero-bg-1920::before {
+    content: "";
+    display: block;
+    padding-top: 56.25%; /* 1080 / 1920 = 0.5625 */
+  }
+}
+
+/* WYSIWYG Content Rendering */
+.product-description-html {
+  min-width: 0;
+  max-width: 100%;
+}
+.product-description-html p {
+  margin-bottom: 0.75rem;
+}
+.product-description-html ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.product-description-html ul li {
+  margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
+}
+.product-description-html ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.product-description-html strong, .product-description-html b {
+  font-weight: 800;
+  color: #fff;
+}
+.light-theme .product-description-html strong, .light-theme .product-description-html b {
+  color: #000;
+}
+.product-description-html h1,
+.product-description-html h2,
+.product-description-html h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 900;
+}

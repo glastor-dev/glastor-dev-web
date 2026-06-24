@@ -1,0 +1,12 @@
+{
+  "name": "GLASTOR E-Commerce & Admin",
+  "description": "Premium industrial hardware boutique featuring view switching (Showcase, Shop, Technical Product Details, Checkup Checkout with coupon engine, Admin Panel with dynamic sales tracking + SEO, and DevOps Hub for live cluster diagnostics & microservice controls).",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

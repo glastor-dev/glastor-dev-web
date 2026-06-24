@@ -1,0 +1,223 @@
+.hero-container {
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.87);
+}
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 6px 6px 10px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+}
+.card-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 16px;
+  color: rgba(255, 255, 255, 0.87);
+  pointer-events: none;
+}
+.content-place {
+  margin-top: 8px;
+  margin-bottom: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.content-title-1, .content-title-2 {
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.content-start {
+  width: 24px;
+  height: 3px;
+  border-radius: 99px;
+  background-color: rgba(255, 255, 255, 0.87);
+  margin-top: 16px;
+}
+.details {
+  z-index: 22;
+  position: absolute;
+  top: 15%;
+  left: 8%;
+}
+@media (max-width: 768px) {
+  .details { left: 5%; top: 10%; }
+  .details > .desc { width: 90% !important; }
+  .details > .cta { width: 100% !important; }
+}
+.details .place-box {
+  height: 46px;
+  overflow: hidden;
+}
+.details .place-box .text {
+  padding-top: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #41BF84;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.details .place-box .text:before {
+  top: 0;
+  left: 0;
+  position: absolute;
+  content: "";
+  width: 30px;
+  height: 4px;
+  border-radius: 99px;
+  background-color: #41BF84;
+}
+.details .title-1, .details .title-2 {
+  font-weight: 600;
+  font-size: clamp(40px, 6vw, 72px);
+  font-family: 'Oswald', sans-serif;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.details .title-box-1, .details .title-box-2 {
+  height: clamp(50px, 7vw, 100px);
+  overflow: hidden;
+  margin-top: 2px;
+}
+.details > .desc {
+  margin-top: 16px;
+  width: 500px;
+  font-size: clamp(12px, 1.5vw, 15px);
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+.details > .cta {
+  width: 500px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+}
+.details > .cta > .bookmark {
+  border: 1px solid rgba(255,255,255,0.3);
+  background-color: transparent;
+  width: 36px;
+  height: 36px;
+  border-radius: 99px;
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.details > .cta > .bookmark:hover {
+  background-color: rgba(255,255,255,0.1);
+  transform: scale(1.1);
+}
+.details > .cta > .bookmark svg {
+  width: 20px;
+  height: 20px;
+}
+.details > .cta > .discover {
+  border: 1px solid #ffffff;
+  background-color: transparent;
+  height: 36px;
+  border-radius: 99px;
+  color: #ffffff;
+  padding: 4px 24px;
+  font-size: 12px;
+  margin-left: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-weight: bold;
+  box-shadow: 0 0 0 rgba(255,255,255,0);
+}
+.details > .cta > .discover:hover {
+  background-color: white;
+  color: black;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 20px -10px rgba(255,255,255,0.5);
+}
+.indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  z-index: 60;
+  background-color: #41BF84;
+}
+.pagination {
+  position: absolute;
+  display: inline-flex;
+}
+.pagination > .arrow {
+  z-index: 60;
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.33);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.pagination > .arrow:hover {
+  background: rgba(255,255,255,0.1);
+}
+.pagination > .arrow:nth-child(2) {
+  margin-left: 20px;
+}
+.pagination > .arrow svg {
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.pagination .progress-sub-container {
+  margin-left: 24px;
+  z-index: 60;
+  width: 300px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.pagination .progress-sub-container .progress-sub-background {
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.pagination .progress-sub-container .progress-sub-background .progress-sub-foreground {
+  height: 3px;
+  background-color: #41BF84;
+  width: 0%;
+}
+.pagination .slide-numbers {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  z-index: 60;
+  position: relative;
+}
+.pagination .slide-numbers .item {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  color: white;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+.cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1a1a1a;
+  z-index: 100;
+}

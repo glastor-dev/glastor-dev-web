@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://ais-pre-ve56eyrizcjckavnupebnz-153443328861.us-west2.run.app/sitemap.xml

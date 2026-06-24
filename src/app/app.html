@@ -1,0 +1,53 @@
+<!-- PREMIUM GLASSMORPHIC CURSOR FOLLOWER WITH MIX-BLEND-DIFFERENCE -->
+<div id="sodra-custom-cursor" 
+     class="fixed pointer-events-none z-[10000] w-6 h-6 rounded-full bg-white mix-blend-difference hover:scale-150 transition-all duration-150 ease-out hidden lg:block -translate-x-3 -translate-y-3 opacity-0 select-none">
+</div>
+
+
+
+<!-- ROUTER CONTAINER FOR DYNAMIC VIEWS -->
+<router-outlet></router-outlet>
+
+<!-- ================= PREMIUM TOAST GLOBAL NOTIFICATION CHANNEL ================= -->
+<div class="fixed bottom-6 right-6 z-[1000] flex flex-col space-y-3 max-w-sm w-full pointer-events-none select-none">
+  @for (toast of appState.toasts(); track toast.id) {
+    <div [id]="toast.id" 
+         class="toast-animate pointer-events-auto flex items-start gap-4 bg-white/95 backdrop-blur border border-zinc-250 rounded-2xl p-4 shadow-xl relative overflow-hidden transition-all duration-300 transform translate-x-0">
+      
+      <!-- Visual identifier stripe on left margin -->
+      <div [class]="'absolute left-0 top-0 bottom-0 w-1.5 ' + 
+                    (toast.type === 'success' ? 'bg-emerald-500' : 
+                     toast.type === 'info' ? 'bg-indigo-600' : 
+                     toast.type === 'warning' ? 'bg-amber-500' : 'bg-rose-500')">
+      </div>
+
+      <!-- Icon symbol mapping -->
+      <div [class]="'w-8 h-8 rounded-xl shrink-0 flex items-center justify-center ' + 
+                    (toast.type === 'success' ? 'bg-emerald-50 text-emerald-600' : 
+                     toast.type === 'info' ? 'bg-indigo-50 text-indigo-600' : 
+                     toast.type === 'warning' ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500')">
+        <span class="material-icons scale-80 font-bold">
+          {{ toast.type === 'success' ? 'check_circle' : 
+             toast.type === 'info' ? 'info' : 
+             toast.type === 'warning' ? 'warning' : 'dangerous' }}
+        </span>
+      </div>
+
+      <!-- Notification message text -->
+      <div class="flex-grow space-y-0.5 pr-4 text-left">
+        @if (toast.title) {
+          <h4 class="text-xs font-black text-zinc-900 leading-tight tracking-tight">{{ toast.title }}</h4>
+        }
+        <p class="text-[11px] font-semibold text-zinc-500 leading-normal">{{ toast.message }}</p>
+      </div>
+
+      <!-- Dismiss close -->
+      <button (click)="appState.dismissToast(toast.id)" 
+              class="w-6 h-6 rounded-lg bg-zinc-50 hover:bg-zinc-100 flex items-center justify-center text-zinc-400 hover:text-zinc-700 cursor-pointer transition-colors shrink-0">
+        <span class="material-icons scale-75">close</span>
+      </button>
+    </div>
+  }
+
+
+</div>
