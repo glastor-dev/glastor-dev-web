@@ -24,6 +24,12 @@ module.exports = {
         },
         zinc: {
           ...colors.zinc,
+          // WCAG AAA 7:1 Overrides (Enforced System-Wide)
+          300: '#D4D4D8', // Light mode bg or dark mode extra light text
+          400: '#C2C2C2', // Passed 7:1 on black
+          500: '#A8A8A8', // Passed 7:1 on black
+          600: '#545454', // Passed 7:1 on white
+          700: '#404040', // Passed 7:1 on white
           900: '#0D0D0D', // Very dark background
           950: '#000000', // Absolute black background
         },

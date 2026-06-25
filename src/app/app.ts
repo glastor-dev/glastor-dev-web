@@ -1,5 +1,7 @@
 import { Component, OnInit, inject, afterNextRender } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { CheckmarkCircle01Icon, InformationCircleIcon, Alert01Icon, CancelCircleIcon, Cancel01Icon } from '@hugeicons/core-free-icons';
 import { AppStateService } from './app-state.service';
 import { LenisService } from './services/lenis.service';
 import gsap from 'gsap';
@@ -56,12 +58,17 @@ export interface Order {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HugeiconsIconComponent],
   templateUrl: './app.html'
 })
 export class AppComponent implements OnInit {
   appState = inject(AppStateService);
   lenisService = inject(LenisService);
+  CheckmarkCircle01Icon = CheckmarkCircle01Icon;
+  InformationCircleIcon = InformationCircleIcon;
+  Alert01Icon = Alert01Icon;
+  CancelCircleIcon = CancelCircleIcon;
+  Cancel01Icon = Cancel01Icon;
 
   constructor() {
     afterNextRender(() => {

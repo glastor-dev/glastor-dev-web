@@ -26,11 +26,13 @@
                     (toast.type === 'success' ? 'bg-emerald-50 text-emerald-600' : 
                      toast.type === 'info' ? 'bg-indigo-50 text-indigo-600' : 
                      toast.type === 'warning' ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500')">
-        <span class="material-icons scale-80 font-bold">
-          {{ toast.type === 'success' ? 'check_circle' : 
-             toast.type === 'info' ? 'info' : 
-             toast.type === 'warning' ? 'warning' : 'dangerous' }}
-        </span>
+        <hugeicons-icon 
+          [icon]="toast.type === 'success' ? CheckmarkCircle01Icon : 
+             toast.type === 'info' ? InformationCircleIcon : 
+             toast.type === 'warning' ? Alert01Icon : CancelCircleIcon"
+          [size]="24"
+          [strokeWidth]="1.5"
+          class="scale-80 font-bold" />
       </div>
 
       <!-- Notification message text -->
@@ -44,7 +46,7 @@
       <!-- Dismiss close -->
       <button (click)="appState.dismissToast(toast.id)" 
               class="w-6 h-6 rounded-lg bg-zinc-50 hover:bg-zinc-100 flex items-center justify-center text-zinc-400 hover:text-zinc-700 cursor-pointer transition-colors shrink-0">
-        <span class="material-icons scale-75">close</span>
+        <hugeicons-icon [icon]="Cancel01Icon" [size]="20" [strokeWidth]="1.5" class="scale-75" />
       </button>
     </div>
   }

@@ -1,11 +1,13 @@
 import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppStateService } from '../../app-state.service';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { ShoppingCart01Icon, FavouriteIcon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-icons-of-the-month-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
   template: `
       <!-- CURATED PIECES DISCOVER GRID -->
       <section class="max-w-7xl mx-auto px-4 space-y-10">
@@ -19,7 +21,7 @@ import { AppStateService } from '../../app-state.service';
                   class="bg-zinc-900 hover:bg-zinc-850 text-white pl-6 pr-2 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all self-start md:self-auto hover:-translate-y-0.5 shadow-md flex items-center gap-4 cursor-pointer btn-shimmer group whitespace-nowrap w-fit shrink-0">
             <span>Ver catálogo completo</span>
             <span class="shrink-0 w-8 h-8 rounded-full bg-zinc-800 text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
-              <span class="material-icons text-sm">arrow_forward</span>
+              <hugeicons-icon [icon]="ArrowRight01Icon" [size]="18"  [strokeWidth]="1.5" />
             </span>
           </button>
         </div>
@@ -49,9 +51,7 @@ import { AppStateService } from '../../app-state.service';
                 <div class="flex justify-between items-center w-full">
                   <h3 class="text-white text-lg font-bold truncate pr-4">{{ product.name }}</h3>
                   <button (click)="onToggleWishlist(product.id, $event)" class="text-white hover:text-rose-500 transition-colors shrink-0">
-                    <span class="material-icons text-[18px]" [class.text-rose-500]="wishlist.includes(product.id)">
-                      {{ wishlist.includes(product.id) ? 'favorite' : 'favorite_border' }}
-                    </span>
+                    <hugeicons-icon [icon]="FavouriteIcon" [size]="18" [class.text-rose-500]="wishlist.includes(product.id)"  [strokeWidth]="1.5" />
                   </button>
                 </div>
 
@@ -60,7 +60,7 @@ import { AppStateService } from '../../app-state.service';
                   <span class="text-white text-xl font-medium tracking-wide">{{ formatPrice(product.price) }}</span>
                   <button (click)="onAddToCart(product)"
                           class="flex items-center justify-center border border-white text-white rounded-full w-9 h-9 hover:bg-emerald-400 hover:border-emerald-400 hover:text-white transition-all duration-300 hover:scale-110 active:scale-90 active:bg-emerald-600 shadow-[0_0_0_rgba(52,211,153,0)] hover:shadow-[0_0_15px_rgba(52,211,153,0.6)]">
-                    <span class="material-icons text-[18px]">add_shopping_cart</span>
+                    <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="18"  [strokeWidth]="1.5" />
                   </button>
                 </div>
               </div>
@@ -88,6 +88,10 @@ export class IconsOfTheMonthSectionComponent {
   @Output() navigate = new EventEmitter<{view: string, id?: string}>();
   @Output() addToCart = new EventEmitter<any>();
   @Output() toggleWishlist = new EventEmitter<{id: string, event: Event}>();
+
+  ShoppingCart01Icon = ShoppingCart01Icon;
+  FavouriteIcon = FavouriteIcon;
+  ArrowRight01Icon = ArrowRight01Icon;
 
   parseBadge(badgeStr: string | null): string {
     if (!badgeStr) return 'TOP VENTAS';

@@ -1,6 +1,7 @@
 import { Component, signal, computed, OnInit, OnDestroy, inject } from '@angular/core';
 import { AppStateService } from './app-state.service';
 import { CommonModule } from '@angular/common';
+import { CheckoutPageComponent } from './components/pages/checkout-page.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import Lenis from 'lenis';
@@ -64,7 +65,9 @@ export interface Order {
   discount: number;
   total: number;
   status: 'completado' | 'procesando' | 'enviado';
-}import { LegalPageComponent } from './components/pages/legal-page.component';
+}
+import { ArrepentimientoPageComponent } from './components/pages/arrepentimiento-page.component';
+import { LegalPageComponent } from './components/pages/legal-page.component';
 import { HomePageComponent } from './components/pages/home-page.component';
 import { CatalogPageComponent } from './components/pages/catalog-page.component';
 import { ProductDetailPageComponent } from './components/pages/product-detail-page.component';
@@ -72,6 +75,14 @@ import { NavbarComponent } from './components/layout/navbar.component';
 import { FullscreenMenuComponent } from './components/layout/fullscreen-menu.component';
 import { CookieBannerComponent } from './components/layout/cookie-banner.component';
 import { ProductCardComponent } from './components/ui/product-card.component';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, InformationCircleIcon, CheckmarkBadge01Icon } from '@hugeicons/core-free-icons';
+import { 
+  Settings01Icon, Ticket01Icon, Refresh01Icon, Settings02Icon, 
+  Invoice01Icon, Route01Icon, Cancel01Icon, Tick01Icon, 
+  Delete01Icon, Rocket01Icon, ArrowRight01Icon, ShoppingBag01Icon, 
+  ShoppingCart01Icon, FavouriteIcon 
+} from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-portal',
@@ -83,10 +94,13 @@ import { ProductCardComponent } from './components/ui/product-card.component';
     CatalogPageComponent,
     ProductDetailPageComponent,
     LegalPageComponent,
+    ArrepentimientoPageComponent,
     NavbarComponent,
     FullscreenMenuComponent,
     CookieBannerComponent,
-    QuillModule
+    QuillModule,
+    HugeiconsIconComponent,
+    CheckoutPageComponent
   ],
   templateUrl: './portal.html'
 })
@@ -94,6 +108,28 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   adminToken = signal<string | null>(typeof window !== 'undefined' ? localStorage.getItem('glastor_admin_token') : null);
   isAdminAuthenticated = computed(() => !!this.adminToken());
+
+  Settings01Icon = Settings01Icon;
+  UserIcon = UserIcon;
+  Wallet01Icon = Wallet01Icon;
+  CreditCardIcon = CreditCardIcon;
+  BitcoinIcon = BitcoinIcon;
+  Building03Icon = Building03Icon;
+  InformationCircleIcon = InformationCircleIcon;
+  CheckmarkBadge01Icon = CheckmarkBadge01Icon;
+  Ticket01Icon = Ticket01Icon;
+  Refresh01Icon = Refresh01Icon;
+  Settings02Icon = Settings02Icon;
+  Invoice01Icon = Invoice01Icon;
+  Route01Icon = Route01Icon;
+  Cancel01Icon = Cancel01Icon;
+  Tick01Icon = Tick01Icon;
+  Delete01Icon = Delete01Icon;
+  Rocket01Icon = Rocket01Icon;
+  ArrowRight01Icon = ArrowRight01Icon;
+  ShoppingBag01Icon = ShoppingBag01Icon;
+  ShoppingCart01Icon = ShoppingCart01Icon;
+  FavouriteIcon = FavouriteIcon;
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -214,8 +250,8 @@ export class PortalComponent implements OnInit, OnDestroy {
   // Smooth scroll instance reference
   private lenisInstance: any = null;
 
-  // View engine: 'inicio' | 'tienda' | 'detalle' | 'admin' | 'checkout' | 'devops' | 'legales'
-  currentView = signal<'inicio' | 'tienda' | 'detalle' | 'admin' | 'checkout' | 'devops' | 'legales' | '404'>('inicio');
+  // View engine: 'inicio' | 'tienda' | 'detalle' | 'admin' | 'checkout' | 'devops' | 'legales' | 'arrepentimiento'
+  currentView = signal<'inicio' | 'tienda' | 'detalle' | 'admin' | 'checkout' | 'devops' | 'legales' | 'arrepentimiento' | '404'>('inicio');
   activeAdminTab = signal<'crm' | 'devops'>('crm');
   selectedProductId = signal<string | null>(null);
   selectedVariantId = signal<string | null>(null);
@@ -248,6 +284,7 @@ export class PortalComponent implements OnInit, OnDestroy {
   // Loaded dynamically via backend SQLite
   products = signal<Product[]>([]);
   orders = signal<Order[]>([]);
+  revocaciones = signal<Array<any>>([]);
 
   // Reactive Filters
   selectedCategory = signal<string>('todos');
@@ -919,6 +956,7 @@ export class PortalComponent implements OnInit, OnDestroy {
     cardCvc: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{3}$')]),
     cryptoTxHash: new FormControl('', []),
     bankTxRef: new FormControl('', []),
+    acceptTerms: new FormControl(false, [Validators.requiredTrue])
   });
 
   // FormGroup for Product Addition/Upsert via Zod valid API
@@ -1258,6 +1296,19 @@ export class PortalComponent implements OnInit, OnDestroy {
     this.robotsControl.setValue(this.metaTags().robots);
   }
 
+  // Handle Arrepentimiento submission
+  registerRevocation(data: any) {
+    this.revocaciones.update(list => [data, ...list]);
+    this.addDevopsLog('crm', 'WARN', `Solicitud de arrepentimiento registrada: ${data.id} para el pedido ${data.pedido}`);
+    
+    // Attempt to automatically update the order status if it exists
+    const existingOrder = this.orders().find(o => o.id === data.pedido);
+    if (existingOrder) {
+      this.updateOrderStatus(existingOrder.id, 'procesando');
+      this.addDevopsLog('crm', 'INFO', `Estado del pedido ${data.pedido} actualizado a PROCESANDO debido a solicitud de arrepentimiento.`);
+    }
+  }
+
   // ==========================================
   // FEEDBACKS & APIS INTEGRATION SYNC
   // ==========================================
@@ -1390,7 +1441,7 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   // View control transitions
   setView(view: string, productId: string | null = null) {
-    const validView = view as 'inicio' | 'tienda' | 'detalle' | 'admin' | 'checkout' | 'devops' | 'legales' | '404';
+    const validView = view as 'inicio' | 'tienda' | 'detalle' | 'admin' | 'checkout' | 'devops' | 'legales' | 'arrepentimiento' | '404';
     this.playSynthBeep(620, 'sine', 0.05, 0.015);
     this.isMenuOpen.set(false);
     this.isTransitioning.set(true);

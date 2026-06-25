@@ -1,10 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { Cancel01Icon, LockPasswordIcon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-fullscreen-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
   template: `
     <div class="fixed inset-0 z-[10000] overflow-hidden pointer-events-auto select-none flex flex-col justify-between p-6 md:p-12 transition-all duration-500 ease-in-out"
          [class.bg-[#060608]]="isCinematicGlow"
@@ -34,7 +36,7 @@ import { CommonModule } from '@angular/common';
         <button (click)="closeMenu.emit()"
                 class="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 cursor-pointer shadow-lg active:scale-90 group bg-rose-600 text-white hover:bg-rose-500 shadow-rose-600/30"
                 title="Cerrar Menú">
-          <span class="material-icons select-none scale-125 group-hover:rotate-180 transition-transform duration-700">close</span>
+          <hugeicons-icon [icon]="Cancel01Icon" [size]="24" [strokeWidth]="1.5" class="select-none scale-125 group-hover:rotate-180 transition-transform duration-700" />
         </button>
       </div>
 
@@ -95,7 +97,7 @@ import { CommonModule } from '@angular/common';
         </button>
 
         <button (click)="navigate.emit({view: 'admin', tab: 'crm'})" class="group text-left focus:outline-none w-auto overflow-visible flex items-center gap-2 md:gap-3">
-          <span class="material-icons text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-zinc-500 group-hover:text-[#41BF84] transition-colors">lock</span>
+          <hugeicons-icon [icon]="LockPasswordIcon" [size]="32" [strokeWidth]="1.5" class="text-zinc-500 group-hover:text-[#41BF84] transition-colors" />
           <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105"
               [class.text-transparent]="isCinematicGlow"
               [class.bg-clip-text]="isCinematicGlow"
@@ -116,6 +118,8 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class FullscreenMenuComponent {
+  Cancel01Icon = Cancel01Icon;
+  LockPasswordIcon = LockPasswordIcon;
   @Input() isCinematicGlow = true;
   @Input() currentView = 'inicio';
   @Input() activeAdminTab = 'crm';

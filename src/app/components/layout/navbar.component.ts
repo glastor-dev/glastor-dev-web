@@ -1,10 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { CallIcon, Mail01Icon, FavouriteIcon, ShoppingCart01Icon, Menu01Icon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
   template: `
   <!-- TOP B2B CONTACT BAR -->
   <div class="text-[10px] uppercase font-bold tracking-widest py-1.5 px-6 border-b flex justify-between items-center transition-all z-50 relative"
@@ -20,8 +22,12 @@ import { CommonModule } from '@angular/common';
       <span>Logística Oficial 24/48h</span>
     </div>
     <div class="flex items-center gap-6 mx-auto md:mx-0">
-      <a href="tel:+34900123456" class="hover:text-[#41BF84] transition-colors flex items-center gap-1.5 cursor-pointer"><span class="material-icons text-[12px]">phone</span> Asesoramiento Comercial</a>
-      <a href="mailto:b2b@glastor.com" class="hover:text-[#41BF84] transition-colors flex items-center gap-1.5 cursor-pointer"><span class="material-icons text-[12px]">email</span> b2b@glastor.com</a>
+      <a href="tel:+34900123456" class="hover:text-[#41BF84] transition-colors flex items-center gap-1.5 cursor-pointer">
+        <hugeicons-icon [icon]="CallIcon" [size]="14" [strokeWidth]="2" /> Asesoramiento Comercial
+      </a>
+      <a href="mailto:b2b@glastor.com" class="hover:text-[#41BF84] transition-colors flex items-center gap-1.5 cursor-pointer">
+        <hugeicons-icon [icon]="Mail01Icon" [size]="14" [strokeWidth]="2" /> b2b@glastor.com
+      </a>
       <span class="opacity-40 hidden sm:block">|</span>
       <a href="#" class="hover:text-[#41BF84] transition-colors hidden sm:block cursor-pointer">Soporte Técnico Oficial</a>
     </div>
@@ -55,7 +61,7 @@ import { CommonModule } from '@angular/common';
                               ? 'bg-zinc-900/60 border-zinc-800/80 text-zinc-100 hover:text-white' 
                               : 'bg-zinc-100 border-zinc-200/50 text-zinc-700 hover:text-zinc-950')"
                     title="Lista de Favoritos">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              <hugeicons-icon [icon]="FavouriteIcon" [size]="20" [strokeWidth]="1.5" class="text-rose-500" />
               @if (wishlistCount > 0) {
                 <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 bg-rose-500 rounded-full flex items-center justify-center text-[8px] font-black text-white shadow-sm shadow-rose-500/20">
                   {{ wishlistCount }}
@@ -68,7 +74,7 @@ import { CommonModule } from '@angular/common';
                              (isCinematicGlow 
                               ? 'bg-zinc-900/60 border-zinc-800/80 text-zinc-100 hover:text-white' 
                               : 'bg-zinc-100 border-zinc-200/50 text-zinc-700 hover:text-zinc-950')">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="20" [strokeWidth]="1.5" />
               @if (cartCount > 0) {
                 <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 bg-amber-500 rounded-full flex items-center justify-center text-[8px] font-black text-zinc-950 shadow-sm shadow-amber-500/20">
                   {{ cartCount }}
@@ -87,7 +93,7 @@ import { CommonModule } from '@angular/common';
                             ? 'text-zinc-400 hover:text-white hover:bg-zinc-800/80' 
                             : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-200/60')"
                   title="Ver Lista de Favoritos">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)]" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <hugeicons-icon [icon]="FavouriteIcon" [size]="20" [strokeWidth]="1.5" class="text-rose-500 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)]" />
             @if (wishlistCount > 0) {
               <span class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 rounded-full flex items-center justify-center text-[9px] font-black text-white shadow-sm shadow-rose-500/40 border-2 border-zinc-950">
                 {{ wishlistCount }}
@@ -101,7 +107,7 @@ import { CommonModule } from '@angular/common';
                             ? 'text-[#41BF84] hover:text-[#41BF84] hover:bg-[#41BF84]/10' 
                             : 'text-zinc-800 hover:text-zinc-950 hover:bg-zinc-200/60')"
                   title="Ver Cesta de Compras">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(65,191,132,0.3)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="20" [strokeWidth]="1.5" class="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(65,191,132,0.3)]" />
             @if (cartCount > 0) {
               <span [class]="'absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center text-[9px] font-black tracking-tighter shadow-sm border-2 border-zinc-950 ' + 
                               (isCinematicGlow ? 'bg-amber-500 text-zinc-950 shadow-[0_0_10px_rgba(65,191,132,0.4)]' : 'bg-amber-500 text-zinc-950')">
@@ -116,7 +122,7 @@ import { CommonModule } from '@angular/common';
                             ? 'bg-amber-600 text-zinc-950 hover:bg-[#41BF84]/200 shadow-[0_0_15px_rgba(245,158,11,0.25)]' 
                             : 'bg-zinc-900 text-white hover:bg-zinc-800')"
                   title="Abrir Menú Principal">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="4" height="4" rx="1"/><rect x="10" y="3" width="4" height="4" rx="1"/><rect x="17" y="3" width="4" height="4" rx="1"/><rect x="3" y="10" width="4" height="4" rx="1"/><rect x="10" y="10" width="4" height="4" rx="1"/><rect x="17" y="10" width="4" height="4" rx="1"/><rect x="3" y="17" width="4" height="4" rx="1"/><rect x="10" y="17" width="4" height="4" rx="1"/><rect x="17" y="17" width="4" height="4" rx="1"/></svg>
+            <hugeicons-icon [icon]="Menu01Icon" [size]="20" [strokeWidth]="2" class="group-hover:scale-110 transition-transform duration-500" />
           </button>
 
         </div>
@@ -135,4 +141,10 @@ export class NavbarComponent {
   @Output() openCart = new EventEmitter<void>();
   @Output() openWishlist = new EventEmitter<void>();
   @Output() navigate = new EventEmitter<string>();
+
+  CallIcon = CallIcon;
+  Mail01Icon = Mail01Icon;
+  FavouriteIcon = FavouriteIcon;
+  ShoppingCart01Icon = ShoppingCart01Icon;
+  Menu01Icon = Menu01Icon;
 }

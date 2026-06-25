@@ -477,3 +477,21 @@ nav.scrolled {
   margin-bottom: 0.75rem;
   font-weight: 900;
 }
+
+@layer utilities {
+  .light-theme .text-zinc-500 {
+    color: #545454;
+  }
+  .light-theme .text-zinc-400 {
+    color: #404040;
+  }
+  .light-theme .text-zinc-300 {
+    color: #262626;
+  }
+}
+
+@layer utilities {
+  .light-theme .text-amber-500, .light-theme .text-amber-400 {
+    color: #025928; /* Dark green for 7:1 contrast on white */
+  }
+}

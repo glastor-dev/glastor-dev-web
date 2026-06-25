@@ -1,11 +1,13 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Product } from "../../portal";
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Icon, Location01Icon, ShieldCheck, Shield01Icon, DeliveryBox01Icon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: "app-product-detail-page",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
   template: `
   
     <main class="max-w-6xl mx-auto px-4 py-8 space-y-8 text-left page-transition">
@@ -18,7 +20,7 @@ import { Product } from "../../portal";
                            (isCinematicGlow 
                             ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white' 
                             : 'bg-white border-zinc-200 text-zinc-500 hover:text-zinc-950')">
-            <span class="material-icons scale-75">arrow_back</span>
+            <hugeicons-icon [icon]="ArrowLeft01Icon" [size]="16" class="scale-75"  [strokeWidth]="1.5" />
             Volver a la galería
           </button>
           <span class="text-zinc-350 text-xs">/</span>
@@ -102,11 +104,11 @@ import { Product } from "../../portal";
               <div class="flex items-center gap-1 text-[#41BF84] cursor-pointer hover:text-[#41BF84]">
                 <span class="text-sm font-black">{{ product.rating.toFixed(1) }}</span>
                 <div class="flex">
-                  <span class="material-icons text-sm">star</span>
-                  <span class="material-icons text-sm">star</span>
-                  <span class="material-icons text-sm">star</span>
-                  <span class="material-icons text-sm">star</span>
-                  <span class="material-icons text-sm">star_half</span>
+                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
+                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
+                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
+                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
+                  <hugeicons-icon [icon]="StarHalfIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
                 </div>
                 <span class="text-xs text-[#41BF84] ml-1 hover:underline font-medium" [class.text-[#41BF84]]="isCinematicGlow">{{ product.reviews.length * 142 }} valoraciones</span>
               </div>
@@ -135,11 +137,9 @@ import { Product } from "../../portal";
               <div class="border-b" [class.border-zinc-800]="isCinematicGlow" [class.border-zinc-200]="!isCinematicGlow">
                 <button (click)="toggleAccordion('ACERCA DEL MODELO')" 
                         class="w-full flex items-center gap-3 py-4 text-left focus:outline-none group">
-                  <span class="material-icons font-bold text-[22px] transition-transform duration-300"
+                  <hugeicons-icon [icon]="ArrowRight01Icon" [size]="22" class="font-bold transition-transform duration-300"
                         [class.rotate-90]="expandedAccordion === 'ACERCA DEL MODELO'"
-                        [class.text-cyan-500]="isCinematicGlow" [class.text-cyan-700]="!isCinematicGlow">
-                    chevron_right
-                  </span>
+                        [class.text-cyan-500]="isCinematicGlow" [class.text-cyan-700]="!isCinematicGlow"  [strokeWidth]="1.5" />
                   <span class="text-xl font-black uppercase tracking-widest" 
                         [class.text-white]="isCinematicGlow" [class.text-black]="!isCinematicGlow">
                     ACERCA DEL MODELO
@@ -161,11 +161,7 @@ import { Product } from "../../portal";
               <div class="border-b" [class.border-zinc-800]="isCinematicGlow" [class.border-zinc-200]="!isCinematicGlow">
                 <button (click)="toggleAccordion('CARACTERISTICAS')" 
                         class="w-full flex items-center gap-3 py-4 text-left focus:outline-none group">
-                  <span class="material-icons font-bold text-[22px] transition-transform duration-300"
-                        [class.rotate-90]="expandedAccordion === 'CARACTERISTICAS'"
-                        [class.text-cyan-500]="isCinematicGlow" [class.text-cyan-700]="!isCinematicGlow">
-                    chevron_right
-                  </span>
+                  <hugeicons-icon [icon]="ArrowRight01Icon" [size]="22" [strokeWidth]="1.5" class="font-bold transition-transform duration-300" [class.rotate-90]="expandedAccordion === 'CARACTERISTICAS' || expandedAccordion === 'ESPECIFICACIONES'" [class.text-cyan-500]="isCinematicGlow" [class.text-cyan-700]="!isCinematicGlow" />
                   <span class="text-xl font-black uppercase tracking-widest" 
                         [class.text-white]="isCinematicGlow" [class.text-black]="!isCinematicGlow">
                     CARACTERISTICAS
@@ -195,11 +191,7 @@ import { Product } from "../../portal";
               <div class="border-b" [class.border-zinc-800]="isCinematicGlow" [class.border-zinc-200]="!isCinematicGlow">
                 <button (click)="toggleAccordion('ESPECIFICACIONES')" 
                         class="w-full flex items-center gap-3 py-4 text-left focus:outline-none group">
-                  <span class="material-icons font-bold text-[22px] transition-transform duration-300"
-                        [class.rotate-90]="expandedAccordion === 'ESPECIFICACIONES'"
-                        [class.text-cyan-500]="isCinematicGlow" [class.text-cyan-700]="!isCinematicGlow">
-                    chevron_right
-                  </span>
+                  <hugeicons-icon [icon]="ArrowRight01Icon" [size]="22" [strokeWidth]="1.5" class="font-bold transition-transform duration-300" [class.rotate-90]="expandedAccordion === 'CARACTERISTICAS' || expandedAccordion === 'ESPECIFICACIONES'" [class.text-cyan-500]="isCinematicGlow" [class.text-cyan-700]="!isCinematicGlow" />
                   <span class="text-xl font-black uppercase tracking-widest" 
                         [class.text-white]="isCinematicGlow" [class.text-black]="!isCinematicGlow">
                     ESPECIFICACIONES
@@ -260,11 +252,11 @@ import { Product } from "../../portal";
               <!-- Shipping Info Mini -->
               <div class="space-y-1.5 text-xs" [class.text-zinc-300]="isCinematicGlow" [class.text-zinc-700]="!isCinematicGlow">
                 <div class="flex gap-2">
-                  <span class="material-icons text-sm text-[#41BF84]">local_shipping</span>
+                  <hugeicons-icon [icon]="TruckIcon" [size]="16" [strokeWidth]="1.5" />
                   <span>Entrega GRATIS el <span class="font-bold">viernes, 26 de Junio</span>. Realiza el pedido en <span class="text-[#41BF84] font-bold">3 hrs 15 mins</span>.</span>
                 </div>
                 <div class="flex gap-2 text-[#41BF84] cursor-pointer hover:underline mt-1">
-                  <span class="material-icons text-sm">location_on</span>
+                  <hugeicons-icon [icon]="Location01Icon" [size]="14" [strokeWidth]="1.5" />
                   <span class="font-bold text-[11px]">Enviar a Zona Logística Primaria</span>
                 </div>
               </div>
@@ -339,9 +331,7 @@ import { Product } from "../../portal";
                         class="w-full py-2.5 rounded-lg border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2"
                         [class.border-zinc-700]="isCinematicGlow" [class.hover:bg-zinc-800]="isCinematicGlow" [class.text-zinc-300]="isCinematicGlow"
                         [class.border-zinc-200]="!isCinematicGlow" [class.hover:bg-zinc-100]="!isCinematicGlow" [class.text-zinc-700]="!isCinematicGlow">
-                  <span class="material-icons text-sm" [class.text-rose-500]="isInWishlist(product.id)">
-                    {{ isInWishlist(product.id) ? 'favorite' : 'favorite_border' }}
-                  </span>
+                  <hugeicons-icon [icon]="FavouriteIcon" [size]="14" [strokeWidth]="1.5" [class.text-rose-500]="isInWishlist(product.id)" [class.fill-rose-500]="isInWishlist(product.id)" />
                   Agregar a la Lista
                 </button>
               </div>
@@ -352,15 +342,15 @@ import { Product } from "../../portal";
                  [class]="'grid grid-cols-3 gap-2 py-4 px-2 text-center text-[9px] font-black uppercase ' + 
                           (isCinematicGlow ? 'text-zinc-400' : 'text-zinc-500')">
               <div class="space-y-1.5 flex flex-col items-center">
-                <span class="material-icons text-zinc-400 block text-xl mb-1">verified_user</span>
+                <hugeicons-icon [icon]="ShieldCheck" [size]="20" [strokeWidth]="1.5" class="text-zinc-400 block mb-1" />
                 <span>Transacción<br>Segura</span>
               </div>
               <div class="space-y-1.5 border-x border-dashed flex flex-col items-center" [class.border-zinc-800]="isCinematicGlow" [class.border-zinc-200]="!isCinematicGlow">
-                <span class="material-icons text-zinc-400 block text-xl mb-1">security</span>
+                <hugeicons-icon [icon]="Shield01Icon" [size]="20" [strokeWidth]="1.5" class="text-zinc-400 block mb-1" />
                 <span>Garantía de<br>5 años</span>
               </div>
               <div class="space-y-1.5 flex flex-col items-center">
-                <span class="material-icons text-zinc-400 block text-xl mb-1">inventory_2</span>
+                <hugeicons-icon [icon]="DeliveryBox01Icon" [size]="20" [strokeWidth]="1.5" class="text-zinc-400 block mb-1" />
                 <span>Devoluciones<br>gratis</span>
               </div>
             </div>
@@ -387,9 +377,7 @@ import { Product } from "../../portal";
               </div>
               <div class="flex justify-center text-[#41BF84]">
                 @for (star of [1,2,3,4,5]; track star) {
-                  <span class="material-icons text-base">
-                    {{ star <= Math.floor(product.rating) ? 'star' : (star === Math.ceil(product.rating) && product.rating % 1 !== 0 ? 'star_half' : 'star_border') }}
-                  </span>
+                  <hugeicons-icon [icon]="star <= Math.floor(product.rating) ? StarIcon : (star === Math.ceil(product.rating) && product.rating % 1 !== 0 ? StarHalfIcon : StarIcon)" [size]="16" [strokeWidth]="1.5" [class.fill-current]="star <= Math.floor(product.rating)" class="text-[#41BF84]" />
                 }
               </div>
               <p class="text-[9px] text-[#41BF84] font-mono font-black uppercase tracking-widest bg-[#41BF84]/10 px-2 py-1 rounded-md inline-block">
@@ -434,7 +422,7 @@ import { Product } from "../../portal";
 
                     <div class="flex text-[#41BF84]">
                       @for (star of [1,2,3,4,5]; track star) {
-                        <span class="material-icons text-sm">{{ star <= rev.stars ? 'star' : 'star_border' }}</span>
+                        <hugeicons-icon [icon]="StarIcon" [size]="14" [strokeWidth]="1.5" [class.fill-current]="star <= rev.stars" class="text-[#41BF84]" />
                       }
                     </div>
                   </div>
@@ -456,7 +444,19 @@ import { Product } from "../../portal";
 export class ProductDetailPageComponent {
   Math = Math;
   @Input() isCinematicGlow = true;
-  @Input() product: any;
+  ArrowLeft01Icon = ArrowLeft01Icon;
+  StarIcon = StarIcon;
+  StarHalfIcon = StarHalfIcon;
+  ArrowRight01Icon = ArrowRight01Icon;
+  ShoppingCart01Icon = ShoppingCart01Icon;
+  FavouriteIcon = FavouriteIcon;
+  TruckIcon = TruckIcon;
+  Tick01Icon = Tick01Icon;
+  Location01Icon = Location01Icon;
+  ShieldCheck = ShieldCheck;
+  Shield01Icon = Shield01Icon;
+  DeliveryBox01Icon = DeliveryBox01Icon;
+  @Input() product!: Product | null;
   @Input() selectedVariantObj: any;
   @Input() dynamicReviews: any[] = [];
   @Input() ratingBreakdown: any[] = [];

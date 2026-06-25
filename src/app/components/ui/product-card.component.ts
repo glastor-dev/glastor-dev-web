@@ -1,11 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../portal';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { FavouriteIcon, StarIcon, ViewIcon, ShoppingCart01Icon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
   template: `
     <div [class]="'tilt-card-3d container-3d rounded-lg p-1.5 transition-all duration-300 hover:-translate-y-2 border hover:shadow-2xl ' + 
                    (isCinematicGlow 
@@ -26,9 +28,7 @@ import { Product } from '../../portal';
                             ? 'bg-zinc-900/95 text-zinc-500 border-white/5' 
                             : 'bg-white/95 text-zinc-400 border-black/5')"
                   title="Favorito">
-            <span class="material-icons text-sm" [class.text-rose-600]="isInWishlist">
-              {{ isInWishlist ? 'favorite' : 'favorite_border' }}
-            </span>
+            <hugeicons-icon [icon]="FavouriteIcon" [size]="18" [strokeWidth]="isInWishlist ? 2.5 : 1.5" [class.text-rose-600]="isInWishlist" />
           </button>
 
           <!-- Overlay Badges (Including Low Stock 'Quick Buy' Alerts) -->
@@ -55,7 +55,7 @@ import { Product } from '../../portal';
                          (isCinematicGlow 
                           ? 'bg-zinc-900/95 border-white/5' 
                           : 'bg-white/95 border-black/5')">
-            <span class="material-icons text-[#41BF84] scale-60 font-black">star</span>
+            <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
             <span [class]="'text-[10px] font-bold font-mono ' + (isCinematicGlow ? 'text-zinc-200' : 'text-zinc-800')">{{ product.rating.toFixed(1) }}</span>
           </div>
         </div>
@@ -81,7 +81,7 @@ import { Product } from '../../portal';
                                (isCinematicGlow 
                                 ? 'bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border-zinc-800' 
                                 : 'bg-zinc-100 hover:bg-zinc-200/80 text-zinc-650 border-transparent')">
-                <span class="material-icons scale-75">visibility</span>
+                <hugeicons-icon [icon]="ViewIcon" [size]="16"  [strokeWidth]="1.5" />
                 Detalles
               </button>
               <button (click)="addToCart.emit(product)"
@@ -89,7 +89,7 @@ import { Product } from '../../portal';
                                (isCinematicGlow 
                                 ? 'bg-amber-600 hover:bg-[#41BF84]/200 text-zinc-950' 
                                 : 'bg-zinc-900 hover:bg-zinc-800 text-white')">
-                <span class="material-icons scale-75">add_shopping_cart</span>
+                <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="16"  [strokeWidth]="1.5" />
                 Añadir
               </button>
             </div>
@@ -137,4 +137,9 @@ export class ProductCardComponent {
     if (!html) return '';
     return html.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
   }
+
+  FavouriteIcon = FavouriteIcon;
+  StarIcon = StarIcon;
+  ViewIcon = ViewIcon;
+  ShoppingCart01Icon = ShoppingCart01Icon;
 }
