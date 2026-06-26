@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from "@angular/core";
+import { Meta, Title } from '@angular/platform-browser';
 import { CommonModule } from "@angular/common";
 import { Product } from "../../portal";
 import { HugeiconsIconComponent } from '@hugeicons/angular';
@@ -477,7 +478,20 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
 
 `
 })
-export class ProductDetailPageComponent {
+export class ProductDetailPageComponent implements OnChanges {
+  private meta = inject(Meta);
+  private title = inject(Title);
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['product'] && this.product) {
+      this.title.setTitle(this.product.name + ' - Glastor');
+      this.meta.updateTag({ name: 'description', content: this.product.description });
+      if (this.product.seo) {
+        this.meta.updateTag({ name: 'keywords', content: this.product.seo.metaTitle });
+      }
+    }
+  }
+
   Math = Math;
   @Input() isCinematicGlow = true;
   ArrowLeft01Icon = ArrowLeft01Icon;

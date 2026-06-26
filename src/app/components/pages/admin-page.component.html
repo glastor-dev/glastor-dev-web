@@ -1,0 +1,1341 @@
+    @if (!isAdminAuthenticated()) {
+      <section id="admin-login" class="min-h-screen bg-black text-white pt-32 pb-24 px-6 md:px-12 xl:px-24 flex items-center justify-center">
+        <div class="max-w-md w-full bg-[#0a0a0a] border border-white/10 p-8 rounded-2xl shadow-2xl">
+          <div class="text-center mb-8">
+            <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-4xl text-zinc-500 mb-4"  [strokeWidth]="1.5" />
+            <h2 class="text-3xl font-black tracking-tight text-white font-mono">GLASTOR OS</h2>
+            <p class="text-zinc-400 text-sm mt-2">Autenticación requerida para acceder al subsistema administrativo.</p>
+          </div>
+          
+          <form [formGroup]="loginForm" (ngSubmit)="adminLogin()" class="space-y-6">
+            <div class="space-y-2">
+              <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Usuario Administrador</label>
+              <input type="text" formControlName="username" class="w-full bg-zinc-900/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-zinc-500 transition-colors font-mono" placeholder="admin">
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Credencial de Acceso (JWT)</label>
+              <input type="password" formControlName="password" class="w-full bg-zinc-900/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-zinc-500 transition-colors font-mono" placeholder="••••••••••••">
+            </div>
+            
+            <button type="submit" [disabled]="isLoggingIn || loginForm.invalid" class="w-full bg-white text-black font-black uppercase tracking-widest py-4 rounded-lg hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50">
+              @if (isLoggingIn) {
+                <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="animate-spin"  [strokeWidth]="1.5" /> Validando...
+              } @else {
+                Desbloquear Terminal <hugeicons-icon [icon]="Settings01Icon" [size]="20"  [strokeWidth]="1.5" />
+              }
+            </button>
+          </form>
+        </div>
+      </section>
+    } @else {
+
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-8 page-transition">
+      
+      <!-- Back-office header title -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div class="text-left space-y-1.5">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-lg bg-[#41BF84]/10 border border-[#41BF84]/20 flex items-center justify-center text-[#41BF84]">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-85"  [strokeWidth]="1.5" />
+            </span>
+            <span class="bg-zinc-800 text-zinc-600 text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase">Consola de Control</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">Panel de Administrador e Indexación SEO</h1>
+          <p class="text-xs text-zinc-500">Rastrea la salud de indexación del e-commerce, maneja robots.txt y gestiona los pedidos (CRM) de tus clientes.</p>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap justify-end">
+          @if (activeAdminTab === 'crm') {
+            <button (click)="toggleSeoPanel()" 
+                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-black cursor-pointer transition-colors shadow-sm whitespace-nowrap">
+              <hugeicons-icon [icon]="Settings02Icon" [size]="20" class="scale-80"  [strokeWidth]="1.5" />
+              {{ isSeoPanelOpen ? 'Ocultar XML/Robots' : 'Mostrar Formulación XML' }}
+            </button>
+          }
+          <button (click)="adminLogout()" 
+                  class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-lg text-xs font-black cursor-pointer transition-colors shadow-sm whitespace-nowrap">
+            <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-80"  [strokeWidth]="1.5" />
+            Cerrar Sesión Segura
+          </button>
+        </div>
+      </div>
+
+      <!-- Selector de Sub-Paneles (Administración Interna) -->
+      <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+        <button (click)="setActiveAdminTab('crm')" 
+                [class]="'inline-flex items-center gap-2 px-4 py-2 border-b-2 text-xs font-black transition-all cursor-pointer ' + 
+                         (activeAdminTab === 'crm' 
+                          ? 'border-[#41BF84]/20 text-[#41BF84] font-extrabold' 
+                          : 'border-transparent text-zinc-500 hover:text-zinc-600')">
+          <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+          Gestión de e-Commerce & SEO
+        </button>
+
+        <button (click)="setActiveAdminTab('devops')" 
+                [class]="'inline-flex items-center gap-2 px-4 py-2 border-b-2 text-xs font-black transition-all cursor-pointer relative ' + 
+                         (activeAdminTab === 'devops' 
+                          ? 'border-red-650 text-red-600 font-extrabold' 
+                          : 'border-transparent text-zinc-500 hover:text-zinc-600')">
+          <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75 text-red-500"  [strokeWidth]="1.5" />
+          Centro DevOps & Telemetría Hub
+          @if (isPipelineRunning) {
+            <span class="w-1.5 h-1.5 rounded-full bg-red-500 absolute top-0.5 right-1 animate-ping"></span>
+          }
+        </button>
+      </div>
+
+      @if (activeAdminTab === 'crm') {
+
+      <!-- ANALYTICS BACK-OFFICE METRIC SCORECARD GRID -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+        
+        <!-- Metric Box 1: Revenue -->
+        <div class="bg-zinc-950 text-white rounded-lg p-6 space-y-4 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[160px] group border border-white/5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase font-black block">Ingresos de Caja</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-black font-mono tracking-tight text-[#41BF84]">{{ formatPrice(adminMetrics.revenue) }}</div>
+            <span class="text-[10px] text-zinc-500 block tracking-tight font-medium mt-1">Caja total transaccionada en canales</span>
+          </div>
+          <!-- Sparkline Indicator SVG -->
+          <div class="absolute bottom-0 left-0 right-0 h-10 opacity-30 group-hover:opacity-50 transition-opacity">
+            <svg class="w-full h-full" viewBox="0 0 100 20" preserveAspectRatio="none">
+              <path d="M0,18 Q15,10 30,12 T60,5 T90,3 L100,5" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"></path>
+              <path d="M0,18 Q15,10 30,12 T60,5 T90,3 L100,5 L100,20 L0,20 Z" fill="url(#grad1)" opacity="0.3"></path>
+              <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#34d399" />
+                  <stop offset="100%" stop-color="#34d399" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metric Box 2: Sales -->
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-4 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[160px] group hover:border-zinc-350 transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase font-black block">Ventas Generadas</span>
+            <hugeicons-icon [icon]="Invoice01Icon" [size]="20" class="text-zinc-300 text-sm"  [strokeWidth]="1.5" />
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-black text-white font-mono tracking-tight">{{ adminMetrics.salesCount }} Pedidos</div>
+            <span class="text-[10px] text-zinc-500 block font-medium mt-1">Diligencias validadas en pasarelas</span>
+          </div>
+          <!-- Sparkline Indicator SVG -->
+          <div class="absolute bottom-0 left-0 right-0 h-10 opacity-20 group-hover:opacity-40 transition-opacity">
+            <svg class="w-full h-full" viewBox="0 0 100 20" preserveAspectRatio="none">
+              <path d="M0,15 L20,12 L40,14 L60,8 L80,10 L100,3" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metric Box 3: Sitemap Nodes -->
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-4 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[160px] group hover:border-zinc-350 transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase font-black block">Nodos Sitemap</span>
+            <hugeicons-icon [icon]="Route01Icon" [size]="20" class="text-zinc-300 text-sm"  [strokeWidth]="1.5" />
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-black text-white font-mono tracking-tight">{{ sitemapUrls.length }} Enlaces</div>
+            <span class="text-[10px] text-zinc-500 block font-medium mt-1">Nodos sitemap indexados en tiempo real</span>
+          </div>
+          <!-- Grid visual overlay -->
+          <div class="absolute bottom-2 right-4 opacity-5 group-hover:opacity-15 transition-opacity">
+            <svg class="w-16 h-16 text-white" viewBox="0 0 100 100" fill="currentColor">
+              <circle cx="20" cy="50" r="8"></circle>
+              <circle cx="50" cy="20" r="8"></circle>
+              <circle cx="50" cy="80" r="8"></circle>
+              <circle cx="80" cy="50" r="8"></circle>
+              <line x1="28" y1="48" x2="42" y2="28" stroke="currentColor" stroke-width="4"></line>
+              <line x1="28" y1="52" x2="42" y2="72" stroke="currentColor" stroke-width="4"></line>
+              <line x1="58" y1="28" x2="72" y2="48" stroke="currentColor" stroke-width="4"></line>
+              <line x1="58" y1="72" x2="72" y2="52" stroke="currentColor" stroke-width="4"></line>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metric Box 4: SEO Score -->
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-4 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[160px] group hover:border-zinc-350 transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase font-black block">Auditoría SEO</span>
+            <span [class]="'text-[9px] font-mono font-black uppercase px-2 py-0.5 rounded-md ' + (seoScore >= 80 ? 'bg-[#41BF84]/10 text-[#41BF84]' : 'bg-[#41BF84]/10 text-[#41BF84]')">
+              {{ seoScore >= 80 ? 'Excepcional' : 'Optimizable' }}
+            </span>
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-black font-mono tracking-tight text-white">{{ seoScore }} / 100</div>
+            <span class="text-[10px] text-zinc-500 block font-medium mt-1">Criterio de rastreo del motor CMS</span>
+          </div>
+          <!-- Circle percentage indicator -->
+          <div class="absolute bottom-4 right-4 w-12 h-12">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-zinc-100" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path [class]="seoScore >= 80 ? 'text-[#41BF84]' : 'text-[#41BF84]'" [attr.stroke-dasharray]="seoScore + ', 100'" stroke-width="3.2" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- COLLAPSIBLE DETAILED CUSTOM SEO XML ENGINE (WHEN OPENED) -->
+      @if (isSeoPanelOpen) {
+        <section class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-8 text-left shadow-sm">
+          
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+              <hugeicons-icon [icon]="Route01Icon" [size]="20" class="text-[#41BF84] scale-75"  [strokeWidth]="1.5" />
+              1. Formularios de Sitemap XML y Metatags directas
+            </h3>
+            <span class="text-[10px] font-mono text-zinc-500">INDEXADOR AUTOMÁTICO</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Sitemap form builder (4 Cols) -->
+            <div class="lg:col-span-4 bg-zinc-800/50/80 border border-white/10 rounded-lg p-5 space-y-6">
+              <div class="space-y-1">
+                <span class="text-xs font-black text-white block uppercase">Insertar Nodo XML</span>
+                <p class="text-[10px] text-zinc-500 leading-normal">Agrega nuevas subpáginas del catálogo o enlaces al sitemap dinámico.</p>
+              </div>
+
+              <form [formGroup]="sitemapForm" (ngSubmit)="addSitemapUrl()" class="space-y-4">
+                <div class="space-y-1.5">
+                  <label class="text-[9px] font-black uppercase text-zinc-500 block">RUTA LOC (ABSOLUTA ENLACE)</label>
+                  <input type="text" formControlName="loc" placeholder="https://dominio.com/pagina"
+                         class="text-white w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none">
+                  @if (sitemapForm.get('loc')?.touched && sitemapForm.get('loc')?.invalid) {
+                    <span class="text-[9px] text-rose-500 font-bold block">Escriba una dirección absoluta válida.</span>
+                  }
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <label class="text-[9px] font-black uppercase text-zinc-500 block">FRECUENCIA</label>
+                    <select formControlName="changefreq"
+                            class="text-white w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-1.5 text-xs focus:outline-none">
+                      <option value="always">Siempre</option>
+                      <option value="hourly">Por hora</option>
+                      <option value="daily">Diario</option>
+                      <option value="weekly">Semanal</option>
+                      <option value="monthly">Mensual</option>
+                      <option value="yearly">Anual</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-1">
+                    <label class="text-[9px] font-black uppercase text-zinc-500 block">PRIORIDAD</label>
+                    <select formControlName="priority"
+                            class="text-white w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-1.5 text-xs focus:outline-none">
+                      <option value="1.0">1.0 (Primaria)</option>
+                      <option value="0.8">0.8 (Normal)</option>
+                      <option value="0.5">0.5 (Neutral)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" [disabled]="sitemapForm.invalid"
+                        class="w-full bg-indigo-600 disabled:bg-indigo-300 text-white font-black text-xs py-2.5 rounded-lg cursor-pointer flex items-center justify-center gap-1 shadow-sm shadow-indigo-100">
+                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                  Insertar Enlace
+                </button>
+              </form>
+
+              <!-- Dynamic Preview code box representation -->
+              <div class="space-y-1.5">
+                <span class="text-[9px] font-mono uppercase text-zinc-500 block">PREVIEW DINÁMICO SITEMAP.XML</span>
+                <pre class="w-full max-h-40 overflow-y-auto bg-zinc-900 text-zinc-300 p-3 rounded-lg text-[9px] leading-relaxed font-mono select-all text-left">{{ sitemapXmlPreview }}</pre>
+              </div>
+
+            </div>
+
+            <!-- Metatags snippet configuration (5 Cols) -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="bg-[#0a0a0a] border border-white/10 rounded-lg p-5 space-y-4">
+                <span class="text-xs font-black text-white block uppercase">Metatags del Motor CMS</span>
+
+                <form [formGroup]="metaForm" (ngSubmit)="updateSeoMeta()" class="space-y-4">
+                  <div class="space-y-1">
+                    <div class="flex justify-between items-center text-[9px] font-mono text-zinc-500">
+                      <span>TÍTULO DE SITIO</span>
+                      <span>{{ metaForm.get('title')?.value?.length || 0 }} / 70</span>
+                    </div>
+                    <input type="text" formControlName="title"
+                           class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#41BF84]">
+                  </div>
+
+                  <div class="space-y-1">
+                    <div class="flex justify-between items-center text-[9px] font-mono text-zinc-500">
+                      <span>METADESCRIPCIÓN (GOOGLE SERP)</span>
+                      <span>{{ metaForm.get('description')?.value?.length || 0 }} / 160</span>
+                    </div>
+                    <textarea rows="2" formControlName="description"
+                              class="text-white w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#41BF84] resize-none"></textarea>
+                  </div>
+
+                  <div class="space-y-1">
+                    <label class="text-[9px] font-black text-zinc-500">PALABRAS CLAVE (SEPARADOS POR COMA)</label>
+                    <input type="text" formControlName="keywords"
+                           class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none">
+                  </div>
+
+                  <button type="submit" [disabled]="metaForm.invalid"
+                          class="w-full bg-zinc-900 disabled:bg-zinc-200 text-white font-black text-xs py-2.5 rounded-lg cursor-pointer">
+                    Actualizar Encabezados Meta
+                  </button>
+                </form>
+              </div>
+
+              <!-- Rule of bots robots.txt -->
+              <div class="bg-[#0a0a0a] border border-white/10 rounded-lg p-5 space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-black text-white block uppercase">Reglas del Robots.txt</span>
+                  <button (click)="updateRobotsTxt()" 
+                          class="text-[9px] font-black text-[#41BF84] bg-[#41BF84]/10 px-2 py-1 rounded cursor-pointer">
+                    Reescribir
+                  </button>
+                </div>
+                <textarea rows="3" [formControl]="robotsControl"
+                          class="w-full font-mono bg-zinc-900 text-zinc-300 p-3 rounded-lg text-[10px] leading-relaxed focus:outline-none border-0 text-left"></textarea>
+              </div>
+
+            </div>
+
+            <!-- Nodos Registrados Tree view (3 Cols) -->
+            <div class="lg:col-span-3 bg-zinc-900/50 border border-white/10 rounded-lg p-5 space-y-3">
+              <span class="text-xs font-black text-white block uppercase">Nodos Activos ({{ sitemapUrls.length }})</span>
+              
+              <div class="divide-y divide-zinc-200/80 max-h-96 overflow-y-auto pr-1">
+                @for (url of sitemapUrls; track url.loc; let idx = $index) {
+                  <div class="py-2.5 text-[11px] flex items-center justify-between gap-2 text-left first:pt-0 last:pb-0">
+                    <div class="min-w-0">
+                      <span class="block font-mono font-bold text-zinc-805 truncate" title="{{ url.loc }}">{{ url.loc }}</span>
+                      <span class="block text-[9px] text-zinc-500">Freq: {{ url.changefreq }} · Priority: {{ url.priority.toFixed(1) }}</span>
+                    </div>
+                    <button (click)="removeSitemapUrl(idx)" 
+                            class="w-5 h-5 rounded hover:bg-rose-50 flex items-center justify-center text-rose-500 cursor-pointer shrink-0">
+                      <hugeicons-icon [icon]="Cancel01Icon" [size]="20" class="scale-60 font-bold"  [strokeWidth]="1.5" />
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+      }
+
+      <!-- MAIN CRM ORDER MANAGEMENT ENGINE FOR SHOPPED ORDERS -->
+      <section class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-6 text-left shadow-sm">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div class="space-y-1">
+            <h3 class="text-sm font-black text-white uppercase flex items-center gap-1.5">
+              <hugeicons-icon [icon]="Invoice01Icon" [size]="20" class="text-[#41BF84] scale-90"  [strokeWidth]="1.5" />
+              2. Control de Pedidos e-Commerce (CRM Back-office)
+            </h3>
+            <p class="text-xs text-zinc-500">Maneja, aprueba y audita los despachos de los clientes en tiempo real.</p>
+          </div>
+          <span class="text-xs font-mono font-bold text-zinc-500 bg-zinc-800 px-3 py-1.5 rounded-lg">
+            Registrados: {{ orders.length }} pedidos
+          </span>
+        </div>
+
+        @if (orders.length > 0) {
+          <div class="overflow-x-auto border border-white/5 rounded-lg">
+            <table class="w-full text-left text-xs text-zinc-600">
+              <thead class="bg-zinc-800/50 border-b border-white/5 text-[10px] font-black uppercase text-zinc-500 font-mono tracking-wider">
+                <tr>
+                  <th scope="col" class="px-5 py-3">Código Pedido</th>
+                  <th scope="col" class="px-5 py-3">Cliente</th>
+                  <th scope="col" class="px-5 py-3">Fecha</th>
+                  <th scope="col" class="px-5 py-3">Artículos del Pedido</th>
+                  <th scope="col" class="px-5 py-3 text-right">Monto Neto</th>
+                  <th scope="col" class="px-5 py-3">Estado Envío</th>
+                  <th scope="col" class="px-5 py-3 text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-100 bg-[#0a0a0a]">
+                @for (order of orders; track order.id) {
+                  <tr class="hover:bg-zinc-900/50">
+                    
+                    <!-- ID Code -->
+                    <td class="px-5 py-4 font-mono font-black text-[#41BF84] whitespace-nowrap">
+                      {{ order.id }}
+                    </td>
+
+                    <!-- Customer Personal -->
+                    <td class="px-5 py-4">
+                      <span class="block font-bold text-white leading-none mb-1">{{ order.fullName }}</span>
+                      <span class="block text-[10px] text-zinc-500 font-mono leading-none">{{ order.email }}</span>
+                    </td>
+
+                    <!-- Date -->
+                    <td class="px-5 py-4 font-mono text-zinc-500 whitespace-nowrap text-xs">
+                      {{ order.date }}
+                    </td>
+
+                    <!-- Compacted items stack -->
+                    <td class="px-5 py-4 max-w-xs">
+                      <div class="space-y-0.5 max-h-16 overflow-y-auto">
+                        @for (i of order.items; track i.name) {
+                          <span class="block text-[11px] text-zinc-300 truncate font-semibold">
+                            • {{ i.name }} (x{{ i.quantity }})
+                          </span>
+                        }
+                      </div>
+                    </td>
+
+                    <!-- Net Cost -->
+                    <td class="px-5 py-4 font-mono font-black text-white text-right text-xs">
+                      {{ formatPrice(order.total) }}
+                      @if (order.discount > 0) {
+                        <span class="block text-[9px] text-[#41BF84] font-bold">-{{ formatPrice(order.discount) }}</span>
+                      }
+                    </td>
+
+                    <!-- Status Selection pill -->
+                    <td class="px-5 py-4 whitespace-nowrap">
+                      <span [class]="'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase ' + 
+                                     (order.status === 'completado' ? 'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20' : 
+                                      order.status === 'enviado' ? 'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20' : 
+                                      'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20')">
+                        <span [class]="'w-1.5 h-1.5 rounded-full ' + 
+                                       (order.status === 'completado' ? 'bg-emerald-500' : 
+                                        order.status === 'enviado' ? 'bg-indigo-500' : 'bg-amber-500')"></span>
+                        {{ order.status }}
+                      </span>
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="px-5 py-4 text-center whitespace-nowrap">
+                      <div class="flex items-center justify-center gap-1.5">
+                        
+                        <!-- Complete Button -->
+                        <button (click)="updateOrderStatus(order.id, 'completado')" 
+                                class="p-1 rounded bg-zinc-800 text-[#41BF84] hover:bg-[#41BF84]/10 border border-white/10 cursor-pointer flex items-center justify-center"
+                                title="Marcar como Completado">
+                          <hugeicons-icon [icon]="Tick01Icon" [size]="20" class="scale-75 font-bold"  [strokeWidth]="1.5" />
+                        </button>
+
+                        <!-- Ship Button -->
+                        <button (click)="updateOrderStatus(order.id, 'enviado')" 
+                                class="p-1 rounded bg-zinc-800 text-[#41BF84] hover:bg-[#41BF84]/10 border border-white/10 cursor-pointer flex items-center justify-center"
+                                title="Marcar como Enviado">
+                          <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75 font-bold"  [strokeWidth]="1.5" />
+                        </button>
+
+                        <button (click)="deleteOrder(order.id)" 
+                                class="p-1 rounded bg-zinc-800 text-zinc-500 hover:text-rose-500 hover:bg-rose-50 border border-white/10 cursor-pointer flex items-center justify-center"
+                                title="Archivar Registro">
+                          <hugeicons-icon [icon]="Delete01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                        </button>
+
+                      </div>
+                    </td>
+
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="py-12 text-center text-zinc-500 space-y-3">
+            <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-zinc-300 scale-150"  [strokeWidth]="1.5" />
+            <p class="text-xs">No se han registrado despachos ni pedidos activos de clientes en el CRM.</p>
+            <button (click)="setView('tienda')" 
+                    class="bg-zinc-900 hover:bg-zinc-805 text-white text-xs font-black px-5 py-2.5 rounded-lg cursor-pointer">
+              Interactuar como cliente en la tienda
+            </button>
+          </div>
+        }
+
+      </section>
+
+      <!-- REGISTRO DE ARREPENTIMIENTOS (LEY 24.240) -->
+      <section class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-6 text-left shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div class="space-y-1">
+            <h3 class="text-sm font-black text-white uppercase flex items-center gap-1.5">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-rose-500 scale-90"  [strokeWidth]="1.5" />
+              Registro de Arrepentimientos (Ley 24.240)
+            </h3>
+            <p class="text-xs text-zinc-500">Historial de solicitudes de revocación de compras mediante el Botón de Arrepentimiento.</p>
+          </div>
+          <span class="text-xs font-mono font-bold text-zinc-500 bg-zinc-800 px-3 py-1.5 rounded-lg">
+            Registrados: {{ revocaciones.length }} revocaciones
+          </span>
+        </div>
+
+        @if (revocaciones.length > 0) {
+          <div class="overflow-x-auto border border-white/5 rounded-lg">
+            <table class="w-full text-left text-xs text-zinc-600">
+              <thead class="bg-zinc-800/50 border-b border-white/5 text-[10px] font-black uppercase text-zinc-500 font-mono tracking-wider">
+                <tr>
+                  <th scope="col" class="px-5 py-3">Código Trámite</th>
+                  <th scope="col" class="px-5 py-3">Fecha</th>
+                  <th scope="col" class="px-5 py-3">Cliente</th>
+                  <th scope="col" class="px-5 py-3">Pedido/Factura</th>
+                  <th scope="col" class="px-5 py-3">Producto a Devolver</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-100 bg-[#0a0a0a]">
+                @for (rev of revocaciones; track rev.id) {
+                  <tr class="hover:bg-zinc-900/50">
+                    <td class="px-5 py-4 font-mono font-black text-rose-500 whitespace-nowrap">{{ rev.id }}</td>
+                    <td class="px-5 py-4 font-mono text-zinc-500 whitespace-nowrap text-xs">{{ rev.fecha }}</td>
+                    <td class="px-5 py-4">
+                      <span class="block font-bold text-white leading-none mb-1">{{ rev.nombre }} {{ rev.apellido }}</span>
+                      <span class="block text-[10px] text-zinc-500 font-mono leading-none">{{ rev.email }}</span>
+                    </td>
+                    <td class="px-5 py-4 font-mono font-black text-[#41BF84] whitespace-nowrap">{{ rev.pedido }}</td>
+                    <td class="px-5 py-4 text-white text-xs">{{ rev.producto }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="py-8 text-center text-zinc-500 space-y-3">
+            <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-zinc-300 scale-150 opacity-50"  [strokeWidth]="1.5" />
+            <p class="text-xs">No hay solicitudes de arrepentimiento registradas en el sistema.</p>
+          </div>
+        }
+      </section>
+
+      <!-- 3. CONFIGURAR / ADMINISTRAR CATÁLOGO DE DISEÑOS (PROCESADO EN SQLite3) -->
+      <section id="catalog-admin-section" class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-8 text-left shadow-sm">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div class="space-y-1">
+            <h3 id="catalogo-form-anchor" class="text-sm font-black text-white uppercase flex items-center gap-1.5">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[#41BF84] scale-90"  [strokeWidth]="1.5" />
+              3. Editor de Productos GLASTOR ® (SQLite3 Real-time Engine)
+            </h3>
+            <p class="text-xs text-zinc-500">Publica nuevos lanzamientos o modifica precios, descripción y existencias al instante con persistencia robusta.</p>
+          </div>
+          <span class="text-xs font-mono font-bold text-zinc-500 bg-zinc-800 px-3 py-1.5 rounded-lg">
+            Catálogo: {{ products.length }} piezas
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Tabla de existencias (Data Grid) -->
+          <div class="lg:col-span-5 bg-zinc-900/50 border border-white/10 rounded-lg p-5 flex flex-col h-[520px]">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-black text-white block uppercase font-sans">Niveles de Inventario</span>
+              <div class="flex items-center gap-2">
+                <button (click)="cancelEditProduct()" class="text-[#41BF84] hover:text-emerald-300 text-[10px] bg-emerald-900/20 hover:bg-emerald-900/40 border border-emerald-500/30 px-2 py-1 rounded cursor-pointer font-bold transition-colors flex items-center gap-1">
+                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" /> Crear Nuevo
+                </button>
+                <button (click)="toggleAdminSort()" class="text-zinc-300 text-[10px] bg-[#0a0a0a] border border-white/10 px-2 py-1 rounded cursor-pointer font-bold hover:bg-zinc-800 flex items-center gap-1">
+                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" /> Sort ({{ adminTableSortDesc ? 'Desc' : 'Asc' }})
+                </button>
+              </div>
+            </div>
+            
+            <div class="overflow-y-auto flex-grow pr-1">
+              <table class="w-full text-left border-collapse">
+                <thead class="sticky top-0 bg-zinc-800/50 z-10">
+                  <tr class="border-b border-white/10 text-[10px] text-zinc-500 uppercase tracking-wider">
+                    <th class="pb-2 font-black">Pieza</th>
+                    <th class="pb-2 font-black">Stock</th>
+                    <th class="pb-2 font-black text-right">Acción</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-200/60">
+                  @for (p of pagedAdminProducts; track p.id) {
+                    <tr class="hover:bg-zinc-800/50 transition-colors">
+                      <td class="py-2.5 flex items-center gap-2">
+                        <img [src]="p.image" class="w-8 h-8 rounded border border-white/10 object-cover shrink-0">
+                        <div class="min-w-0">
+                          <span class="block text-xs font-bold text-white truncate max-w-[120px]">{{ p.name }}</span>
+                          <span class="block text-[9px] text-zinc-500 font-mono">{{ formatPrice(p.price) }}</span>
+                        </div>
+                      </td>
+                      <td class="py-2.5">
+                        @if (p.stock === 0) {
+                          <span class="text-[9px] text-rose-600 bg-rose-50 px-1 py-0.5 rounded font-black uppercase">Agotado</span>
+                        } @else {
+                          <span class="text-[10px] text-zinc-300 font-mono">{{ p.stock }}</span>
+                        }
+                      </td>
+                      <td class="py-2.5 text-right whitespace-nowrap">
+                        <div class="flex items-center justify-end gap-1">
+                          <button (click)="editProduct(p)" class="w-6 h-6 rounded bg-[#0a0a0a] hover:bg-zinc-700 border border-white/10 inline-flex items-center justify-center cursor-pointer transition-colors text-zinc-300" title="Editar Producto">
+                            <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                          </button>
+                          <button (click)="deleteProduct(p.id)" class="w-6 h-6 rounded bg-[#0a0a0a] hover:bg-rose-900 border border-white/10 inline-flex items-center justify-center cursor-pointer transition-colors text-rose-500 hover:text-white" title="Eliminar Producto">
+                            <hugeicons-icon [icon]="Delete01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/10 text-xs font-mono">
+              <button (click)="prevAdminPage()" [disabled]="adminTablePage === 1" class="px-2 py-1 bg-[#0a0a0a] border border-white/10 rounded disabled:opacity-50 hover:bg-zinc-800 cursor-pointer text-zinc-300">Prev</button>
+              <span class="text-zinc-500 text-[10px]">Pág {{ adminTablePage }} / {{ adminTableTotalPages }}</span>
+              <button (click)="nextAdminPage()" [disabled]="adminTablePage >= adminTableTotalPages" class="px-2 py-1 bg-[#0a0a0a] border border-white/10 rounded disabled:opacity-50 hover:bg-zinc-800 cursor-pointer text-zinc-300">Next</button>
+            </div>
+          </div>
+
+          <!-- Formulario de carga / edición (7 columns) -->
+          <div class="lg:col-span-7 bg-[#0a0a0a] border border-white/10 rounded-[28px] p-5 md:p-6 space-y-6">
+            <div class="space-y-1">
+              <span class="text-xs font-black text-white block uppercase font-sans">
+                {{ editingProductId ? 'Modificar Elemento Seleccionado' : 'Agregar Nuevo Lanzamiento al Catálogo' }}
+              </span>
+              <p class="text-[11px] text-zinc-500">Introduce la especificación técnica. Los esquemas Zod se validarán en tiempo real al enviar.</p>
+            </div>
+
+            <form [formGroup]="productForm" (ngSubmit)="saveProduct()" class="space-y-4 text-xs">
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Nombre de la Pieza</label>
+                  <input type="text" formControlName="name" placeholder="Silla Escultural"
+                         class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#41BF84]">
+                  @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
+                    <span class="text-[9px] text-rose-500 font-bold block mt-0.5">Mínimo 3 caracteres requeridos.</span>
+                  }
+                </div>
+
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between">
+                    <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Categoría de Colección</label>
+                    <button type="button" (click)="addNewCategory()" class="text-[9px] uppercase tracking-wider font-bold text-[#41BF84] hover:text-emerald-300 transition-colors">+ Añadir</button>
+                  </div>
+                  <select formControlName="category"
+                          class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#41BF84] font-medium">
+                    <option value="tecnologia">Tecnología (Smart TV, iPhone, etc)</option>
+                    <option value="herramientas">Herramientas (Makita, Bosch, Lüsqtoff, etc)</option>
+                    <option value="computacion">Computación (AMD, Intel, NVIDIA, Memorias)</option>
+                    <option value="accesorios">Accesorios (Gabinetes, PC, etc)</option>
+                    @for (cat of customCategories; track cat.value) {
+                      <option [value]="cat.value">{{ cat.label }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Precio Neto ($)</label>
+                  <input type="number" formControlName="price"
+                         class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none">
+                  @if (productForm.get('price')?.touched && productForm.get('price')?.invalid) {
+                    <span class="text-[9px] text-rose-500 font-bold block mt-0.5">El precio debe ser un número positivo.</span>
+                  }
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Existencias en Almacén (Stock)</label>
+                  <input type="number" formControlName="stock"
+                         class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none">
+                  @if (productForm.get('stock')?.touched && productForm.get('stock')?.invalid) {
+                    <span class="text-[9px] text-rose-500 font-bold block mt-0.5">El stock no puede ser negativo.</span>
+                  }
+                </div>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[10px] font-black uppercase text-zinc-300 flex justify-between items-center font-sans">
+                  Fotografía Principal
+                  @if (isUploadingImage) {
+                    <span class="text-[#41BF84] font-mono flex items-center gap-1 animate-pulse">
+                      <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="scale-75 animate-spin"  [strokeWidth]="1.5" /> Subiendo...
+                    </span>
+                  }
+                </label>
+                <div class="relative w-full border-2 border-dashed border-zinc-600 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 transition-colors group flex items-center gap-4 overflow-hidden p-2"
+                     (dragover)="onImageDragOver($event)" (drop)="onImageDrop($event)">
+                  <img *ngIf="productForm.get('image')?.value" [src]="productForm.get('image')?.value" class="w-16 h-16 object-cover rounded-lg border border-white/10 shrink-0">
+                  <div class="flex-grow flex flex-col gap-1">
+                    <input type="text" formControlName="image" placeholder="Pega URL o usa el botón de subida"
+                           class="w-full bg-transparent border-none px-2 py-1 text-xs text-white focus:outline-none placeholder:text-zinc-500 font-mono">
+                    <div class="flex items-center gap-2 px-2">
+                       <label class="text-[9px] bg-zinc-700 hover:bg-zinc-600 border border-white/10 text-white px-2 py-1 rounded cursor-pointer transition-colors font-bold flex items-center gap-1 w-max">
+                         <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                         Subir desde PC (Cloudinary)
+                         <input type="file" class="hidden" accept="image/*" (change)="uploadToCloudinary($event)" [disabled]="isUploadingImage">
+                       </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Galería Adicional (URLs, una por línea)</label>
+                <div class="relative bg-zinc-800/50 rounded-lg overflow-hidden border border-white/10 group focus-within:border-emerald-500">
+                  <textarea formControlName="galleryRaw" rows="2"
+                            class="w-full bg-transparent border-none px-3 py-2 text-xs text-white focus:outline-none font-mono"
+                            placeholder="https://...&#10;https://..."></textarea>
+                  <div class="flex items-center justify-end px-2 pb-2">
+                    <label class="text-[9px] bg-zinc-700 hover:bg-zinc-600 border border-white/10 text-white px-2 py-1 rounded cursor-pointer transition-colors font-bold flex items-center gap-1 w-max">
+                      <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                      Añadir desde PC
+                      <input type="file" class="hidden" accept="image/*" (change)="uploadGalleryToCloudinary($event)" [disabled]="isUploadingImage">
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Autocomplete Section -->
+              <div class="bg-indigo-900/20 border border-indigo-500/30 rounded-lg p-3 mb-4 space-y-2">
+                <label class="text-[10px] font-black uppercase text-indigo-300 font-sans flex items-center gap-1">
+                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[14px]"  [strokeWidth]="1.5" /> Autocompletar con IA desde URL
+                </label>
+                <div class="flex items-center gap-2">
+                  <input type="url" #aiUrlInput placeholder="https://www.makita.com/..." 
+                         class="flex-1 bg-zinc-900/50 border border-white/10 rounded px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#41BF84] transition-colors">
+                  <button type="button" (click)="autocompleteFromUrl(aiUrlInput.value)" [disabled]="isAutocompleting"
+                          class="bg-indigo-600 hover:bg-[#41BF84]/200 text-white px-3 py-1.5 rounded text-xs font-bold transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
+                    @if (isAutocompleting) {
+                      <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="animate-spin text-[14px]"  [strokeWidth]="1.5" /> Procesando...
+                    } @else {
+                      <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[14px]"  [strokeWidth]="1.5" /> Extraer
+                    }
+                  </button>
+                </div>
+                <p class="text-[9px] text-indigo-200/60 leading-tight">Pegue la URL oficial del producto. La Inteligencia Artificial analizará la página y rellenará mágicamente la descripción y los campos del acordeón.</p>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Descripción Narrativa (Editor WYSIWYG)</label>
+                <div class="bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-indigo-505 transition-colors text-white" style="min-height: 120px;">
+                  <quill-editor formControlName="description"
+                                class="text-white"
+                                [styles]="{height: '120px', border: 'none', color: 'white'}"
+                                placeholder="Escribe el criterio del diseñador, la elección de materiales nobles..."></quill-editor>
+                </div>
+                @if (productForm.get('description')?.touched && productForm.get('description')?.invalid) {
+                  <span class="text-[9px] text-rose-500 font-bold block mt-0.5">Escribe al menos 10 caracteres explicativos.</span>
+                }
+              </div>
+
+              <!-- Accordion Content Editors -->
+              <div class="grid grid-cols-1 gap-4 bg-cyan-900/10 p-4 rounded-lg border border-cyan-500/20">
+                <div class="space-y-1">
+                  <span class="text-[10px] font-black uppercase text-cyan-300 block font-sans">Contenido del Acordeón (Detalles del Producto)</span>
+                  <span class="text-[9px] text-zinc-400 block pb-2">Redacta el texto HTML para cada pestaña del acordeón.</span>
+                </div>
+
+                <!-- Acerca del Modelo -->
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold uppercase text-zinc-400 block font-sans">Acerca del Modelo</label>
+                  <div class="bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-cyan-500 transition-colors text-white" style="min-height: 100px;">
+                    <quill-editor formControlName="aboutModel"
+                                  class="text-white text-xs"
+                                  [styles]="{height: '100px', border: 'none', color: 'white'}"
+                                  placeholder="Ej: Este producto pertenece a la línea profesional..."></quill-editor>
+                  </div>
+                </div>
+
+                <!-- Características -->
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold uppercase text-zinc-400 block font-sans">Características (Soporta viñetas)</label>
+                  <div class="bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-cyan-500 transition-colors text-white" style="min-height: 100px;">
+                    <quill-editor formControlName="features"
+                                  class="text-white text-xs"
+                                  [styles]="{height: '100px', border: 'none', color: 'white'}"
+                                  placeholder="Ej: Construido con materiales de alta resistencia..."></quill-editor>
+                  </div>
+                </div>
+
+                <!-- Especificaciones -->
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold uppercase text-zinc-400 block font-sans">Especificaciones</label>
+                  <div class="bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-cyan-500 transition-colors text-white" style="min-height: 100px;">
+                    <quill-editor formControlName="specifications"
+                                  class="text-white text-xs"
+                                  [styles]="{height: '100px', border: 'none', color: 'white'}"
+                                  placeholder="Ej: Dimensiones: 10x10. Peso: 5kg..."></quill-editor>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Variantes (SKUs Dinámicos) -->
+              <div class="space-y-3 bg-indigo-900/10 p-4 rounded-lg border border-[#41BF84]/20">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-[10px] font-black uppercase text-indigo-300 block font-sans">Variantes (SKUs Dinámicos)</span>
+                    <span class="text-[9px] text-zinc-400">Variaciones de este producto (ej. colores, voltajes) con su propio precio y stock.</span>
+                  </div>
+                  <button type="button" (click)="addVariant()" class="text-[9px] bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 rounded px-2 py-1 font-bold flex items-center gap-1 cursor-pointer text-indigo-200 transition-colors">
+                    <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75 text-[#41BF84]"  [strokeWidth]="1.5" /> Añadir Variante
+                  </button>
+                </div>
+                
+                <div formArrayName="variants" class="space-y-3">
+                  @for (v of variants.controls; track v.value.id; let idx = $index) {
+                    <div [formGroupName]="idx" class="grid grid-cols-12 gap-2 items-center bg-zinc-900/50 p-2 rounded-lg border border-white/5">
+                      <div class="col-span-5 space-y-1">
+                        <input formControlName="name" placeholder="Ej. Rojo / 220V" class="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-2 py-1.5 text-[11px] text-white focus:outline-none focus:border-[#41BF84]">
+                      </div>
+                      <div class="col-span-3 space-y-1">
+                        <div class="flex items-center bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-indigo-500">
+                          <span class="text-zinc-500 text-[10px] pl-2">$</span>
+                          <input type="number" formControlName="price" placeholder="Precio" class="w-full bg-transparent border-none px-2 py-1.5 text-[11px] text-white focus:outline-none">
+                        </div>
+                      </div>
+                      <div class="col-span-3 space-y-1">
+                        <div class="flex items-center bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-indigo-500">
+                          <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75 text-zinc-500 pl-1"  [strokeWidth]="1.5" />
+                          <input type="number" formControlName="stock" placeholder="Stock" class="w-full bg-transparent border-none px-2 py-1.5 text-[11px] text-white focus:outline-none">
+                        </div>
+                      </div>
+                      <div class="col-span-1 text-right">
+                        <button type="button" (click)="removeVariant(idx)" class="w-7 h-7 inline-flex items-center justify-center bg-[#0a0a0a] border border-white/10 hover:bg-rose-500/10 hover:border-rose-500/30 hover:text-rose-400 text-zinc-500 rounded-lg cursor-pointer transition-colors">
+                          <hugeicons-icon [icon]="Delete01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                        </button>
+                      </div>
+                    </div>
+                  }
+                  @if (variants.length === 0) {
+                    <div class="text-center py-4 border border-dashed border-white/10 rounded-lg bg-zinc-900/30">
+                      <p class="text-[10px] text-zinc-500 italic">No hay variantes definidas. El producto es único.</p>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Atributos Fijos Básicos -->
+              <div class="grid grid-cols-3 gap-3">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Materiales</label>
+                  <input type="text" formControlName="material" placeholder="Roble macizo salvaje"
+                         class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Dimensiones</label>
+                  <input type="text" formControlName="dimensions" placeholder="50 x 50 x 80 cm"
+                         class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Peso Neto</label>
+                  <input type="text" formControlName="weight" placeholder="4.5 kg"
+                         class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Atributos Dinámicos Extras -->
+              <div class="space-y-3 bg-zinc-900/50 p-4 rounded-lg border border-white/5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Especificaciones Adicionales</span>
+                  <button type="button" (click)="addDynamicAttribute()" class="text-[9px] bg-[#0a0a0a] border border-white/10 rounded px-2 py-1 font-bold flex items-center gap-1 cursor-pointer hover:bg-zinc-800 text-zinc-300">
+                    <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75 text-[#41BF84]"  [strokeWidth]="1.5" /> Añadir
+                  </button>
+                </div>
+                
+                <div formArrayName="dynamicAttributes" class="space-y-2">
+                  @for (attr of dynamicAttributes.controls; track $index) {
+                    <div [formGroupName]="$index" class="flex items-center gap-2">
+                      <input formControlName="key" placeholder="Ej. Color" class="w-1/3 bg-[#0a0a0a] border border-white/10 rounded-lg px-2 py-1.5 text-[11px] text-white focus:outline-none focus:border-[#41BF84]">
+                      <input formControlName="value" placeholder="Ej. Rojo Carmesí" class="flex-grow bg-[#0a0a0a] border border-white/10 rounded-lg px-2 py-1.5 text-[11px] text-white focus:outline-none focus:border-[#41BF84]">
+                      <button type="button" (click)="removeDynamicAttribute($index)" class="w-7 h-7 flex-shrink-0 flex items-center justify-center bg-[#0a0a0a] border border-white/10 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 text-zinc-500 rounded-lg cursor-pointer transition-colors">
+                        <hugeicons-icon [icon]="Delete01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                      </button>
+                    </div>
+                  }
+                  @if (dynamicAttributes.length === 0) {
+                    <p class="text-[10px] text-zinc-500 italic">No hay especificaciones extra. Haz click en "Añadir".</p>
+                  }
+                </div>
+              </div>
+
+              <!-- Workflow y Estado -->
+              <div class="grid grid-cols-2 gap-4 bg-emerald-900/10 p-4 rounded-lg border border-[#41BF84]/20">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-emerald-300 block font-sans">Estado de Publicación</label>
+                  <select formControlName="status" class="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 text-[11px] text-white focus:outline-none focus:border-[#41BF84]">
+                    <option value="draft">Borrador (Oculto)</option>
+                    <option value="published">Publicado (Visible)</option>
+                    <option value="archived">Archivado (Retirado)</option>
+                  </select>
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black uppercase text-emerald-300 block font-sans">Fecha de Programación (Opcional)</label>
+                  <input type="datetime-local" formControlName="publishDate" class="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 text-[11px] text-white focus:outline-none focus:border-[#41BF84]" style="color-scheme: dark;">
+                </div>
+              </div>
+
+              <!-- Motor SEO Dinámico -->
+              <div formGroupName="seo" class="space-y-3 bg-amber-900/10 p-4 rounded-lg border border-[#41BF84]/20">
+                <span class="text-[10px] font-black uppercase text-amber-300 block font-sans">Metadatos para Motores de Búsqueda (SEO)</span>
+                <div class="space-y-3">
+                  <div class="space-y-1">
+                    <label class="text-[9px] uppercase text-zinc-400 block">URL Slug Amigable</label>
+                    <div class="flex items-center bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-amber-500">
+                      <span class="text-zinc-500 text-[10px] pl-3">tienda.com/p/</span>
+                      <input type="text" formControlName="slug" placeholder="mi-producto-genial" class="w-full bg-transparent border-none px-2 py-1.5 text-[11px] text-white focus:outline-none">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                      <label class="text-[9px] uppercase text-zinc-400 block">Meta Título (Max 70)</label>
+                      <input type="text" formControlName="metaTitle" placeholder="Comprar Amoladora Profesional" class="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-1.5 text-[11px] text-white focus:outline-none focus:border-[#41BF84]">
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-[9px] uppercase text-zinc-400 block">Alt Text Principal</label>
+                      <input type="text" formControlName="altText" placeholder="Foto frontal de amoladora roja" class="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-1.5 text-[11px] text-white focus:outline-none focus:border-[#41BF84]">
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[9px] uppercase text-zinc-400 block">Meta Descripción (Snippet)</label>
+                    <textarea formControlName="metaDescription" rows="2" placeholder="La mejor amoladora del mercado con motor de 2200W..." class="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 text-[11px] text-white focus:outline-none focus:border-[#41BF84]"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 flex items-center gap-3">
+                @if (editingProductId) {
+                  <button type="button" (click)="cancelEditProduct()"
+                          class="px-5 py-2.5 bg-zinc-105 hover:bg-zinc-700 text-zinc-300 font-bold rounded-lg cursor-pointer transition-colors shrink-0">
+                    Descartar Edición
+                  </button>
+                }
+                <button type="submit" [disabled]="productForm.invalid"
+                        class="w-full bg-zinc-900 disabled:bg-zinc-200 text-white font-black text-xs py-2.5 rounded-lg cursor-pointer flex items-center justify-center gap-1 shadow-sm transition-all shadow-zinc-100">
+                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                  {{ editingProductId ? 'Guardar Cambios en SQLite3' : 'Sincronizar Pieza en SQLite3' }}
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+      </section>
+      }
+
+      @if (activeAdminTab === 'devops') {
+        <div class="space-y-8 text-left animate-fade-in duration-300">
+      
+          <!-- DevOps Panel Header -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-white/10 pb-6">
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2.5">
+            <span class="px-2 py-1 bg-red-650 text-white rounded text-[10px] font-black uppercase font-mono tracking-widest" style="background-color: #e53e3e;">
+              Devops Active
+            </span>
+            <span class="text-xs font-mono font-bold text-zinc-500">IP: 192.168.1.100 // SSL ACTIVATED</span>
+          </div>
+          <h2 class="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-2 font-sans">
+            <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-red-600 scale-110"  [strokeWidth]="1.5" />
+            Glastor® DevOps & Orchestration Hub
+          </h2>
+          <p class="text-xs text-zinc-500">Manejo centralizado de sistemas hibridados en la nube. Simula picos de tránsito, caídas de microservicios y despliegues CI/CD en producción.</p>
+        </div>
+
+        <!-- Telemetry Status Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div class="bg-zinc-800/50 border border-white/10 rounded-lg p-3 text-left">
+            <span class="text-[9px] font-mono font-black uppercase text-zinc-500 block tracking-widest">Tránsito Global</span>
+            <span class="text-lg font-black font-sans text-white mt-1 block">
+              {{ metricsTrafficRate }} <span class="text-xs text-zinc-500 font-normal">req/s</span>
+            </span>
+          </div>
+          <div class="bg-zinc-800/50 border border-white/10 rounded-lg p-3 text-left">
+            <span class="text-[9px] font-mono font-black uppercase text-zinc-500 block tracking-widest">Latencia Media</span>
+            <span class="text-lg font-black font-sans text-white mt-1 block" [class.text-[#41BF84]]="metricsAvgLatency > 100">
+              {{ metricsAvgLatency }} <span class="text-xs text-zinc-500 font-normal">ms</span>
+            </span>
+          </div>
+          <div class="bg-zinc-800/50 border border-white/10 rounded-lg p-3 text-left col-span-2 sm:col-span-1">
+            <span class="text-[9px] font-mono font-black uppercase text-zinc-500 block tracking-widest">Tasa Errores</span>
+            <span class="text-lg font-black font-sans text-white mt-1 block" [class.text-rose-600]="metricsErrorRate > 1">
+              {{ metricsErrorRate }}%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Control Center -->
+      <section class="bg-zinc-950 text-white rounded-lg p-6 space-y-6 relative overflow-hidden shadow-xl border border-zinc-800">
+        <!-- Absolute abstract grid backdrop -->
+        <div class="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1.5px,transparent_1.5px)] [background-size:20px_20px] pointer-events-none"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4 z-10 relative">
+          <div class="space-y-1">
+            <h3 class="text-xs font-mono font-bold uppercase text-[#41BF84] tracking-[0.2em] flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              1. Panel de Simulaciones y Control Técnico
+            </h3>
+            <p class="text-[11px] text-zinc-500">Herramientas automatizadas de inyección para validación ante fallos del clúster.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 z-10 relative">
+          
+          <!-- Pipeline trigger -->
+          <div class="bg-zinc-909 border border-zinc-850 rounded-lg p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-2">
+              <hugeicons-icon [icon]="Rocket01Icon" [size]="20" class="text-[#41BF84] scale-110"  [strokeWidth]="1.5" />
+              <h4 class="text-xs font-black uppercase text-white/95">Despliegue Continuo (CI/CD)</h4>
+              <p class="text-[11px] text-zinc-500 leading-relaxed">Ejecuta el pipeline de integración. Realiza compilación AOT, ejecuta suite de tests industriales y empaqueta en Docker para su distribución en Google Cloud Run.</p>
+            </div>
+            <button (click)="triggerPipeline()" [disabled]="isPipelineRunning"
+                    class="w-full mt-3 bg-indigo-650 hover:bg-indigo-700 disabled:bg-zinc-800 disabled:text-zinc-500 text-white py-3 px-4 rounded-lg text-xs font-black tracking-widest uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-900/30 cursor-pointer">
+              <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="scale-75 animate-spin"  [strokeWidth]="1.5" />
+              <span>{{ isPipelineRunning ? 'Desplegando...' : 'Iniciar Pipeline' }}</span>
+            </button>
+          </div>
+
+          <!-- Traffic Spike Injector -->
+          <div class="bg-zinc-909 border border-zinc-850 rounded-lg p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-2">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[#41BF84] scale-110"  [strokeWidth]="1.5" />
+              <h4 class="text-xs font-black uppercase text-white/95">Inyección de Pico de Tránsito</h4>
+              <p class="text-[11px] text-zinc-500 leading-relaxed">Simula un burst inmediato de más de 5,000 peticiones concurrentes a la API Glastor. Permite testear el balanceo horizontal y las políticas de degradación del frontend.</p>
+            </div>
+            <button (click)="injectTrafficSpike()" [disabled]="isPipelineRunning"
+                    class="w-full mt-3 bg-amber-500 hover:bg-amber-600 hover:scale-[1.01] active:scale-95 text-white py-3 px-4 rounded-lg text-xs font-black tracking-widest uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+              <span>Inyectar PICOS Tránsito</span>
+            </button>
+          </div>
+
+          <!-- Redis cache flushing -->
+          <div class="bg-zinc-909 border border-zinc-850 rounded-lg p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-2">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[#41BF84] scale-110"  [strokeWidth]="1.5" />
+              <h4 class="text-xs font-black uppercase text-white/95">Invalidador de Caché Redis</h4>
+              <p class="text-[11px] text-zinc-500 leading-relaxed">Ejecuta un comando FlushAll simulado para invalidar de inmediato todos los objetos cacheados de la tienda y del checkout, forzando consultas directas síncronas a la DB.</p>
+            </div>
+            <button (click)="flushCache()"
+                    class="w-full mt-3 bg-emerald-600 hover:bg-emerald-700 hover:scale-[1.01] active:scale-95 text-white py-3 px-4 rounded-lg text-xs font-black tracking-widest uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-700/20 cursor-pointer">
+              <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="scale-75 font-bold"  [strokeWidth]="1.5" />
+              <span>Purgar Caché (Redis)</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Grid: Nodes Management & Environment ConfigMap -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Microservices Node Clusters Tracker (7 Cols) -->
+        <section class="lg:col-span-7 bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-6 shadow-sm">
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <div class="space-y-1">
+              <h3 class="text-sm font-black text-white uppercase flex items-center gap-1.5">
+                <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-zinc-300 scale-90"  [strokeWidth]="1.5" />
+                2. Orquestración y Estado de Nodos / Clúster
+              </h3>
+              <p class="text-xs text-zinc-500">Cada botón permite inducir fallos temporales (outages) para evaluar la resiliencia en el frontend.</p>
+            </div>
+            <span class="text-[10px] bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20 font-mono font-bold px-3 py-1 rounded-full uppercase">
+              Activos: 5/5
+            </span>
+          </div>
+
+          <!-- Nodes Loop -->
+          <div class="space-y-4">
+            @for (node of devopsNodes; track node.id) {
+              <div class="bg-zinc-800/50 border border-white/10 rounded-lg p-4 transition-all hover:bg-zinc-800/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <!-- Info Column -->
+                <div class="space-y-1.5 max-w-sm">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span [class]="'w-2.5 h-2.5 rounded-full block ' + 
+                                   (node.status === 'operational' ? 'bg-emerald-500 animate-pulse' : 
+                                    node.status === 'degraded' ? 'bg-amber-500 animate-pulse' : 'bg-rose-500 blink-node')"></span>
+                    <h4 class="text-xs font-extrabold text-white uppercase font-sans">{{ node.name }}</h4>
+                    <span [class]="'text-[9px] font-mono uppercase font-black tracking-wider px-1.5 py-0.5 rounded ' + 
+                                   (node.status === 'operational' ? 'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20' : 
+                                    node.status === 'degraded' ? 'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20' : 
+                                    'bg-rose-50 text-rose-700 border border-rose-100')">
+                      {{ node.status }}
+                    </span>
+                  </div>
+                  <p class="text-[11px] text-zinc-500 leading-tight">{{ node.description }}</p>
+                </div>
+
+                <!-- Stats Sliders representation -->
+                <div class="grid grid-cols-2 gap-4 shrink-0 min-w-[150px]">
+                  <div class="space-y-1">
+                    <div class="flex justify-between items-center text-[9px] font-mono text-zinc-500">
+                      <span>Carga CPU</span>
+                      <span class="font-bold">{{ node.cpu }}%</span>
+                    </div>
+                    <div class="w-24 h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-indigo-650 rounded-full transition-all duration-500" 
+                           [style.width.%]="node.cpu"
+                           [class.bg-amber-500]="node.cpu > 50"
+                           [class.bg-rose-600]="node.cpu > 80"></div>
+                    </div>
+                  </div>
+
+                  <div class="space-y-1">
+                    <div class="flex justify-between items-center text-[9px] font-mono text-zinc-500">
+                      <span>Memoria</span>
+                      <span class="font-bold">{{ node.memory }}%</span>
+                    </div>
+                    <div class="w-24 h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-zinc-700 rounded-full transition-all duration-500" 
+                           [style.width.%]="node.memory"
+                           [class.bg-amber-500]="node.memory > 70"
+                           [class.bg-rose-600]="node.memory > 90"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Control Button -->
+                <div class="shrink-0">
+                  <button (click)="toggleServiceNode(node.id)"
+                          [class]="'w-full md:w-auto px-3.5 py-2 rounded-lg text-[10px] font-black uppercase font-mono tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer ' + 
+                                   (node.status === 'outage' 
+                                    ? 'bg-rose-600 hover:bg-rose-700 text-white' 
+                                    : 'bg-zinc-200 hover:bg-zinc-350 text-zinc-800')">
+                    <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                    <span>{{ node.status === 'outage' ? 'Reiniciar' : 'Apagar' }}</span>
+                  </button>
+                </div>
+
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- ConfigMap & Container EnvVars (5 Cols) -->
+        <section class="lg:col-span-5 bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-6 shadow-sm text-left">
+          <div class="border-b border-white/5 pb-4 space-y-1">
+            <h3 class="text-sm font-black text-white uppercase flex items-center gap-1.5">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-zinc-300 scale-90"  [strokeWidth]="1.5" />
+              3. ConfigMap & Variables de Entorno (.env)
+            </h3>
+            <p class="text-xs text-zinc-500">Aprovisiona de forma dinámica llaves de configuración a los contenedores Docker activos.</p>
+          </div>
+
+          <!-- List of vars -->
+          <div class="space-y-2.5 max-h-64 overflow-y-auto pr-1">
+            @for (v of devopsEnvVars; track v.key) {
+              <div class="p-3 bg-zinc-800/50 border border-white/10 rounded-lg flex items-center justify-between gap-4">
+                <div class="min-w-0 flex-1 text-left">
+                  <span class="block font-mono text-[10px] font-black text-[#41BF84] truncate select-all">{{ v.key }} = "{{ v.value }}"</span>
+                  <span class="block text-[9px] text-zinc-500 line-clamp-1 leading-tight mt-0.5">{{ v.description }}</span>
+                </div>
+                <!-- Delete var unless standard crucial keys -->
+                @if (v.key !== 'PORT' && v.key !== 'ENV') {
+                  <button (click)="removeCustomEnvVar(v.key)" 
+                          class="p-1 cursor-pointer rounded hover:bg-rose-100 text-rose-500 flex items-center justify-center shrink-0">
+                    <hugeicons-icon [icon]="Delete01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Add Var form -->
+          <div class="bg-zinc-800/50 rounded-lg p-4.5 space-y-3.5 border border-white/10">
+            <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block font-sans">Añadir Variable de Contenedor</span>
+            
+            <div class="grid grid-cols-2 gap-3.5">
+              <div class="space-y-1 text-left">
+                <label class="text-[9px] font-bold text-zinc-500">LLAVE (KEY)</label>
+                <input type="text" #keyInput placeholder="PROD_DB_HOST"
+                       class="w-full bg-[#0a0a0a] border border-zinc-300 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none">
+              </div>
+              <div class="space-y-1 text-left">
+                <label class="text-[9px] font-bold text-zinc-500">VALOR (VALUE)</label>
+                <input type="text" #valInput placeholder="10.0.4.15"
+                       class="w-full bg-[#0a0a0a] border border-zinc-300 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none">
+              </div>
+            </div>
+
+            <div class="space-y-1 text-left">
+              <label class="text-[9px] font-bold text-zinc-500">DESCRIPCIÓN DE LA VARIABLE</label>
+              <input type="text" #descInput placeholder="Instancia secundaria de base de datos distribuidas"
+                     class="w-full bg-[#0a0a0a] border border-zinc-300 rounded-lg px-2.5 py-1.5 text-[11px] text-white focus:outline-none">
+            </div>
+
+            <button type="button" 
+                    (click)="addCustomEnvVar(keyInput.value, valInput.value, descInput.value); keyInput.value=''; valInput.value=''; descInput.value=''"
+                    class="w-full bg-zinc-900 hover:bg-zinc-805 text-white py-2.5 rounded-lg text-xs font-black tracking-wider uppercase transition-all cursor-pointer flex items-center justify-center gap-1.5">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
+              <span>Inyectar en ConfigMap</span>
+            </button>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- Pipelines Tracker Timeline & Live Stream Console -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- CI/CD Pipelines Execution list (5 Cols) -->
+        <section class="lg:col-span-4 bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-6 shadow-sm text-left">
+          <div class="border-b border-white/5 pb-4 space-y-1">
+            <h3 class="text-sm font-black text-white uppercase flex items-center gap-1.5">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-zinc-300 scale-90"  [strokeWidth]="1.5" />
+              4. Historial Ejecuciones CI/CD
+            </h3>
+            <p class="text-xs text-zinc-500">Historial completo de auditoría de pipelines compilados con Angular builder.</p>
+          </div>
+
+          <div class="space-y-4 max-h-[360px] overflow-y-auto pr-1">
+            @for (pipe of devopsPipelines; track pipe.id) {
+              <div class="relative pl-5 border-l-2 border-white/10 pb-1"
+                   [class.border-indigo-500]="pipe.status === 'running'">
+                
+                <!-- Dot overlay node -->
+                <span [class]="'absolute -left-[7px] top-1.5 w-3 h-3 rounded-full border bg-[#0a0a0a] ' + 
+                               (pipe.status === 'success' ? 'border-emerald-500 bg-emerald-500' : 
+                                pipe.status === 'running' ? 'border-indigo-600 bg-indigo-600 animate-ping' : 'border-rose-500 bg-rose-500')"></span>
+
+                <div class="space-y-1 text-left">
+                  <div class="flex items-center justify-between gap-2.5">
+                    <span class="font-mono text-xs font-black text-white">{{ pipe.id }}</span>
+                    <span class="text-[9px] text-zinc-500 font-mono font-bold">{{ pipe.timestamp }}</span>
+                  </div>
+                  <span class="inline-flex items-center gap-1 text-[9px] font-mono tracking-wider font-extrabold uppercase text-[#41BF84] bg-[#41BF84]/10 px-1.5 py-0.5 rounded leading-none">
+                    <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[9px] leading-none shrink-0"  [strokeWidth]="1.5" />
+                    {{ pipe.branch }}
+                  </span>
+                  <p class="text-[11px] text-zinc-500 leading-tight font-medium my-1">{{ pipe.commit }}</p>
+                  
+                  <div class="flex items-center justify-between gap-4 mt-2">
+                    <span class="text-[9px] font-mono text-zinc-500">Duración: <strong class="text-zinc-600 font-bold">{{ pipe.duration }}</strong></span>
+                    
+                    @if (pipe.status === 'running') {
+                      <div class="flex items-center gap-2">
+                        <div class="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                          <div class="h-full bg-indigo-600 rounded-full animate-[pulse_1.5s_infinite]" [style.width.%]="pipe.progress"></div>
+                        </div>
+                        <span class="text-[9px] font-mono font-black text-[#41BF84]">{{ pipe.progress }}%</span>
+                      </div>
+                    } @else {
+                      <span [class]="'text-[9px] font-mono font-black uppercase ' + 
+                                     (pipe.status === 'success' ? 'text-[#41BF84]' : 'text-rose-600')">
+                        {{ pipe.status }}
+                      </span>
+                    }
+                  </div>
+                </div>
+
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Live Terminal Streamer logs (8 Cols) -->
+        <section class="lg:col-span-8 bg-zinc-950 text-white border border-zinc-800 rounded-lg p-6 space-y-5 shadow-xl relative overflow-hidden">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+            <div class="space-y-1.5 text-left">
+              <h3 class="text-xs font-mono font-bold uppercase tracking-[0.2em] text-red-500 flex items-center gap-1.5">
+                <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-90"  [strokeWidth]="1.5" />
+                5. Consola Telemetría y Logs Live de Contenedor
+              </h3>
+              <p class="text-[10px] text-zinc-500 leading-none">Flujo streaming de logs unificados emitiendo peticiones del back-office.</p>
+            </div>
+
+            <!-- Inject custom alert button -->
+            <button (click)="addDevopsLog('usuario', 'WARN', 'Petición manual auditada de logs realizada desde DevOps Console.'); playSynthBeep(415, 'sawtooth', 0.1, 0.01)"
+                    class="px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 hover:text-white transition-all text-zinc-300 rounded-lg text-[9px] font-mono uppercase font-black cursor-pointer tracking-wider flex items-center gap-1">
+              <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[10px]"  [strokeWidth]="1.5" />
+              <span>Inyectar Alerta</span>
+            </button>
+          </div>
+
+          <!-- Log service filtering tabs -->
+          <div class="flex flex-wrap items-center gap-2 border-b border-zinc-900 pb-3">
+            <span class="text-[9px] font-mono text-zinc-550 mr-2 uppercase tracking-wide">Filtros:</span>
+            
+            <button (click)="setLogFilter('all')" 
+                    [class]="'px-2.5 py-1 rounded text-[9px] font-mono uppercase tracking-wider cursor-pointer ' + 
+                             (activeLogFilter === 'all' ? 'bg-zinc-800 text-white font-extrabold' : 'text-zinc-500 hover:text-zinc-350')">
+              Todos ({{ devopsLogs.length }})
+            </button>
+            <button (click)="setLogFilter('redis')" 
+                    [class]="'px-2.5 py-1 rounded text-[9px] font-mono uppercase tracking-wider cursor-pointer ' + 
+                             (activeLogFilter === 'redis' ? 'bg-zinc-800 text-[#41BF84] font-extrabold' : 'text-zinc-500 hover:text-zinc-350')">
+              redis
+            </button>
+            <button (click)="setLogFilter('database')" 
+                    [class]="'px-2.5 py-1 rounded text-[9px] font-mono uppercase tracking-wider cursor-pointer ' + 
+                             (activeLogFilter === 'database' ? 'bg-zinc-800 text-[#41BF84] font-extrabold' : 'text-zinc-500 hover:text-zinc-350')">
+              database
+            </button>
+            <button (click)="setLogFilter('devops')" 
+                    [class]="'px-2.5 py-1 rounded text-[9px] font-mono uppercase tracking-wider cursor-pointer ' + 
+                             (activeLogFilter === 'devops' ? 'bg-zinc-800 text-[#41BF84] font-extrabold' : 'text-zinc-500 hover:text-zinc-350')">
+              devops
+            </button>
+            <button (click)="setLogFilter('traffic')" 
+                    [class]="'px-2.5 py-1 rounded text-[9px] font-mono uppercase tracking-wider cursor-pointer ' + 
+                             (activeLogFilter === 'traffic' ? 'bg-zinc-800 text-rose-500 font-extrabold' : 'text-zinc-500 hover:text-zinc-350')">
+              traffic
+            </button>
+          </div>
+
+          <!-- Mono Logging Box -->
+          <div class="bg-[#050507] rounded-lg p-4.5 border border-zinc-900 text-left font-mono text-[10px] leading-relaxed max-h-[280px] overflow-y-auto space-y-1.5 scrollbar-thin select-all">
+            
+            <!-- Filtered logs iterate -->
+            @for (log of devopsLogs; track log) {
+              <!-- Regex filter simulation by string contains -->
+              @if (activeLogFilter === 'all' || 
+                   (activeLogFilter === 'redis' && log.includes('[REDIS]')) || 
+                   (activeLogFilter === 'database' && log.includes('[DATABASE]')) || 
+                   (activeLogFilter === 'devops' && (log.includes('[DEVOPS]') || log.includes('[BUILDER]'))) || 
+                   (activeLogFilter === 'traffic' && (log.includes('[TRAFFIC]') || log.includes('[BALANCER]') || log.includes('[API-GATEWAY]')))) {
+                
+                <div class="hover:bg-zinc-900/40 py-0.5 px-1.5 rounded transition-colors flex items-start gap-2 select-all">
+                  <!-- Level formatting -->
+                  @if (log.includes('[SUCCESS]')) {
+                    <span class="text-emerald-450 font-black shrink-0">[OK]</span>
+                    <span class="text-zinc-300 font-medium select-all">{{ log.split('SUCCESS]')[1] || log }}</span>
+                  } @else if (log.includes('[ERROR]')) {
+                    <span class="text-rose-500 font-black shrink-0 animate-pulse uppercase">[ERR]</span>
+                    <span class="text-rose-350 font-medium select-all">{{ log.split('ERROR]')[1] || log }}</span>
+                  } @else if (log.includes('[WARN]')) {
+                    <span class="text-[#41BF84] font-black shrink-0">[WRN]</span>
+                    <span class="text-amber-200 select-all font-medium">{{ log.split('WARN]')[1] || log }}</span>
+                  } @else {
+                    <span class="text-[#41BF84] shrink-0">[LOG]</span>
+                    <span class="text-zinc-500 select-all">{{ log.split('INFO]')[1] || log }}</span>
+                  }
+                </div>
+              }
+            }
+
+            @if (devopsLogs.length === 0) {
+              <div class="py-12 text-center text-zinc-650 space-y-1 select-none">
+                <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="opacity-40"  [strokeWidth]="1.5" />
+                <p>No se han registrado operaciones en el buffer de logs unificado.</p>
+              </div>
+            }
+
+          </div>
+
+          <!-- Bottom micro analytics -->
+          <div class="flex items-center justify-between text-[8px] font-mono uppercase text-zinc-600 tracking-wider">
+            <span>Terminal Buff: 200 slots max</span>
+            <span class="flex items-center gap-1.5 select-none">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping"></span>
+              Escuchando sockets seguros...
+            </span>
+          </div>
+
+        </section>
+
+      </div>
+      </div>
+      }
+
+    </main>
+    }

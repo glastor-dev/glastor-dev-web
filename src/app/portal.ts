@@ -72,6 +72,7 @@ import { LegalPageComponent } from './components/pages/legal-page.component';
 import { HomePageComponent } from './components/pages/home-page.component';
 import { CatalogPageComponent } from './components/pages/catalog-page.component';
 import { ProductDetailPageComponent } from './components/pages/product-detail-page.component';
+import { AdminPageComponent } from './components/pages/admin-page.component';
 import { NavbarComponent } from './components/layout/navbar.component';
 import { FullscreenMenuComponent } from './components/layout/fullscreen-menu.component';
 import { CookieBannerComponent } from './components/layout/cookie-banner.component';
@@ -101,7 +102,8 @@ import {
     CookieBannerComponent,
     QuillModule,
     HugeiconsIconComponent,
-    CheckoutPageComponent
+    CheckoutPageComponent,
+    AdminPageComponent
   ],
   templateUrl: './portal.html'
 })
