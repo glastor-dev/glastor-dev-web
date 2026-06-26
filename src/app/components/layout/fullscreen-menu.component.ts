@@ -44,7 +44,7 @@ import { Cancel01Icon, LockPasswordIcon } from '@hugeicons/core-free-icons';
       <div class="flex-grow flex flex-col justify-center items-start space-y-4 md:space-y-6 lg:space-y-8 relative z-10 ml-4 md:ml-12 lg:ml-24">
         
         <button (click)="navigate.emit({view: 'inicio'})" class="group text-left focus:outline-none w-auto overflow-visible">
-          <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105"
+          <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105 pr-2"
               [class.text-transparent]="isCinematicGlow"
               [class.bg-clip-text]="isCinematicGlow"
               [class.bg-gradient-to-r]="isCinematicGlow"
@@ -60,7 +60,7 @@ import { Cancel01Icon, LockPasswordIcon } from '@hugeicons/core-free-icons';
         </button>
 
         <button (click)="navigate.emit({view: 'tienda'})" class="group text-left focus:outline-none w-auto overflow-visible">
-          <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105"
+          <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105 pr-2"
               [class.text-transparent]="isCinematicGlow"
               [class.bg-clip-text]="isCinematicGlow"
               [class.bg-gradient-to-r]="isCinematicGlow"
@@ -76,7 +76,7 @@ import { Cancel01Icon, LockPasswordIcon } from '@hugeicons/core-free-icons';
         </button>
 
         <button (click)="navigate.emit({view: 'checkout'})" class="group text-left focus:outline-none w-auto overflow-visible flex items-center gap-6">
-          <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105"
+          <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105 pr-2"
               [class.text-transparent]="isCinematicGlow"
               [class.bg-clip-text]="isCinematicGlow"
               [class.bg-gradient-to-r]="isCinematicGlow"
@@ -98,7 +98,7 @@ import { Cancel01Icon, LockPasswordIcon } from '@hugeicons/core-free-icons';
 
         <button (click)="navigate.emit({view: 'admin', tab: 'crm'})" class="group text-left focus:outline-none w-auto overflow-visible flex items-center gap-2 md:gap-3">
           <hugeicons-icon [icon]="LockPasswordIcon" [size]="32" [strokeWidth]="1.5" class="text-zinc-500 group-hover:text-[#41BF84] transition-colors" />
-          <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105"
+          <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-none font-black uppercase tracking-tighter transition-all duration-500 transform origin-left hover:scale-105 pr-2"
               [class.text-transparent]="isCinematicGlow"
               [class.bg-clip-text]="isCinematicGlow"
               [class.bg-gradient-to-r]="isCinematicGlow"

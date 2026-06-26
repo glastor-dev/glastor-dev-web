@@ -328,7 +328,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                                   ? 'bg-amber-600 hover:bg-[#41BF84]/200 text-zinc-950 disabled:bg-zinc-800 disabled:text-zinc-600 shadow-amber-500/10' 
                                   : 'bg-zinc-900 hover:bg-zinc-800 text-white disabled:bg-zinc-200 disabled:text-zinc-400')">
                   <hugeicons-icon [icon]="CheckmarkBadge01Icon" [size]="20" class="scale-85" [strokeWidth]="1.5" />
-                  Autorizar Liquidación por {{ formatPrice(total) }}
+                  Confirmar Orden de Compra por {{ formatPrice(total) }} (~{{ formatEUR(total) }})
                 </button>
 
                 @if (checkoutForm.get('paymentMethod')?.value === 'bank') {
@@ -412,39 +412,48 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
               <!-- DETAILED INVOICE COST BOX -->
               <div [class]="'border rounded-lg p-6 space-y-3.5 text-left ' + 
                              (isCinematicGlow ? 'bg-zinc-950 border-zinc-850' : 'bg-zinc-100/70 border-zinc-200')">
-                <h3 [class]="'text-xs font-black uppercase tracking-wider ' + (isCinematicGlow ? 'text-white' : 'text-zinc-900')">Desglose de Tributos</h3>
+                <h3 [class]="'text-xs font-black uppercase tracking-wider ' + (isCinematicGlow ? 'text-white' : 'text-zinc-900')">Resumen de tu Orden</h3>
 
                 <div [class]="'space-y-2 text-xs ' + (isCinematicGlow ? 'text-zinc-400' : 'text-zinc-655')">
                   <div class="flex justify-between">
-                    <span>Subtotal de Cesta</span>
-                    <span [class.text-white]="isCinematicGlow" class="font-mono text-zinc-800 font-bold">{{ formatPrice(subtotal) }}</span>
+                    <span>Subtotal de Cesta <span class="text-[9px] text-zinc-500 font-bold uppercase tracking-wider ml-1">(IVA 21% INCLUIDO)</span></span>
+                    <div class="flex flex-col items-end">
+                      <span [class.text-white]="isCinematicGlow" class="font-mono text-zinc-800 font-bold">{{ formatPrice(subtotal) }}</span>
+                      <span class="text-[9px] text-zinc-500 font-mono font-bold tracking-tight">~ {{ formatEUR(subtotal) }}</span>
+                    </div>
                   </div>
 
                   @if (activeDiscountPercent > 0) {
                     <div class="flex justify-between text-[#41BF84] font-bold">
                       <span>Descuento Aplicado ({{ activeDiscountPercent }}%)</span>
-                      <span class="font-mono">- {{ formatPrice(discountAmount) }}</span>
+                      <div class="flex flex-col items-end">
+                        <span class="font-mono">- {{ formatPrice(discountAmount) }}</span>
+                        <span class="text-[9px] text-zinc-500 font-mono font-bold tracking-tight">~ - {{ formatEUR(discountAmount) }}</span>
+                      </div>
                     </div>
                   }
 
-                  <div class="flex justify-between">
-                    <span>IVA Regulado (21%)</span>
-                    <span [class.text-white]="isCinematicGlow" class="font-mono text-zinc-800 font-bold">{{ formatPrice(iva) }}</span>
-                  </div>
+
 
                   <div class="flex justify-between items-center">
                     <span>Envío Certificado</span>
                     @if (shipping === 0) {
                       <span class="text-[#41BF84] font-bold text-[10px] uppercase">¡Gratuito!</span>
                     } @else {
-                      <span [class.text-white]="isCinematicGlow" class="font-mono text-zinc-800 font-bold">{{ formatPrice(shipping) }}</span>
+                      <div class="flex flex-col items-end">
+                        <span [class.text-white]="isCinematicGlow" class="font-mono text-zinc-800 font-bold">{{ formatPrice(shipping) }}</span>
+                        <span class="text-[9px] text-zinc-500 font-mono font-bold tracking-tight">~ {{ formatEUR(shipping) }}</span>
+                      </div>
                     }
                   </div>
 
                   <div [class]="'pt-2.5 border-t flex justify-between items-center ' + 
                                  (isCinematicGlow ? 'border-zinc-850 text-white' : 'border-zinc-200 text-zinc-900')">
                     <span class="font-black">Total de Inversión</span>
-                    <span [class]="'font-mono text-lg font-black ' + (isCinematicGlow ? 'text-[#41BF84]' : 'text-[#41BF84]')">{{ formatPrice(total) }}</span>
+                    <div class="flex flex-col items-end">
+                      <span [class]="'font-mono text-lg font-black leading-none ' + (isCinematicGlow ? 'text-[#41BF84]' : 'text-[#41BF84]')">{{ formatPrice(total) }}</span>
+                      <span class="text-[10px] text-[#41BF84]/70 font-mono font-black tracking-tight mt-1">~ {{ formatEUR(total) }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -491,6 +500,13 @@ export class CheckoutPageComponent {
   Math = Math;
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(price);
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(price);
+  }
+
+  @Input() exchangeRateEurToArs!: number;
+
+  formatEUR(priceInArs: number): string {
+    const eurPrice = priceInArs / this.exchangeRateEurToArs;
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(eurPrice);
   }
 }

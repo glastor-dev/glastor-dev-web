@@ -5,6 +5,7 @@ import { TrustBrandsSectionComponent } from '../sections/trust-brands-section.co
 import { PillarsSectionComponent } from '../sections/pillars-section.component';
 import { IndustriesSectionComponent } from '../sections/industries-section.component';
 import { IconsOfTheMonthSectionComponent } from '../sections/icons-of-the-month-section.component';
+import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive';
 import { Product } from '../../portal';
 
 @Component({
@@ -16,25 +17,28 @@ import { Product } from '../../portal';
     TrustBrandsSectionComponent,
     PillarsSectionComponent,
     IndustriesSectionComponent,
-    IconsOfTheMonthSectionComponent
+    IconsOfTheMonthSectionComponent,
+    ScrollRevealDirective
   ],
   template: `
-    <main class="space-y-20 py-8 page-transition">
+    <main class="space-y-24 sm:space-y-32 pt-8 pb-32 sm:pb-48 page-transition">
 
       <!-- HERO MODULAR -->
       <app-hero-section (navigate)="navigate.emit({view: $event})"></app-hero-section>
 
       <!-- TRUST BRANDS (B2B Authority) -->
-      <app-trust-brands-section></app-trust-brands-section>
+      <app-trust-brands-section appScrollReveal></app-trust-brands-section>
       
       <!-- SCANDINAVIAN BRAND PILLARS -->
-      <app-pillars-section class="block"></app-pillars-section>
+      <app-pillars-section class="block" appScrollReveal [appScrollReveal]="100"></app-pillars-section>
 
       <!-- B2B INDUSTRIES GRID -->
-      <app-industries-section class="block mt-24 sm:mt-32"></app-industries-section>
+      <app-industries-section class="block mt-24 sm:mt-32" appScrollReveal></app-industries-section>
 
       <!-- CURATED PIECES DISCOVER GRID -->
       <app-icons-of-the-month-section class="block"
+        appScrollReveal
+        [appScrollReveal]="100"
         [products]="iconsOfTheMonth"
         [wishlist]="wishlist"
         (navigate)="navigate.emit({view: $any($event.view), id: $event.id})"

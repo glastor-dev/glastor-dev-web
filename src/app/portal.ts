@@ -1,5 +1,6 @@
 import { Component, signal, computed, OnInit, OnDestroy, inject } from '@angular/core';
 import { AppStateService } from './app-state.service';
+import { CurrencyService } from './services/currency.service';
 import { CommonModule } from '@angular/common';
 import { CheckoutPageComponent } from './components/pages/checkout-page.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
@@ -105,6 +106,8 @@ import {
   templateUrl: './portal.html'
 })
 export class PortalComponent implements OnInit, OnDestroy {
+  currencyService = inject(CurrencyService);
+  exchangeRateEurToArs = signal<number>(1100);
 
   adminToken = signal<string | null>(typeof window !== 'undefined' ? localStorage.getItem('glastor_admin_token') : null);
   isAdminAuthenticated = computed(() => !!this.adminToken());
@@ -827,48 +830,62 @@ export class PortalComponent implements OnInit, OnDestroy {
     if (!product) return [];
 
     const r = product.rating || 4.8;
-    let p5 = 80;
-    let p4 = 15;
-    let p3 = 5;
-    let p2 = 0;
-    let p1 = 0;
+    const seed = product.name ? product.name.length : 10;
+    const variance = (seed % 15) - 7; // -7 to +7 variance for realism
 
-    if (r >= 4.9) {
-      p5 = 90;
-      p4 = 8;
-      p3 = 2;
-    } else if (r >= 4.7) {
-      p5 = 80;
-      p4 = 15;
-      p3 = 5;
-    } else if (r >= 4.4) {
-      p5 = 65;
-      p4 = 25;
-      p3 = 8;
-      p2 = 2;
+    let p5 = 0, p4 = 0, p3 = 0, p2 = 0, p1 = 0;
+
+    if (r >= 4.8) {
+      p5 = 85 + variance;
+      p4 = 100 - p5 - 2 - (seed % 2);
+      p3 = 100 - p5 - p4;
+    } else if (r >= 4.5) {
+      p5 = 70 + variance;
+      p4 = 20 - Math.floor(variance / 2);
+      p3 = 100 - p5 - p4 - 1 - (seed % 2);
+      p2 = 100 - p5 - p4 - p3;
+    } else if (r >= 4.0) {
+      p5 = 55 + variance;
+      p4 = 25 - Math.floor(variance / 2);
+      p3 = 100 - p5 - p4 - 3 - (seed % 3);
+      p2 = 100 - p5 - p4 - p3 - 1;
+      p1 = 1;
     } else {
-      p5 = 50;
-      p4 = 30;
-      p3 = 12;
-      p2 = 6;
-      p1 = 2;
+      p5 = 40 + variance;
+      p4 = 30 - Math.floor(variance / 2);
+      p3 = 15;
+      p2 = 10;
+      p1 = 100 - p5 - p4 - p3 - p2;
     }
+
+    // Ensure no negative values (clamp to 0 minimum)
+    p5 = Math.max(0, p5);
+    p4 = Math.max(0, p4);
+    p3 = Math.max(0, p3);
+    p2 = Math.max(0, p2);
+    p1 = Math.max(0, p1);
+
+    // Ensure strict 100% sum after clamp
+    const diff = 100 - (p5 + p4 + p3 + p2 + p1);
+    if (diff !== 0) p4 += diff; 
 
     return [
       { stars: 5, pct: p5 },
       { stars: 4, pct: p4 },
       { stars: 3, pct: p3 },
       { stars: 2, pct: p2 },
-      { stars: 1, pct: p1 },
+      { stars: 1, pct: p1 }
     ];
   });
 
   recommendationPercent = computed(() => {
+    const breakdown = this.ratingBreakdown();
+    if (breakdown.length === 0) return '0.0';
+    const p5 = breakdown.find(b => b.stars === 5)?.pct || 0;
+    const p4 = breakdown.find(b => b.stars === 4)?.pct || 0;
     const product = this.selectedProductObj();
-    if (!product) return '98.4';
-    const r = product.rating || 4.8;
-    const score = Math.min(100, Math.max(50, Math.round((r / 5) * 100)));
-    return score.toFixed(1);
+    const decimal = product ? (product.name.length % 9) : 0;
+    return `${p5 + p4}.${decimal}`;
   });
 
   // Home Featured Products (High rating)
@@ -1113,6 +1130,10 @@ export class PortalComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.currencyService.getEurExchangeRate().subscribe(rate => {
+      this.exchangeRateEurToArs.set(rate);
+      console.log('Euro exchange rate updated via DolarAPI:', rate);
+    });
     // Initialize default DevOps diagnostic logs
     this.addDevopsLog('system', 'INFO', 'Iniciando módulo de diagnóstico fotométrico GLASTOR...');
     this.addDevopsLog('database', 'INFO', 'Estableciendo conexión persistente con SQLite master local.');
@@ -1431,11 +1452,11 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   shipping = computed(() => {
     const afterDiscount = this.subtotal() - this.discountAmount();
-    return afterDiscount > 300 ? 0 : (this.subtotal() === 0 ? 0 : 15.00);
+    return afterDiscount >= 200000 ? 0 : (this.subtotal() === 0 ? 0 : 16500);
   });
 
   total = computed(() => {
-    const result = (this.subtotal() - this.discountAmount()) + this.iva() + this.shipping();
+    const result = (this.subtotal() - this.discountAmount()) + this.shipping();
     return Math.max(0, result);
   });
 

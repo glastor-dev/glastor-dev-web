@@ -10,7 +10,7 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
   imports: [CommonModule, HugeiconsIconComponent],
   template: `
   
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8 text-left page-transition">
+    <main class="max-w-6xl mx-auto px-4 py-8 pb-24 lg:pb-8 space-y-8 text-left page-transition">
       
       <!-- Back Breadcrumb tracker with premium border and gradient highlight -->
       <div [class]="'flex flex-wrap items-center justify-between gap-4 border-b pb-4 ' + (isCinematicGlow ? 'border-zinc-850' : 'border-zinc-100')">
@@ -103,14 +103,18 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
             <div class="flex flex-wrap items-center gap-3 border-b pb-4" [class.border-zinc-800]="isCinematicGlow" [class.border-zinc-200]="!isCinematicGlow">
               <div class="flex items-center gap-1 text-[#41BF84] cursor-pointer hover:text-[#41BF84]">
                 <span class="text-sm font-black">{{ product.rating.toFixed(1) }}</span>
-                <div class="flex">
-                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
-                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
-                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
-                  <hugeicons-icon [icon]="StarIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
-                  <hugeicons-icon [icon]="StarHalfIcon" [size]="14" class="text-[#41BF84]"  [strokeWidth]="1.5" />
+                <div class="flex gap-0.5">
+                  @for (i of [1, 2, 3, 4, 5]; track i) {
+                    @if (product.rating >= i) {
+                      <svg viewBox="0 0 24 24" fill="currentColor" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    } @else if (product.rating >= i - 0.5) {
+                      <svg viewBox="0 0 24 24" class="w-[14px] h-[14px] text-[#41BF84]"><defs><linearGradient [id]="'half'+i" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half'+i+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    } @else {
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    }
+                  }
                 </div>
-                <span class="text-xs text-[#41BF84] ml-1 hover:underline font-medium" [class.text-[#41BF84]]="isCinematicGlow">{{ product.reviews.length * 142 }} valoraciones</span>
+                <span class="text-xs text-[#41BF84] ml-1 hover:underline font-medium" [class.text-[#41BF84]]="isCinematicGlow">{{ totalReviewsCount }} valoraciones</span>
               </div>
               
               @if (product.badges && product.badges.length > 0) {
@@ -375,10 +379,16 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
                 </span>
                 <span class="text-zinc-400 text-[10px] block font-mono">SOBRE 5.0 ESTRELLAS</span>
               </div>
-              <div class="flex justify-center text-[#41BF84]">
-                @for (star of [1,2,3,4,5]; track star) {
-                  <hugeicons-icon [icon]="star <= Math.floor(product.rating) ? StarIcon : (star === Math.ceil(product.rating) && product.rating % 1 !== 0 ? StarHalfIcon : StarIcon)" [size]="16" [strokeWidth]="1.5" [class.fill-current]="star <= Math.floor(product.rating)" class="text-[#41BF84]" />
-                }
+              <div class="flex justify-center gap-0.5 text-[#41BF84]">
+                  @for (i of [1, 2, 3, 4, 5]; track i) {
+                    @if (product.rating >= i) {
+                      <svg viewBox="0 0 24 24" fill="currentColor" class="w-[16px] h-[16px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    } @else if (product.rating >= i - 0.5) {
+                      <svg viewBox="0 0 24 24" class="w-[16px] h-[16px] text-[#41BF84]"><defs><linearGradient [id]="'half2'+i" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half2'+i+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    } @else {
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[16px] h-[16px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    }
+                  }
               </div>
               <p class="text-[9px] text-[#41BF84] font-mono font-black uppercase tracking-widest bg-[#41BF84]/10 px-2 py-1 rounded-md inline-block">
                 RECOMENDADO POR EL {{ recommendationPercent }}%
@@ -404,7 +414,7 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
             <div class="text-left space-y-1.5 border-b pb-3"
                  [class.border-zinc-850]="isCinematicGlow"
                  [class.border-zinc-150]="!isCinematicGlow">
-              <h3 [class.text-white]="isCinematicGlow" [class.text-zinc-950]="!isCinematicGlow" class="text-sm font-black text-zinc-900 uppercase tracking-wider font-mono">
+              <h3 [class.text-white]="isCinematicGlow" [class.text-zinc-950]="!isCinematicGlow" class="text-sm font-black uppercase tracking-wider font-mono">
                 Reseñas de clientes comerciales GLASTOR ®
               </h3>
               <p [class]="'text-xs font-medium ' + (isCinematicGlow ? 'text-zinc-400' : 'text-zinc-500')">Coleccionamos impresiones directas de ferreterías, empresas y comercios para auditar la calidad distribuidora.</p>
@@ -420,9 +430,15 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
                       <span class="block text-[9px] font-mono text-zinc-400 font-bold uppercase tracking-widest">{{ rev.date }}</span>
                     </div>
 
-                    <div class="flex text-[#41BF84]">
+                    <div class="flex gap-0.5 text-[#41BF84]">
                       @for (star of [1,2,3,4,5]; track star) {
-                        <hugeicons-icon [icon]="StarIcon" [size]="14" [strokeWidth]="1.5" [class.fill-current]="star <= rev.stars" class="text-[#41BF84]" />
+                        @if (rev.stars >= star) {
+                          <svg viewBox="0 0 24 24" fill="currentColor" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        } @else if (rev.stars >= star - 0.5) {
+                          <svg viewBox="0 0 24 24" class="w-[14px] h-[14px] text-[#41BF84]"><defs><linearGradient [id]="'half3'+star" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half3'+star+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        } @else {
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        }
                       }
                     </div>
                   </div>
@@ -436,6 +452,26 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
         </section>
       }
 
+      @if (product) {
+        <!-- STICKY MOBILE BUY BAR (CRO) -->
+        <div class="fixed bottom-0 left-0 right-0 lg:hidden px-4 py-3 z-50 flex items-center justify-between border-t transition-colors shadow-[0_-10px_40px_rgba(0,0,0,0.5)] animate-fade-in"
+             [class.bg-zinc-950]="isCinematicGlow"
+             [class.border-zinc-800]="isCinematicGlow"
+             [class.bg-white]="!isCinematicGlow"
+             [class.border-zinc-200]="!isCinematicGlow">
+          <div class="flex flex-col">
+            <span class="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-500">Inversión Final</span>
+            <span class="font-mono text-lg font-black leading-none" [class.text-white]="isCinematicGlow" [class.text-zinc-900]="!isCinematicGlow">
+              {{ formatPrice((selectedVariantObj?.price || product.price)) }}
+            </span>
+          </div>
+          <button (click)="addToCart.emit(product)"
+                  class="bg-[#41BF84] hover:bg-white text-black font-black uppercase text-xs px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 transition-all active:scale-95">
+            Añadir 
+            <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="18" [strokeWidth]="1.5" />
+          </button>
+        </div>
+      }
     </main>
 
 
@@ -460,12 +496,18 @@ export class ProductDetailPageComponent {
   @Input() selectedVariantObj: any;
   @Input() dynamicReviews: any[] = [];
   @Input() ratingBreakdown: any[] = [];
-  @Input() recommendationPercent: string = "98.4";
+  @Input() recommendationPercent: string = '0';
   @Input() wishlist: string[] = [];
   @Input() selectedVariantId: string | null = null;
   @Input() selectedGalleryImage: string | null = null;
   @Input() expandedAccordion: string | null = null;
-  @Input() selectedPerspectiveIndex = 0;
+  @Input() selectedPerspectiveIndex: number = 0;
+
+  get totalReviewsCount(): number {
+    if (!this.product) return 180;
+    const nameLen = this.product.name ? this.product.name.length : 10;
+    return 180 + (nameLen * 37) % 250 + (this.product.reviews?.length || 0) * 15;
+  }
 
   @Output() navigate = new EventEmitter<string>();
   @Output() addToCart = new EventEmitter<any>();
@@ -476,7 +518,7 @@ export class ProductDetailPageComponent {
   @Output() selectedPerspectiveIndexChange = new EventEmitter<number>();
 
   isInWishlist(id: string): boolean {
-    return this.wishlist.includes(id);
+    return this.wishlist ? this.wishlist.includes(id) : false;
   }
 
   formatPrice(value: number): string {
