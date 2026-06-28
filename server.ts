@@ -11,6 +11,7 @@ import { products, orders, orderItems } from './src/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
@@ -20,7 +21,7 @@ import logger from './src/utils/logger.js';
 
 const app = express();
 app.use(helmet());
-app.use(cors({ origin: process.env.NODE_ENV === 'production' ? false : '*' })); // Basic CORS
+app.use(cors({ origin: process.env['NODE_ENV'] === 'production' ? false : '*' })); // Basic CORS
 app.use(express.json());
 app.use(morgan('combined', { stream: { write: (msg) => logger.info(msg.trim()) } }));
 
@@ -97,7 +98,11 @@ const checkoutSchema = z.object({
 });
 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-super-secret-key-2026';
+const JWT_SECRET = process.env['JWT_SECRET'];
+if (!JWT_SECRET) {
+  logger.error('CRITICAL SECURITY ERROR: JWT_SECRET environment variable is missing.');
+  process.exit(1);
+}
 
 const verifyAdminToken = (req: any, res: any, next: any) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -112,9 +117,39 @@ const verifyAdminToken = (req: any, res: any, next: any) => {
 };
 
 app.post('/api/admin/login', loginLimiter, (req, res) => {
-  const { username, password } = req.body;
-  const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-  const adminHash = process.env.ADMIN_PASSWORD_HASH || '';
+  const { username, password, botToken } = req.body;
+  const adminUsername = process.env['ADMIN_USERNAME'] || 'admin';
+  const adminHash = process.env['ADMIN_PASSWORD_HASH'] || '';
+
+  if (!botToken || !botToken.startsWith('gshield_')) {
+    logger.warn(`Intento de login bloqueado por anti-bot (formato inválido). IP: ${req.ip}`);
+    res.status(403).json({ error: 'Acceso Denegado: Verificación anti-bot requerida.' });
+    return;
+  }
+
+  // PoW Verification: "gshield_timestamp_nonce_hash"
+  const parts = botToken.split('_');
+  if (parts.length !== 4) {
+    logger.warn(`Intento de login bloqueado por anti-bot (malformado). IP: ${req.ip}`);
+    res.status(403).json({ error: 'Acceso Denegado: Token anti-bot inválido.' });
+    return;
+  }
+
+  const [, timestampStr, nonceStr, providedHash] = parts;
+  const timestamp = parseInt(timestampStr, 10);
+  
+  if (Date.now() - timestamp > 5 * 60 * 1000) {
+    logger.warn(`Intento de login bloqueado por anti-bot (expirado). IP: ${req.ip}`);
+    res.status(403).json({ error: 'Acceso Denegado: Token anti-bot expirado.' });
+    return;
+  }
+  
+  const hash = crypto.createHash('sha256').update(`${timestampStr}:${nonceStr}`).digest('hex');
+  if (hash !== providedHash || !hash.startsWith('0000')) {
+    logger.warn(`Intento de login bloqueado por anti-bot (PoW inválido). IP: ${req.ip}`);
+    res.status(403).json({ error: 'Acceso Denegado: Prueba de trabajo inválida.' });
+    return;
+  }
 
   if (username === adminUsername && bcrypt.compareSync(password, adminHash)) {
     logger.info(`Login exitoso para usuario: ${username}`);
@@ -179,13 +214,13 @@ app.get('/api/productos', async (req, res) => {
 app.post('/api/productos/autocomplete', verifyAdminToken, apiLimiter, async (req, res) => {
   try {
     const { url } = req.body;
-    if (!url) return res.status(400).json({ error: 'URL is required' });
+    if (!url) { res.status(400).json({ error: 'URL is required' }); return; }
 
-    if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({ error: 'GEMINI_API_KEY no está configurada en el archivo .env' });
+    if (!process.env['GEMINI_API_KEY']) {
+      res.status(500).json({ error: 'GEMINI_API_KEY no está configurada en el archivo .env' }); return;
     }
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env['GEMINI_API_KEY'] });
     
     const prompt = `Analiza la información del producto en este link: ${url}. 
     Redacta la información para una tienda online de herramientas y maquinaria premium. Devuelve un objeto JSON estrictamente con 4 campos: 'description', 'aboutModel', 'features', y 'specifications'. Cada campo debe contener HTML básico (<p>, <ul>, <li>, <strong>) para dar formato al texto.
@@ -197,8 +232,8 @@ app.post('/api/productos/autocomplete', verifyAdminToken, apiLimiter, async (req
     const result = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
-      tools: [{ googleSearch: {} }],
       config: {
+        tools: [{ googleSearch: {} }],
         responseMimeType: 'application/json',
       }
     });
@@ -221,10 +256,11 @@ app.post('/api/productos/guardar', verifyAdminToken, async (req, res) => {
   try {
     const parsed = productSaveSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ 
+      res.status(400).json({ 
         error: "Validación de producto fallida", 
         fields: parsed.error.flatten().fieldErrors 
       });
+      return;
     }
 
     const data = sanitizeObject(parsed.data);
@@ -291,16 +327,17 @@ app.post('/api/checkout', apiLimiter, async (req, res) => {
   try {
     const parsed = checkoutSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({
+      res.status(400).json({
         error: "Formulario de facturación inválido",
         fields: parsed.error.flatten().fieldErrors
       });
+      return;
     }
 
     const { fullName, email, address, city, postalCode, couponCode, items } = sanitizeObject(parsed.data);
     
     // Extract unique product IDs
-    const productIds = items.map(i => i.productId);
+    const productIds = items.map((i: any) => i.productId);
     
     // Query direct database stock check
     const dbProductsList = await db.select().from(products).where(inArray(products.id, productIds));
@@ -350,7 +387,7 @@ app.post('/api/checkout', apiLimiter, async (req, res) => {
 
     // Step 2: Compute math for order authoritative invoice
     let subtotalValue = 0;
-    const itemsWithPrices = items.map(i => {
+    const itemsWithPrices = items.map((i: any) => {
       const prod = productsMap.get(i.productId)!;
       subtotalValue += prod.price * i.quantity;
       return {

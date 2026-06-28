@@ -3,18 +3,20 @@ import { CommonModule } from '@angular/common';
 import { AppStateService } from '../../app-state.service';
 import { HugeiconsIconComponent } from '@hugeicons/angular';
 import { ShoppingCart01Icon, FavouriteIcon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
+import { ParallaxDirective } from '../../directives/parallax.directive';
+import { GlassCardComponent } from '../ui/design-system/glass-card/glass-card.component';
 
 @Component({
   selector: 'app-icons-of-the-month-section',
   standalone: true,
-  imports: [CommonModule, HugeiconsIconComponent],
+  imports: [CommonModule, HugeiconsIconComponent, GlassCardComponent],
   template: `
       <!-- CURATED PIECES DISCOVER GRID -->
       <section class="max-w-7xl mx-auto px-4 space-y-10">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-200 pb-5">
           <div class="text-left space-y-2">
             <span class="text-[10px] font-mono tracking-widest text-[#41BF84] uppercase font-black block">EQUIPOS DESTACADOS</span>
-            <h2 [class]="'text-5xl md:text-[4.5rem] leading-[0.9] font-display font-medium tracking-tight uppercase ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">Productos Estrella del Mes</h2>
+            <h2 [class]="'text-5xl md:text-[4.5rem] leading-[0.9] font-medium tracking-tight uppercase ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">Productos Estrella del Mes</h2>
             <p class="text-sm md:text-base text-zinc-500 max-w-lg mt-4">Nuestra selección de herramientas y tecnología con la mejor calificación en rendimiento y durabilidad industrial.</p>
           </div>
           <button (click)="onNavigate('tienda')" 
@@ -28,43 +30,12 @@ import { ShoppingCart01Icon, FavouriteIcon, ArrowRight01Icon } from '@hugeicons/
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           @for (product of products; track product.id) {
-            <div class="relative group rounded-lg flex flex-col bg-black overflow-hidden transition-all duration-300 hover:shadow-2xl hover:z-10" style="min-height: 380px;">
-              
-              <!-- Top Header (Badge) -->
-              <div class="absolute top-5 left-5 right-5 flex justify-end items-center z-20">
-                <span class="text-[#2ecc71] text-xs font-semibold tracking-wide drop-shadow-md bg-black/50 px-2 py-0.5 rounded-sm backdrop-blur-sm animate-pulse">
-                  {{ parseBadge(product.badges && product.badges.length > 0 ? product.badges[0] : null) }}
-                </span>
-              </div>
-
-              <!-- Product Image (Full Cover) -->
-              <div class="absolute inset-0 w-full h-full overflow-hidden bg-black z-0">
-                <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-transparent z-10"></div>
-                <img [src]="product.image" [alt]="product.name" referrerpolicy="no-referrer"
-                     class="w-full h-full object-cover group-hover:scale-110 opacity-80 group-hover:opacity-100 transition-all duration-1000">
-              </div>
-
-              <!-- Bottom Drawer Section -->
-              <div class="absolute bottom-0 left-0 w-full bg-[#2a2a2c]/90 backdrop-blur-md rounded-b-lg p-6 flex flex-col justify-start transition-all duration-500 ease-in-out h-[85px] group-hover:h-[150px] z-20">
-                
-                <!-- Title & Heart -->
-                <div class="flex justify-between items-center w-full">
-                  <h3 class="text-white text-lg font-bold truncate pr-4">{{ product.name }}</h3>
-                  <button (click)="onToggleWishlist(product.id, $event)" class="text-white hover:text-rose-500 transition-colors shrink-0">
-                    <hugeicons-icon [icon]="FavouriteIcon" [size]="18" [class.text-rose-500]="wishlist.includes(product.id)"  [strokeWidth]="1.5" />
-                  </button>
-                </div>
-
-                <!-- Hidden Details (Revealed on Hover) -->
-                <div class="flex justify-between items-end w-full mt-auto opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                  <span class="text-white text-xl font-medium tracking-wide">{{ formatPrice(product.price) }}</span>
-                  <button (click)="onAddToCart(product)"
-                          class="flex items-center justify-center border border-white text-white rounded-full w-9 h-9 hover:bg-emerald-400 hover:border-emerald-400 hover:text-white transition-all duration-300 hover:scale-110 active:scale-90 active:bg-emerald-600 shadow-[0_0_0_rgba(52,211,153,0)] hover:shadow-[0_0_15px_rgba(52,211,153,0.6)]">
-                    <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="18"  [strokeWidth]="1.5" />
-                  </button>
-                </div>
-              </div>
-            </div>
+            <app-glass-card
+              [product]="product"
+              [isWishlisted]="wishlist.includes(product.id)"
+              (onAddToCart)="onAddToCart(product)"
+              (onToggleWishlist)="onToggleWishlist(product.id, $event.event)">
+            </app-glass-card>
           }
         </div>
       </section>

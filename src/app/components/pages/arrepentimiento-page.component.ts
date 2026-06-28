@@ -1,12 +1,16 @@
-import { Component, signal, inject, Output, EventEmitter } from '@angular/core';
+import { Component, signal, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppStateService } from '../../app-state.service';
+import { BotProtectionComponent } from '../ui/bot-protection.component';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { DeliveryBox01Icon, SentIcon, Refresh01Icon, CheckmarkBadge01Icon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-arrepentimiento-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, BotProtectionComponent, HugeiconsIconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-screen pt-24 pb-20 px-4 md:px-8 font-sans selection:bg-rose-500/30"
          [class.bg-[#0a0a0a]]="isCinematicGlow()"
@@ -19,7 +23,7 @@ import { AppStateService } from '../../app-state.service';
           <span class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
                 [class.bg-rose-500]="isCinematicGlow()" [class.bg-rose-500]="!isCinematicGlow()"
                 [class.bg-opacity-10]="isCinematicGlow()" [class.text-rose-500]="isCinematicGlow()" [class.text-white]="!isCinematicGlow()">
-            <span class="material-icons scale-150">assignment_return</span>
+            <hugeicons-icon [icon]="DeliveryBox01Icon" [size]="32" [strokeWidth]="1.5"></hugeicons-icon>
           </span>
           <h1 class="text-3xl md:text-5xl font-display font-medium tracking-tight mb-4 uppercase">Botón de Arrepentimiento</h1>
           <p class="text-sm md:text-base font-light" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
@@ -91,15 +95,20 @@ import { AppStateService } from '../../app-state.service';
                 }
               </div>
 
-              <div class="pt-4">
+              
+                <div class="pt-2">
+                  <app-bot-protection (tokenGenerated)="arrepentimientoForm.get('botToken')?.setValue($event)"></app-bot-protection>
+                </div>
+
+                <div class="pt-4">
                 <button type="submit" [disabled]="arrepentimientoForm.invalid || isProcessing()"
                         class="w-full font-black text-sm py-4 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         [class.bg-rose-600]="isCinematicGlow()" [class.text-white]="isCinematicGlow()" [class.hover:bg-rose-500]="isCinematicGlow()"
                         [class.bg-zinc-900]="!isCinematicGlow()" [class.hover:bg-zinc-800]="!isCinematicGlow()" [class.text-white]="!isCinematicGlow()">
                   @if (isProcessing()) {
-                    <span class="material-icons animate-spin scale-90">sync</span> Procesando...
+                    <hugeicons-icon [icon]="Refresh01Icon" [size]="20" [strokeWidth]="1.5" class="animate-spin"></hugeicons-icon> Procesando...
                   } @else {
-                    <span class="material-icons scale-90">send</span> Revocar Compra
+                    <hugeicons-icon [icon]="SentIcon" [size]="20" [strokeWidth]="1.5"></hugeicons-icon> Revocar Compra
                   }
                 </button>
               </div>
@@ -112,7 +121,7 @@ import { AppStateService } from '../../app-state.service';
                [class.bg-emerald-50]="!isCinematicGlow()" [class.border-emerald-200]="!isCinematicGlow()">
             
             <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto mb-4 border border-emerald-500/30">
-              <span class="material-icons scale-150">check_circle</span>
+              <hugeicons-icon [icon]="CheckmarkBadge01Icon" [size]="48" [strokeWidth]="1.5"></hugeicons-icon>
             </div>
 
             <h2 class="text-2xl font-black uppercase text-emerald-500 tracking-tight">Trámite Iniciado Correctamente</h2>
@@ -139,6 +148,10 @@ import { AppStateService } from '../../app-state.service';
   `
 })
 export class ArrepentimientoPageComponent {
+  DeliveryBox01Icon = DeliveryBox01Icon;
+  SentIcon = SentIcon;
+  Refresh01Icon = Refresh01Icon;
+  CheckmarkBadge01Icon = CheckmarkBadge01Icon;
   private appState = inject(AppStateService);
   private fb = inject(FormBuilder);
   
@@ -149,7 +162,8 @@ export class ArrepentimientoPageComponent {
     apellido: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
     pedido: ['', Validators.required],
-    producto: ['', Validators.required]
+    producto: ['', Validators.required],
+      botToken: ['', Validators.required]
   });
 
   isProcessing = signal(false);

@@ -38,6 +38,9 @@ module.exports = {
           accent: '#41BF84',
         }
       },
+      backgroundImage: {
+        'vanishing-stripes': "url('/assets/logos/vanishing-stripes-zinc.svg')",
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Archivo', 'sans-serif'],

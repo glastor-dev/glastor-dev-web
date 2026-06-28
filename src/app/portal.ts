@@ -1,4 +1,6 @@
-import { Component, signal, computed, OnInit, OnDestroy, inject } from '@angular/core';
+import { RouterOutlet, Router } from '@angular/router';
+import { Component, signal, computed, OnInit, OnDestroy, inject, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AppStateService } from './app-state.service';
 import { CurrencyService } from './services/currency.service';
 import { CommonModule } from '@angular/common';
@@ -76,65 +78,61 @@ import { AdminPageComponent } from './components/pages/admin-page.component';
 import { NavbarComponent } from './components/layout/navbar.component';
 import { FullscreenMenuComponent } from './components/layout/fullscreen-menu.component';
 import { CookieBannerComponent } from './components/layout/cookie-banner.component';
+import { FooterComponent } from './components/layout/footer.component';
+import { CartDrawerComponent } from './components/layout/cart-drawer.component';
+import { WishlistDrawerComponent } from './components/layout/wishlist-drawer.component';
 import { ProductCardComponent } from './components/ui/product-card.component';
-import { HugeiconsIconComponent } from '@hugeicons/angular';
-import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, InformationCircleIcon, CheckmarkBadge01Icon } from '@hugeicons/core-free-icons';
-import { 
-  Settings01Icon, Ticket01Icon, Refresh01Icon, Settings02Icon, 
-  Invoice01Icon, Route01Icon, Cancel01Icon, Tick01Icon, 
-  Delete01Icon, Rocket01Icon, ArrowRight01Icon, ShoppingBag01Icon, 
-  ShoppingCart01Icon, FavouriteIcon 
-} from '@hugeicons/core-free-icons';
+
+
+
 
 @Component({
   selector: 'app-portal',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule,
-    HomePageComponent,
-    CatalogPageComponent,
-    ProductDetailPageComponent,
-    LegalPageComponent,
-    ArrepentimientoPageComponent,
-    NavbarComponent,
-    FullscreenMenuComponent,
-    CookieBannerComponent,
-    QuillModule,
-    HugeiconsIconComponent,
-    CheckoutPageComponent,
-    AdminPageComponent
+      RouterOutlet,
+      CommonModule, 
+      ReactiveFormsModule,
+      NavbarComponent,
+      FullscreenMenuComponent,
+      CookieBannerComponent,
+      FooterComponent,
+      CartDrawerComponent,
+      WishlistDrawerComponent
   ],
-  templateUrl: './portal.html'
+  templateUrl: './portal.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PortalComponent implements OnInit, OnDestroy {
   currencyService = inject(CurrencyService);
+  router = inject(Router);
   exchangeRateEurToArs = signal<number>(1100);
+  private destroyRef = inject(DestroyRef);
 
   adminToken = signal<string | null>(typeof window !== 'undefined' ? localStorage.getItem('glastor_admin_token') : null);
   isAdminAuthenticated = computed(() => !!this.adminToken());
 
-  Settings01Icon = Settings01Icon;
-  UserIcon = UserIcon;
-  Wallet01Icon = Wallet01Icon;
-  CreditCardIcon = CreditCardIcon;
-  BitcoinIcon = BitcoinIcon;
-  Building03Icon = Building03Icon;
-  InformationCircleIcon = InformationCircleIcon;
-  CheckmarkBadge01Icon = CheckmarkBadge01Icon;
-  Ticket01Icon = Ticket01Icon;
-  Refresh01Icon = Refresh01Icon;
-  Settings02Icon = Settings02Icon;
-  Invoice01Icon = Invoice01Icon;
-  Route01Icon = Route01Icon;
-  Cancel01Icon = Cancel01Icon;
-  Tick01Icon = Tick01Icon;
-  Delete01Icon = Delete01Icon;
-  Rocket01Icon = Rocket01Icon;
-  ArrowRight01Icon = ArrowRight01Icon;
-  ShoppingBag01Icon = ShoppingBag01Icon;
-  ShoppingCart01Icon = ShoppingCart01Icon;
-  FavouriteIcon = FavouriteIcon;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -284,18 +282,18 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   // Active coupon management
   couponCode = new FormControl('');
-  activeDiscountPercent = signal<number>(0);
+  activeDiscountPercent = this.appState.activeDiscountPercent;
 
   // Loaded dynamically via backend SQLite
-  products = signal<Product[]>([]);
-  orders = signal<Order[]>([]);
+  products = this.appState.products;
+  orders = this.appState.orders;
   revocaciones = signal<Array<any>>([]);
 
   // Reactive Filters
-  selectedCategory = signal<string>('todos');
-  searchQuery = signal<string>('');
-  cart = signal<CartItem[]>([]);
-  wishlist = signal<string[]>([]);
+  selectedCategory = this.appState.selectedCategory;
+  searchQuery = this.appState.searchQuery;
+  cart = this.appState.cart;
+  wishlist = this.appState.wishlist;
 
   // UI Drawer states
   isMenuOpen = signal<boolean>(false);
@@ -1132,7 +1130,7 @@ export class PortalComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.currencyService.getEurExchangeRate().subscribe(rate => {
+    this.currencyService.getEurExchangeRate().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(rate => {
       this.exchangeRateEurToArs.set(rate);
       console.log('Euro exchange rate updated via DolarAPI:', rate);
     });
@@ -1261,12 +1259,12 @@ export class PortalComponent implements OnInit, OnDestroy {
     }
 
     // Sync search control to signal
-    this.searchControl.valueChanges.subscribe(value => {
+    this.searchControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.searchQuery.set(value || '');
     });
 
     // Setup payment method conditional validators
-    this.checkoutForm.get('paymentMethod')?.valueChanges.subscribe(method => {
+    this.checkoutForm.get('paymentMethod')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(method => {
       const cardNum = this.checkoutForm.get('cardNumber');
       const cardExp = this.checkoutForm.get('cardExpiry');
       const cardCvc = this.checkoutForm.get('cardCvc');
@@ -1435,32 +1433,20 @@ export class PortalComponent implements OnInit, OnDestroy {
   }
 
   // Shopping Cart Totals calculations
-  cartCount = computed(() => {
-    return this.cart().reduce((acc, item) => acc + item.quantity, 0);
-  });
+  cartCount = this.appState.cartCount;
 
-  subtotal = computed(() => {
-    return this.cart().reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  });
+  subtotal = this.appState.subtotal;
 
-  discountAmount = computed(() => {
-    return this.subtotal() * (this.activeDiscountPercent() / 100);
-  });
+  discountAmount = this.appState.discountAmount;
 
   iva = computed(() => {
     const actSub = this.subtotal() - this.discountAmount();
     return Math.max(0, actSub * 0.21);
   });
 
-  shipping = computed(() => {
-    const afterDiscount = this.subtotal() - this.discountAmount();
-    return afterDiscount >= 200000 ? 0 : (this.subtotal() === 0 ? 0 : 16500);
-  });
+  shipping = this.appState.shipping;
 
-  total = computed(() => {
-    const result = (this.subtotal() - this.discountAmount()) + this.shipping();
-    return Math.max(0, result);
-  });
+  total = this.appState.total;
 
   // View control transitions
   setView(view: string, productId: string | null = null) {
@@ -1485,10 +1471,16 @@ export class PortalComponent implements OnInit, OnDestroy {
       if (view === 'devops') {
         this.currentView.set('admin');
         this.activeAdminTab.set('devops');
+        this.router.navigate(['/admin']);
       } else {
         this.currentView.set(validView);
         if (view === 'admin') {
           this.activeAdminTab.set('crm');
+        }
+        if (productId) {
+          this.router.navigate(['/tienda', productId]);
+        } else {
+          this.router.navigate(['/' + validView]);
         }
       }
 
@@ -1676,60 +1668,15 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   // Cart Functions
   addToCart(product: Product) {
-    // Check if enough stock exists in current catalogs
-    const inCart = this.cart().find(c => c.product.id === product.id);
-    const reqQty = inCart ? inCart.quantity + 1 : 1;
-    
-    if (product.stock < reqQty) {
-      this.playSynthBeep(220, 'triangle', 0.2, 0.03); // failure beep
-      this.triggerToast('warning', 'Stock Limitado', `No hay suficientes unidades de "${product.name}" disponibles en el almacén.`);
-      return;
-    }
-
-    this.playSynthBeep(880, 'sine', 0.12, 0.02);
-    setTimeout(() => this.playSynthBeep(1100, 'sine', 0.1, 0.02), 70); // cheerful major third trigger
-
-    this.cart.update(currentCart => {
-      const existing = currentCart.find(item => item.product.id === product.id);
-      if (existing) {
-        return currentCart.map(item => 
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        return [...currentCart, { product, quantity: 1 }];
-      }
-    });
-
-    this.triggerToast('success', 'Producto Añadido', `Se ha agregado "${product.name}" al carrito de compras.`);
+    this.appState.addToCart({ product, quantity: 1 });
   }
 
   updateQuantity(productId: string, delta: number) {
-    // Check against available catalog stock
-    const item = this.cart().find(c => c.product.id === productId);
-    if (item && delta > 0) {
-      if (item.product.stock <= item.quantity) {
-        this.triggerToast('warning', 'Máximo Inventario', `Solo quedan ${item.product.stock} unidades de este diseño en stock.`);
-        return;
-      }
-    }
-
-    this.cart.update(currentCart => {
-      return currentCart.map(item => {
-        if (item.product.id === productId) {
-          const newQty = item.quantity + delta;
-          return { ...item, quantity: newQty < 1 ? 1 : newQty };
-        }
-        return item;
-      });
-    });
+    this.appState.updateQuantity(productId, delta);
   }
 
   removeFromCart(productId: string) {
-    const item = this.cart().find(i => i.product.id === productId);
-    this.cart.update(currentCart => currentCart.filter(item => item.product.id !== productId));
-    if (item) {
-      this.triggerToast('info', 'Articulo Eliminado', `Se retiró "${item.product.name}" del carrito.`);
-    }
+    this.appState.removeFromCart(productId);
   }
 
   isInWishlist(id: string): boolean {

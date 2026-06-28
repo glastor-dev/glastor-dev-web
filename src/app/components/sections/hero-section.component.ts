@@ -27,7 +27,27 @@ interface HeroDimensions {
   styleUrl: './hero-section.component.css',
   template: `
     <div #heroContainer class="hero-container relative w-full h-[650px] md:h-[750px] overflow-hidden bg-[#1a1a1a] rounded-lg shadow-2xl shadow-black/50">
-      <div class="indicator"></div>
+      
+      <!-- Mobile Static Hero (Visible only on small screens) -->
+      <div class="block md:hidden absolute inset-0 bg-[#050505] z-50">
+        <img [src]="slides[0].bgImage" class="absolute inset-0 w-full h-full object-cover" fetchpriority="high" loading="eager" decoding="sync" alt="Glastor" />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"></div>
+        
+        <div class="absolute inset-0 flex flex-col justify-end px-6 pb-12 z-10">
+          <div class="h-px bg-[#41BF84] w-8 mb-4"></div>
+          <div class="text-[#41BF84] font-mono text-[10px] font-black uppercase tracking-widest mb-2">{{ slides[0].tag }}</div>
+          <div class="font-sans font-black text-4xl text-white uppercase leading-none tracking-tighter">{{ slides[0].title1 }}</div>
+          <div class="font-sans font-black text-4xl text-white uppercase leading-none tracking-tighter mb-4">{{ slides[0].title2 }}</div>
+          <p class="text-zinc-400 text-xs mb-8">{{ slides[0].description }}</p>
+          <button class="w-full bg-[#41BF84] text-black font-bold uppercase tracking-widest py-3.5 rounded-full text-xs" (click)="onNavigate('tienda')">
+            Explorar Catálogo
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop Interactive Hero -->
+      <div class="hidden md:block absolute inset-0">
+        <div class="indicator"></div>
 
       @for (slide of slides; track slide.id; let i = $index) {
         <div class="card" [id]="'card' + i" [style.backgroundImage]="'url(' + slide.bgImage + ')'"></div>
@@ -92,7 +112,8 @@ interface HeroDimensions {
         </div>
       </div>
 
-      <div class="cover"></div>
+        <div class="cover"></div>
+      </div>
     </div>
   `
 })

@@ -1,11 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 
-export interface Toast {
-  id: string;
-  type: 'success' | 'info' | 'warning' | 'error';
-  title?: string;
-  message: string;
-}
+import { Product, CartItem, Order, Toast } from './models';
+
+export { Toast };
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +13,195 @@ export class AppStateService {
   isTransitioning = signal<boolean>(false);
   showPreloader = signal<boolean>(true);
   toasts = signal<Toast[]>([]);
+  products = signal<Product[]>([]);
+  orders = signal<Order[]>([]);
+  cart = signal<CartItem[]>([]);
+  activeDiscountPercent = signal<number>(0);
+  cartCount = computed(() => {
+    return this.cart().reduce((acc, item) => acc + item.quantity, 0);
+  });
+  subtotal = computed(() => {
+    return this.cart().reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+  });
+  discountAmount = computed(() => {
+    return this.subtotal() * (this.activeDiscountPercent() / 100);
+  });
+  shipping = computed(() => {
+    const afterDiscount = this.subtotal() - this.discountAmount();
+    return afterDiscount >= 200000 ? 0 : (this.subtotal() === 0 ? 0 : 16500);
+  });
+  total = computed(() => {
+    const result = (this.subtotal() - this.discountAmount()) + this.shipping();
+    return Math.max(0, result);
+  });
+  wishlist = signal<string[]>([]);
+  customCategories = signal<Array<{value: string, label: string}>>([]);
+  searchQuery = signal<string>('');
+  selectedCategory = signal<string>('todos');
+
+  filteredProducts = computed(() => {
+    const term = this.searchQuery().toLowerCase().trim();
+    const cat = this.selectedCategory();
+    
+    return this.products().filter(p => {
+      const matchCat = (cat === 'todos' || p.category === cat);
+      const matchSearch = p.name.toLowerCase().includes(term) || 
+                          p.description.toLowerCase().includes(term) ||
+                          p.category.toLowerCase().includes(term);
+      return matchCat && matchSearch;
+    });
+  });
+
+  publicProducts = computed(() => {
+    return this.filteredProducts().filter(p => p.status === 'published');
+  });
 
   private audioCtx: AudioContext | null = null;
   private oscNode: OscillatorNode | null = null;
   private gainNode: GainNode | null = null;
   private subOscNode: OscillatorNode | null = null;
   private subGainNode: GainNode | null = null;
+
+  constructor() {
+    this.initLocalStorageCart();
+    this.loadProducts();
+  }
+
+  private initLocalStorageCart() {
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('glastor_cart');
+      if (savedCart) {
+        try {
+          this.cart.set(JSON.parse(savedCart));
+        } catch(e) {}
+      }
+      const savedWishlist = localStorage.getItem('glastor_wishlist');
+      if (savedWishlist) {
+        try {
+          this.wishlist.set(JSON.parse(savedWishlist));
+        } catch(e) {}
+      }
+    }
+  }
+
+  saveCart() {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('glastor_cart', JSON.stringify(this.cart()));
+    }
+  }
+
+  saveWishlist() {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('glastor_wishlist', JSON.stringify(this.wishlist()));
+    }
+  }
+
+  async loadProducts() {
+    if (typeof window === 'undefined') return;
+    try {
+      const res = await fetch('/api/productos');
+      if (!res.ok) throw new Error('Error al leer productos');
+      const data = await res.json();
+      this.products.set(data);
+
+      const standardCats = ['tecnologia', 'herramientas', 'computacion', 'accesorios'];
+      const uniqueCats = new Set<string>();
+      data.forEach((p: any) => {
+        if (p.category && !standardCats.includes(p.category)) {
+          uniqueCats.add(p.category);
+        }
+      });
+      
+      const customArray: {value: string, label: string}[] = [];
+      uniqueCats.forEach(cat => {
+        customArray.push({
+          value: cat,
+          label: cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, ' ')
+        });
+      });
+      this.customCategories.set(customArray);
+    } catch (err) {
+      console.error(err);
+      this.triggerToast('error', 'Error Conectividad', 'No se pudo leer el catálogo de SQLite3.');
+    }
+  }
+
+  addToCart(item: { product: Product, quantity: number, event?: MouseEvent }) {
+    const currentCart = this.cart();
+    const existing = currentCart.find(i => i.product.id === item.product.id);
+    const reqQty = existing ? existing.quantity + item.quantity : item.quantity;
+
+    if (item.product.stock < reqQty) {
+      this.playSynthBeep(220, 'triangle', 0.2, 0.03); // failure beep
+      this.triggerToast('warning', 'Stock Limitado', `No hay suficientes unidades de "${item.product.name}" disponibles.`);
+      return;
+    }
+
+    this.cart.update(items => {
+      if (existing) {
+        return items.map(i => i.product.id === item.product.id ? { ...i, quantity: i.quantity + item.quantity } : i);
+      }
+      return [...items, { product: item.product, quantity: item.quantity }];
+    });
+    this.saveCart();
+    
+    // Success sounds and toast
+    this.playSynthBeep(880, 'sine', 0.12, 0.02);
+    setTimeout(() => this.playSynthBeep(1100, 'sine', 0.1, 0.02), 70);
+    this.triggerToast('success', 'Carrito Actualizado', `${item.quantity}x ${item.product.name} preparado para despacho.`);
+  }
+
+  updateQuantity(productId: string, delta: number) {
+    const item = this.cart().find(c => c.product.id === productId);
+    if (item && delta > 0) {
+      if (item.product.stock <= item.quantity) {
+        this.triggerToast('warning', 'Máximo Inventario', `Solo quedan ${item.product.stock} unidades de este diseño en stock.`);
+        return;
+      }
+    }
+
+    this.cart.update(currentCart => {
+      return currentCart.map(item => {
+        if (item.product.id === productId) {
+          const newQty = item.quantity + delta;
+          return { ...item, quantity: newQty < 1 ? 1 : newQty };
+        }
+        return item;
+      });
+    });
+    this.saveCart();
+  }
+
+  removeFromCart(productId: string) {
+    const item = this.cart().find(i => i.product.id === productId);
+    this.cart.update(currentCart => currentCart.filter(i => i.product.id !== productId));
+    this.saveCart();
+    if (item) {
+      this.triggerToast('info', 'Artículo Eliminado', `Se retiró "${item.product.name}" del carrito.`);
+    }
+  }
+
+  toggleWishlist(id: string, event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const current = this.wishlist();
+    if (current.includes(id)) {
+      this.wishlist.set(current.filter(i => i !== id));
+      this.playSynthBeep(300, 'triangle', 0.1, 0.03);
+    } else {
+      this.wishlist.set([...current, id]);
+      this.playSynthBeep(800, 'sine', 0.1, 0.03);
+      setTimeout(() => this.playSynthBeep(1200, 'sine', 0.1, 0.03), 100);
+    }
+    this.saveWishlist();
+  }
+
+  clearCart() {
+    this.cart.set([]);
+    this.saveCart();
+  }
 
   toggleSound() {
     this.soundEnabled.update(v => !v);

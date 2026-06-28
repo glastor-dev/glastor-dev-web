@@ -1,6 +1,10 @@
     @if (!isAdminAuthenticated()) {
-      <section id="admin-login" class="min-h-screen bg-black text-white pt-32 pb-24 px-6 md:px-12 xl:px-24 flex items-center justify-center">
-        <div class="max-w-md w-full bg-[#0a0a0a] border border-white/10 p-8 rounded-2xl shadow-2xl">
+      <section id="admin-login" class="min-h-screen pt-32 pb-24 px-6 md:px-12 xl:px-24 flex items-center justify-center transition-colors"
+               [class.bg-[#0a0a0a]]="isCinematicGlow()" [class.text-white]="isCinematicGlow()"
+               [class.bg-zinc-50]="!isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">
+        <div class="max-w-md w-full border p-8 rounded-2xl shadow-2xl transition-colors"
+             [class.bg-[#0a0a0a]]="isCinematicGlow()" [class.border-white/10]="isCinematicGlow()"
+             [class.bg-white]="!isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
           <div class="text-center mb-8">
             <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-4xl text-zinc-500 mb-4"  [strokeWidth]="1.5" />
             <h2 class="text-3xl font-black tracking-tight text-white font-mono">GLASTOR OS</h2>
@@ -16,6 +20,10 @@
             <div class="space-y-2">
               <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Credencial de Acceso (JWT)</label>
               <input type="password" formControlName="password" class="w-full bg-zinc-900/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-zinc-500 transition-colors font-mono" placeholder="••••••••••••">
+            </div>
+
+            <div class="pt-2">
+              <app-bot-protection (tokenGenerated)="loginForm.get('botToken')?.setValue($event)"></app-bot-protection>
             </div>
             
             <button type="submit" [disabled]="isLoggingIn || loginForm.invalid" class="w-full bg-white text-black font-black uppercase tracking-widest py-4 rounded-lg hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50">
@@ -140,7 +148,7 @@
             <hugeicons-icon [icon]="Route01Icon" [size]="20" class="text-zinc-300 text-sm"  [strokeWidth]="1.5" />
           </div>
           <div>
-            <div class="text-2xl md:text-3xl font-black text-white font-mono tracking-tight">{{ sitemapUrls.length }} Enlaces</div>
+            <div class="text-2xl md:text-3xl font-black text-white font-mono tracking-tight">{{ sitemapUrls().length }} Enlaces</div>
             <span class="text-[10px] text-zinc-500 block font-medium mt-1">Nodos sitemap indexados en tiempo real</span>
           </div>
           <!-- Grid visual overlay -->
@@ -247,7 +255,7 @@
               <!-- Dynamic Preview code box representation -->
               <div class="space-y-1.5">
                 <span class="text-[9px] font-mono uppercase text-zinc-500 block">PREVIEW DINÁMICO SITEMAP.XML</span>
-                <pre class="w-full max-h-40 overflow-y-auto bg-zinc-900 text-zinc-300 p-3 rounded-lg text-[9px] leading-relaxed font-mono select-all text-left">{{ sitemapXmlPreview }}</pre>
+                <pre class="w-full max-h-40 overflow-y-auto bg-zinc-900 text-zinc-300 p-3 rounded-lg text-[9px] leading-relaxed font-mono select-all text-left">{{ sitemapXmlPreview() }}</pre>
               </div>
 
             </div>
@@ -306,10 +314,10 @@
 
             <!-- Nodos Registrados Tree view (3 Cols) -->
             <div class="lg:col-span-3 bg-zinc-900/50 border border-white/10 rounded-lg p-5 space-y-3">
-              <span class="text-xs font-black text-white block uppercase">Nodos Activos ({{ sitemapUrls.length }})</span>
+              <span class="text-xs font-black text-white block uppercase">Nodos Activos ({{ sitemapUrls().length }})</span>
               
               <div class="divide-y divide-zinc-200/80 max-h-96 overflow-y-auto pr-1">
-                @for (url of sitemapUrls; track url.loc; let idx = $index) {
+                @for (url of sitemapUrls(); track url.loc; let idx = $index) {
                   <div class="py-2.5 text-[11px] flex items-center justify-between gap-2 text-left first:pt-0 last:pb-0">
                     <div class="min-w-0">
                       <span class="block font-mono font-bold text-zinc-805 truncate" title="{{ url.loc }}">{{ url.loc }}</span>
@@ -341,11 +349,11 @@
             <p class="text-xs text-zinc-500">Maneja, aprueba y audita los despachos de los clientes en tiempo real.</p>
           </div>
           <span class="text-xs font-mono font-bold text-zinc-500 bg-zinc-800 px-3 py-1.5 rounded-lg">
-            Registrados: {{ orders.length }} pedidos
+            Registrados: {{ orders().length }} pedidos
           </span>
         </div>
 
-        @if (orders.length > 0) {
+        @if (orders().length > 0) {
           <div class="overflow-x-auto border border-white/5 rounded-lg">
             <table class="w-full text-left text-xs text-zinc-600">
               <thead class="bg-zinc-800/50 border-b border-white/5 text-[10px] font-black uppercase text-zinc-500 font-mono tracking-wider">
@@ -360,7 +368,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-zinc-100 bg-[#0a0a0a]">
-                @for (order of orders; track order.id) {
+                @for (order of orders(); track order.id) {
                   <tr class="hover:bg-zinc-900/50">
                     
                     <!-- ID Code -->
@@ -467,11 +475,11 @@
             <p class="text-xs text-zinc-500">Historial de solicitudes de revocación de compras mediante el Botón de Arrepentimiento.</p>
           </div>
           <span class="text-xs font-mono font-bold text-zinc-500 bg-zinc-800 px-3 py-1.5 rounded-lg">
-            Registrados: {{ revocaciones.length }} revocaciones
+            Registrados: {{ revocaciones().length }} revocaciones
           </span>
         </div>
 
-        @if (revocaciones.length > 0) {
+        @if (revocaciones().length > 0) {
           <div class="overflow-x-auto border border-white/5 rounded-lg">
             <table class="w-full text-left text-xs text-zinc-600">
               <thead class="bg-zinc-800/50 border-b border-white/5 text-[10px] font-black uppercase text-zinc-500 font-mono tracking-wider">
@@ -484,7 +492,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-zinc-100 bg-[#0a0a0a]">
-                @for (rev of revocaciones; track rev.id) {
+                @for (rev of revocaciones(); track rev.id) {
                   <tr class="hover:bg-zinc-900/50">
                     <td class="px-5 py-4 font-mono font-black text-rose-500 whitespace-nowrap">{{ rev.id }}</td>
                     <td class="px-5 py-4 font-mono text-zinc-500 whitespace-nowrap text-xs">{{ rev.fecha }}</td>
@@ -519,7 +527,7 @@
             <p class="text-xs text-zinc-500">Publica nuevos lanzamientos o modifica precios, descripción y existencias al instante con persistencia robusta.</p>
           </div>
           <span class="text-xs font-mono font-bold text-zinc-500 bg-zinc-800 px-3 py-1.5 rounded-lg">
-            Catálogo: {{ products.length }} piezas
+            Catálogo: {{ products().length }} piezas
           </span>
         </div>
 
@@ -534,7 +542,7 @@
                   <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" /> Crear Nuevo
                 </button>
                 <button (click)="toggleAdminSort()" class="text-zinc-300 text-[10px] bg-[#0a0a0a] border border-white/10 px-2 py-1 rounded cursor-pointer font-bold hover:bg-zinc-800 flex items-center gap-1">
-                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" /> Sort ({{ adminTableSortDesc ? 'Desc' : 'Asc' }})
+                  <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" /> Sort ({{ adminTableSortDesc() ? 'Desc' : 'Asc' }})
                 </button>
               </div>
             </div>
@@ -549,7 +557,7 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-200/60">
-                  @for (p of pagedAdminProducts; track p.id) {
+                  @for (p of pagedAdminProducts(); track p.id) {
                     <tr class="hover:bg-zinc-800/50 transition-colors">
                       <td class="py-2.5 flex items-center gap-2">
                         <img [src]="p.image" class="w-8 h-8 rounded border border-white/10 object-cover shrink-0">
@@ -583,9 +591,9 @@
 
             <!-- Paginación -->
             <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/10 text-xs font-mono">
-              <button (click)="prevAdminPage()" [disabled]="adminTablePage === 1" class="px-2 py-1 bg-[#0a0a0a] border border-white/10 rounded disabled:opacity-50 hover:bg-zinc-800 cursor-pointer text-zinc-300">Prev</button>
-              <span class="text-zinc-500 text-[10px]">Pág {{ adminTablePage }} / {{ adminTableTotalPages }}</span>
-              <button (click)="nextAdminPage()" [disabled]="adminTablePage >= adminTableTotalPages" class="px-2 py-1 bg-[#0a0a0a] border border-white/10 rounded disabled:opacity-50 hover:bg-zinc-800 cursor-pointer text-zinc-300">Next</button>
+              <button (click)="prevAdminPage()" [disabled]="adminTablePage() === 1" class="px-2 py-1 bg-[#0a0a0a] border border-white/10 rounded disabled:opacity-50 hover:bg-zinc-800 cursor-pointer text-zinc-300">Prev</button>
+              <span class="text-zinc-500 text-[10px]">Pág {{ adminTablePage() }} / {{ adminTableTotalPages() }}</span>
+              <button (click)="nextAdminPage()" [disabled]="adminTablePage() >= adminTableTotalPages()" class="px-2 py-1 bg-[#0a0a0a] border border-white/10 rounded disabled:opacity-50 hover:bg-zinc-800 cursor-pointer text-zinc-300">Next</button>
             </div>
           </div>
 
@@ -593,7 +601,7 @@
           <div class="lg:col-span-7 bg-[#0a0a0a] border border-white/10 rounded-[28px] p-5 md:p-6 space-y-6">
             <div class="space-y-1">
               <span class="text-xs font-black text-white block uppercase font-sans">
-                {{ editingProductId ? 'Modificar Elemento Seleccionado' : 'Agregar Nuevo Lanzamiento al Catálogo' }}
+                {{ editingProductId() ? 'Modificar Elemento Seleccionado' : 'Agregar Nuevo Lanzamiento al Catálogo' }}
               </span>
               <p class="text-[11px] text-zinc-500">Introduce la especificación técnica. Los esquemas Zod se validarán en tiempo real al enviar.</p>
             </div>
@@ -621,7 +629,7 @@
                     <option value="herramientas">Herramientas (Makita, Bosch, Lüsqtoff, etc)</option>
                     <option value="computacion">Computación (AMD, Intel, NVIDIA, Memorias)</option>
                     <option value="accesorios">Accesorios (Gabinetes, PC, etc)</option>
-                    @for (cat of customCategories; track cat.value) {
+                    @for (cat of customCategories(); track cat.value) {
                       <option [value]="cat.value">{{ cat.label }}</option>
                     }
                   </select>
@@ -651,7 +659,7 @@
               <div class="space-y-1">
                 <label class="text-[10px] font-black uppercase text-zinc-300 flex justify-between items-center font-sans">
                   Fotografía Principal
-                  @if (isUploadingImage) {
+                  @if (isUploadingImage()) {
                     <span class="text-[#41BF84] font-mono flex items-center gap-1 animate-pulse">
                       <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="scale-75 animate-spin"  [strokeWidth]="1.5" /> Subiendo...
                     </span>
@@ -667,7 +675,7 @@
                        <label class="text-[9px] bg-zinc-700 hover:bg-zinc-600 border border-white/10 text-white px-2 py-1 rounded cursor-pointer transition-colors font-bold flex items-center gap-1 w-max">
                          <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
                          Subir desde PC (Cloudinary)
-                         <input type="file" class="hidden" accept="image/*" (change)="uploadToCloudinary($event)" [disabled]="isUploadingImage">
+                         <input type="file" class="hidden" accept="image/*" (change)="uploadToCloudinary($event)" [disabled]="isUploadingImage()">
                        </label>
                     </div>
                   </div>
@@ -684,7 +692,7 @@
                     <label class="text-[9px] bg-zinc-700 hover:bg-zinc-600 border border-white/10 text-white px-2 py-1 rounded cursor-pointer transition-colors font-bold flex items-center gap-1 w-max">
                       <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
                       Añadir desde PC
-                      <input type="file" class="hidden" accept="image/*" (change)="uploadGalleryToCloudinary($event)" [disabled]="isUploadingImage">
+                      <input type="file" class="hidden" accept="image/*" (change)="uploadGalleryToCloudinary($event)" [disabled]="isUploadingImage()">
                     </label>
                   </div>
                 </div>
@@ -698,9 +706,9 @@
                 <div class="flex items-center gap-2">
                   <input type="url" #aiUrlInput placeholder="https://www.makita.com/..." 
                          class="flex-1 bg-zinc-900/50 border border-white/10 rounded px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#41BF84] transition-colors">
-                  <button type="button" (click)="autocompleteFromUrl(aiUrlInput.value)" [disabled]="isAutocompleting"
+                  <button type="button" (click)="autocompleteFromUrl(aiUrlInput.value)" [disabled]="isAutocompleting()"
                           class="bg-indigo-600 hover:bg-[#41BF84]/200 text-white px-3 py-1.5 rounded text-xs font-bold transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
-                    @if (isAutocompleting) {
+                    @if (isAutocompleting()) {
                       <hugeicons-icon [icon]="Refresh01Icon" [size]="20" class="animate-spin text-[14px]"  [strokeWidth]="1.5" /> Procesando...
                     } @else {
                       <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-[14px]"  [strokeWidth]="1.5" /> Extraer
@@ -898,7 +906,7 @@
               </div>
 
               <div class="pt-4 flex items-center gap-3">
-                @if (editingProductId) {
+                @if (editingProductId()) {
                   <button type="button" (click)="cancelEditProduct()"
                           class="px-5 py-2.5 bg-zinc-105 hover:bg-zinc-700 text-zinc-300 font-bold rounded-lg cursor-pointer transition-colors shrink-0">
                     Descartar Edición
@@ -907,7 +915,7 @@
                 <button type="submit" [disabled]="productForm.invalid"
                         class="w-full bg-zinc-900 disabled:bg-zinc-200 text-white font-black text-xs py-2.5 rounded-lg cursor-pointer flex items-center justify-center gap-1 shadow-sm transition-all shadow-zinc-100">
                   <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75"  [strokeWidth]="1.5" />
-                  {{ editingProductId ? 'Guardar Cambios en SQLite3' : 'Sincronizar Pieza en SQLite3' }}
+                  {{ editingProductId() ? 'Guardar Cambios en SQLite3' : 'Sincronizar Pieza en SQLite3' }}
                 </button>
               </div>
 

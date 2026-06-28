@@ -1,15 +1,20 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppStateService } from '../../app-state.service';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 
 type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' | 'confidencialidad' | 'consumidor' | 'rgpd';
 
 @Component({
   selector: 'app-legal-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-screen bg-black pt-24 pb-20 px-4 md:px-8 font-sans selection:bg-emerald-500/30">
+    <div class="min-h-screen pt-24 pb-20 px-4 md:px-8 font-sans selection:bg-emerald-500/30"
+         [class.bg-[#0a0a0a]]="isCinematicGlow()"
+         [class.bg-zinc-50]="!isCinematicGlow()">
       
       <!-- Header -->
       <div class="max-w-7xl mx-auto mb-16 border-b border-white/10 pb-8">
@@ -41,7 +46,7 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
                   <div class="flex items-center justify-between">
                     <span>{{ doc.title }}</span>
                     @if (activeTab() === doc.id) {
-                      <span class="material-icons text-[16px] opacity-100">arrow_forward</span>
+                      <hugeicons-icon [icon]="ArrowRight01Icon" [size]="16" [strokeWidth]="2" class="opacity-100"></hugeicons-icon>
                     }
                   </div>
                 </button>
@@ -49,7 +54,7 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
             </nav>
 
             <div class="mt-8 pt-6 border-t border-white/10 text-xs text-zinc-500">
-              <p>Última actualización: Noviembre 2026</p>
+              <p>Última actualización: {{ formattedDate }}</p>
               <p class="mt-2">GLASTOR® - Marca Registrada</p>
             </div>
           </div>
@@ -205,10 +210,17 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
   `]
 })
 export class LegalPageComponent {
+  ArrowRight01Icon = ArrowRight01Icon;
   private appState = inject(AppStateService);
   isCinematicGlow = this.appState.isCinematicGlow;
 
   activeTab = signal<LegalTab>('privacidad');
+
+  get formattedDate(): string {
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const d = new Date();
+    return `${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
 
   documents: { id: LegalTab; title: string }[] = [
     { id: 'privacidad', title: 'Política de Privacidad' },

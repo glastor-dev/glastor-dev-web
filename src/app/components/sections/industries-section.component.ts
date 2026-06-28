@@ -6,8 +6,13 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24 font-sans bg-transparent">
+    <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24 font-sans bg-transparent relative">
       
+      <!-- Radial masked texture background (Awwwards Style Option B) -->
+      <div class="absolute inset-[-100px] bg-vanishing-stripes opacity-60 pointer-events-none -z-10" 
+           style="-webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 65%); mask-image: radial-gradient(ellipse at center, black 10%, transparent 65%);">
+      </div>
+
       <!-- Catalog Intro -->
       <div class="relative overflow-hidden bg-zinc-900/40 border border-white/5 mb-12 flex flex-col md:flex-row items-center justify-between p-10 md:p-24 rounded-lg shadow-2xl">
         <div class="z-10 relative w-full md:w-3/5 text-center md:text-left">
@@ -17,7 +22,7 @@ import { CommonModule } from '@angular/common';
             Encuentra las soluciones tecnológicas perfectas para tu sector. Equipos de alto rendimiento para entornos exigentes.
           </h2>
           <button (click)="randomizeGrid()" 
-                  class="mt-10 bg-white text-black px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wider hover:scale-105 hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(52,211,153,0.4)] transition-all duration-500 mx-auto md:ml-0 block md:inline-block">
+                  class="mt-10 bg-white text-black px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wider hover:scale-105 hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(52,211,153,0.4)] transition-all duration-500 mx-auto md:ml-0 block md:inline-block font-mono">
             Reorganizar Cuadrícula
           </button>
         </div>
@@ -52,7 +57,7 @@ import { CommonModule } from '@angular/common';
                 
                 <!-- Reveal Link -->
                 <div class="absolute bottom-8 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                  <span class="text-[11px] font-mono tracking-widest text-white border-b border-white/30 pb-1 uppercase hover:border-white transition-colors">Ver Soluciones &rarr;</span>
+                  <span class="text-[11px] font-mono tracking-widest text-white border-b border-white/30 pb-1 uppercase hover:border-white transition-colors">VER SOLUCIONES &rarr;</span>
                 </div>
               </div>
             </a>
@@ -71,10 +76,8 @@ export class IndustriesSectionComponent implements OnInit {
     { id: 2, name: 'Manufactura', subtitle: 'Automatización', image: 'assets/logos/manufactura.webp', spanCols: 2, spanRows: 2 },
     { id: 3, name: 'Retail', subtitle: 'Puntos de Venta POS', image: 'assets/logos/retail.webp', spanCols: 1, spanRows: 2 },
     { id: 4, name: 'Agencia', subtitle: 'Creative Studios', image: 'assets/logos/agencia.webp', spanCols: 1, spanRows: 1 },
-    { id: 5, name: 'Developer', subtitle: 'High-End Workstations', image: 'assets/logos/developer.webp', spanCols: 2, spanRows: 1 },
-    { id: 6, name: 'Corporativo', subtitle: 'Smart Workplaces', image: 'assets/logos/corporativo.webp', spanCols: 1, spanRows: 1 },
-    { id: 7, name: 'Construcción', subtitle: 'Equipos Robustos', image: 'assets/logos/construccion.webp', spanCols: 1, spanRows: 2 },
-    { id: 8, name: 'Web3', subtitle: 'Decentralized Tech', image: 'assets/logos/web3.webp', spanCols: 2, spanRows: 1 },
+    { id: 5, name: 'Corporativo', subtitle: 'Smart Workplaces', image: 'assets/logos/corporativo.webp', spanCols: 1, spanRows: 1 },
+    { id: 6, name: 'Construcción', subtitle: 'Equipos Robustos', image: 'assets/logos/construccion.webp', spanCols: 1, spanRows: 2 }
   ];
 
   ngOnInit() {
