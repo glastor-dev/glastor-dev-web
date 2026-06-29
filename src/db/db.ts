@@ -5,7 +5,7 @@ import { eq, sql as drizzleSql } from 'drizzle-orm';
 import 'dotenv/config';
 
 // Connect to Neon Postgres Serverless
-const sql = neon(process.env['DATABASE_URL'] || '');
+const sql = neon(process.env['DATABASE_URL'] || 'postgres://dummy:dummy@localhost/dummy');
 export const db = drizzle(sql, { schema });
 
 // Zero-Configuration schema sync via raw SQL executed on Postgres
