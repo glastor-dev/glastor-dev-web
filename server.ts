@@ -41,8 +41,7 @@ const apiLimiter = rateLimit({
 
 
 // Resolve static paths
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const dirName = typeof __dirname !== 'undefined' ? __dirname : process.cwd();
 
 // Initialize Database & Seed
 seedDatabaseIfEmpty().catch(err => console.error('DB Seed Error:', err.message));
@@ -535,7 +534,7 @@ app.delete('/api/productos/:id', verifyAdminToken, async (req, res) => {
 
 // Point static files to Angular output directory
 // Angular workspace builds to /dist/app or /dist/app/browser
-const angularBuildPath = path.join(__dirname, 'dist', 'app');
+const angularBuildPath = path.join(dirName, 'dist', 'app');
 app.use(express.static(angularBuildPath));
 
 // Fallback all non-API paths directly to compiled Angular routing index
