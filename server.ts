@@ -45,7 +45,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Database & Seed
-seedDatabaseIfEmpty();
+seedDatabaseIfEmpty().catch(err => console.error('DB Seed Error:', err.message));
 
 // ==========================================
 // ZOD VALIDATION SCHEMAS
