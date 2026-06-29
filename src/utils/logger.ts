@@ -2,10 +2,10 @@ import winston from 'winston';
 import fs from 'fs';
 import path from 'path';
 
-// Ensure logs directory exists
-const logDir = 'logs';
+const isVercel = !!process.env['VERCEL'];
+const logDir = isVercel ? '/tmp/logs' : 'logs';
 if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
+  fs.mkdirSync(logDir, { recursive: true });
 }
 
 const logger = winston.createLogger({
