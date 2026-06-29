@@ -7,7 +7,7 @@
              [class.bg-white]="!isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
           <div class="text-center mb-8">
             <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="text-4xl text-zinc-500 mb-4"  [strokeWidth]="1.5" />
-            <h2 class="text-3xl font-black tracking-tight text-white font-mono">GLASTOR OS</h2>
+            <h2 class="glastor-h2 text-white font-mono">GLASTOR OS</h2>
             <p class="text-zinc-400 text-sm mt-2">Autenticación requerida para acceder al subsistema administrativo.</p>
           </div>
           
@@ -49,7 +49,7 @@
             </span>
             <span class="bg-zinc-800 text-zinc-600 text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase">Consola de Control</span>
           </div>
-          <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">Panel de Administrador e Indexación SEO</h1>
+          <h1 class="glastor-h2 text-white">Panel de Administrador e Indexación SEO</h1>
           <p class="text-xs text-zinc-500">Rastrea la salud de indexación del e-commerce, maneja robots.txt y gestiona los pedidos (CRM) de tus clientes.</p>
         </div>
 
@@ -194,7 +194,7 @@
         <section class="bg-[#0a0a0a] border border-white/10 rounded-lg p-6 space-y-8 text-left shadow-sm">
           
           <div class="flex items-center justify-between border-b border-white/5 pb-4">
-            <h3 class="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+            <h3 class="glastor-h5 text-white flex items-center gap-1.5">
               <hugeicons-icon [icon]="Route01Icon" [size]="20" class="text-[#41BF84] scale-75"  [strokeWidth]="1.5" />
               1. Formularios de Sitemap XML y Metatags directas
             </h3>
@@ -834,6 +834,14 @@
                   <input type="text" formControlName="weight" placeholder="4.5 kg"
                          class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none">
                 </div>
+              </div>
+
+              <!-- Etiquetas / Badges -->
+              <div class="space-y-1">
+                <label class="text-[10px] font-black uppercase text-zinc-300 block font-sans">Etiquetas / Badges (Una por línea)</label>
+                <textarea rows="3" formControlName="badgesRaw" placeholder="4K UHD&#10;Neo QLED&#10;Envío Gratis"
+                          class="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#41BF84] resize-none"></textarea>
+                <span class="text-[9px] text-zinc-500 font-medium block">Añade etiquetas destacadas para la tarjeta, una por línea.</span>
               </div>
 
               <!-- Atributos Dinámicos Extras -->

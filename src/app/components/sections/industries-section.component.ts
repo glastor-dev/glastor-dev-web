@@ -16,9 +16,9 @@ import { CommonModule } from '@angular/common';
       <!-- Catalog Intro -->
       <div class="relative overflow-hidden bg-zinc-900/40 border border-white/5 mb-12 flex flex-col md:flex-row items-center justify-between p-10 md:p-24 rounded-lg shadow-2xl">
         <div class="z-10 relative w-full md:w-3/5 text-center md:text-left">
-          <span class="text-[10px] font-mono tracking-[0.3em] text-emerald-500 uppercase font-black block mb-4">CATÁLOGO B2B</span>
-          <h1 class="font-display font-medium text-5xl md:text-6xl text-white leading-tight mb-6 tracking-tight">Soluciones por<br><span class="italic font-serif text-white/70">Industria</span></h1>
-          <h2 class="text-zinc-400 text-lg md:text-xl font-light leading-relaxed max-w-lg md:ml-0">
+          <h5 class="glastor-h5 mb-4">CATÁLOGO B2B</h5>
+          <h1 class="glastor-h1 mb-6">Soluciones por<br><span class="italic font-serif text-white/70">Industria</span></h1>
+          <h2 class="glastor-subtitle max-w-lg md:ml-0">
             Encuentra las soluciones tecnológicas perfectas para tu sector. Equipos de alto rendimiento para entornos exigentes.
           </h2>
           <button (click)="randomizeGrid()" 
@@ -52,8 +52,8 @@ import { CommonModule } from '@angular/common';
 
               <!-- Text Area (Center aligned, slides up on hover) -->
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-20">
-                <h3 class="font-display font-medium tracking-tight text-[22px] md:text-[28px] leading-[1.1] text-white m-0 transition-transform duration-500 group-hover:-translate-y-2">{{ ind.name }}</h3>
-                <h5 class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400 mt-3 transition-transform duration-500 group-hover:-translate-y-2">{{ ind.subtitle }}</h5>
+                <h4 class="glastor-h4 m-0 transition-transform duration-500 group-hover:-translate-y-2">{{ ind.name }}</h4>
+                <h5 class="glastor-h5 mt-3 transition-transform duration-500 group-hover:-translate-y-2 text-zinc-400">{{ ind.subtitle }}</h5>
                 
                 <!-- Reveal Link -->
                 <div class="absolute bottom-8 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">

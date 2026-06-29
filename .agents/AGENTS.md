@@ -9,9 +9,15 @@ Este documento establece las directrices fundamentales de arquitectura de interf
 La interfaz debe sentirse premium, brutalista, tecnológica y orientada al futuro.
 
 - **Paleta de Colores Restringida:**
-  - Fondo base absoluto: `#050505` (Ultra negro, nunca gris claro).
-  - Acento principal (Neón/Energía): `#00ff66` (Glastor Green).
-  - Textos secundarios: Tonos exactos de `zinc-400` para descripciones largas, y `white` para encabezados.
+  - Fondo base absoluto (`--glastor-bg`): `#000000` / `#0D0D0D` (Ultra negro).
+  - Acento principal (`--glastor-accent`): `#41BF84` (Verde esmeralda — COLOR PRIMARIO).
+  - Acento secundario (`--glastor-mint`): `#6FDBA8` (Mint claro para VFX).
+  - Acentos oscuros: `#01260E` (Verde bosque), `#2F4659` (Azul acero), `#1A3A4A` (Marino).
+  - Textos sutiles: `#B8F0D4` (Mint pálido).
+- **Gradientes Oficiales:**
+  - `brand`: `linear-gradient(90deg, #01260E, #41BF84)`
+  - `steel`: `linear-gradient(90deg, #000, #2F4659)`
+  - `cinematic`: `linear-gradient(135deg, #01260E, #2F4659)`
 - **Tipografía Estricta:**
   - Encabezados (Display): Uso de fuentes masivas, peso `font-black`, interlineado comprimido (`leading-[0.85]`), siempre en mayúsculas (`uppercase`) y con `tracking-tighter`.
   - Datos/Etiquetas (Mono): Fuentes monoespaciadas (`font-mono`) para pequeñas etiquetas, timestamps, estados del sistema, con `tracking-widest` para dar ese aire "técnico".

@@ -26,7 +26,7 @@ interface HeroDimensions {
   standalone: true,
   styleUrl: './hero-section.component.css',
   template: `
-    <div #heroContainer class="hero-container relative w-full h-[650px] md:h-[750px] overflow-hidden bg-[#1a1a1a] rounded-lg shadow-2xl shadow-black/50">
+    <div #heroContainer class="hero-container relative w-full h-[650px] md:h-[750px] overflow-hidden bg-[#0D0D0D] rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/5">
       
       <!-- Mobile Static Hero (Visible only on small screens) -->
       <div class="block md:hidden absolute inset-0 bg-[#050505] z-50">
@@ -36,8 +36,8 @@ interface HeroDimensions {
         <div class="absolute inset-0 flex flex-col justify-end px-6 pb-12 z-10">
           <div class="h-px bg-[#41BF84] w-8 mb-4"></div>
           <div class="text-[#41BF84] font-mono text-[10px] font-black uppercase tracking-widest mb-2">{{ slides[0].tag }}</div>
-          <div class="font-sans font-black text-4xl text-white uppercase leading-none tracking-tighter">{{ slides[0].title1 }}</div>
-          <div class="font-sans font-black text-4xl text-white uppercase leading-none tracking-tighter mb-4">{{ slides[0].title2 }}</div>
+          <div class="font-display font-black text-[clamp(3rem,10vw,4.5rem)] text-white uppercase leading-[0.85] tracking-tighter">{{ slides[0].title1 }}</div>
+          <div class="font-display font-black text-[clamp(3rem,10vw,4.5rem)] text-white uppercase leading-[0.85] tracking-tighter mb-4">{{ slides[0].title2 }}</div>
           <p class="text-zinc-400 text-xs mb-8">{{ slides[0].description }}</p>
           <button class="w-full bg-[#41BF84] text-black font-bold uppercase tracking-widest py-3.5 rounded-full text-xs" (click)="onNavigate('tienda')">
             Explorar Catálogo

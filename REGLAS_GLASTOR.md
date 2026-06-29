@@ -69,63 +69,38 @@ Estas reglas se han reforzado tras la última auditoría de contenido y diseño.
 - El sitio debe ser fluido, impactante y orientado a conversión.
 - Lenis es obligatorio para el manejo de scroll.
 
-## 10. Tipografia
+## 10. Tipografía y Sistema de Escala (Brutalismo Glastor)
 
-La forma en que aplicamos nuestras fuentes, también conocida como tipografía, puede ser tan impactante como el diseño de las propias fuentes. Escribimos como la gente habla, por lo que usamos nuestras fuentes de una manera que lo refleje.
+La forma en que aplicamos nuestras fuentes es el pilar de nuestra identidad visual. A diferencia de interfaces corporativas tradicionales, Glastor® utiliza un enfoque brutalista, agresivo y de altísimo impacto visual para sus titulares, contrastado con una legibilidad perfecta para sus descripciones técnicas.
 
-Los conceptos básicos de la tipografía en GLASTOR se alinean con los rasgos de personalidad de nuestra marca.
+**Nuestras Familias Tipográficas Oficiales:**
 
-- Hazlo abierto
+1. **Archivo (Display):** Para impacto masivo. Reemplaza a Red Hat Display.
+2. **Inter (Text/Sans):** Para legibilidad en lectura prolongada y subtítulos. Reemplaza a Red Hat Text.
+3. **JetBrains Mono (Mono):** Para datos técnicos, código y micro-etiquetas. Reemplaza a Red Hat Mono.
 
-Resalte el mensaje usando espacios en blanco en lugar de llenar toda la página con texto. Use márgenes amplios y considere ajustar la longitud del texto antes de reducir los márgenes o el tamaño de la fuente para que quepa más.
+**El Sistema de Escala H1-H6:**
+Para garantizar una adaptación responsiva fluida, utilizamos fórmulas `clamp()` en CSS (implementadas globalmente bajo clases `.glastor-h*`).
 
-Nuestra familia de fuentes está diseñada con letras grandes y abiertas, por lo que no es necesario aumentar el espacio entre letras (seguimiento).
+- **Display Masivo (H1, H2, H3):**
+  - **Uso:** Heroes, Títulos de sección, Títulos de tarjetas masivas.
+  - **Estilo:** `Archivo`, peso **Black (900)**, **Mayúsculas Sostenidas (Uppercase)** obligatorias, interlineado extremadamente comprimido (`leading-[0.85]`), y espaciado negativo (`tracking-tighter`).
+  - _Nota:_ Abrazamos las mayúsculas en estos tamaños masivos para demostrar valentía y peso físico, contradiciendo la regla clásica de "no usar mayúsculas".
 
-- Hazlo auténtico
+- **Lectura e Interfaz (H4, Subtítulos, Párrafos):**
+  - **Uso:** Nombres de producto, subtítulos introductorios, descripciones.
+  - **Estilo:** `Inter` variable (`100..900`). H4 en `bold` y mayúsculas, subtítulos en `light` y párrafos en `normal`. Mantenemos márgenes generosos y un interlineado relajado (`leading-relaxed`) para no abrumar.
 
-Nuestras palabras deben ser reales y amigables, por lo que siempre escribimos en mayúsculas de oración en lugar de en mayúsculas de título o en mayúsculas completas (sí, incluso para los titulares).
+- **Datos Técnicos (H5, H6, Etiquetas):**
+  - **Uso:** Metadatos, insignias, identificadores B2B.
+  - **Estilo:** `JetBrains Mono`, peso **Black**, mayúsculas, color verde acento (`#41BF84`), y espaciado ampliado (`tracking-widest` o `tracking-[0.2em]`) para evocar instrumentación de precisión.
 
-Seguimos un enfoque tipográfico directo, dejando que las palabras hablen por sí solas con un formato y una ornamentación mínimos. Nos basamos en cómo el texto se presenta de forma natural en las pantallas, porque es ahí donde nuestro público pasa el tiempo.
+**Reglas Prácticas Tipográficas:**
 
-- Hazlo útil
-
-Somos consistentes en la forma en que aplicamos nuestras fuentes en las aplicaciones para que nuestra audiencia sepa qué esperar cuando nos contacte.
-
-Ser útil también significa hacer que nuestras palabras sean accesibles para todos. Procura que el texto sea legible (con un interlineado y una longitud de línea cómodos) y legible (con un contraste adecuado con el fondo).
-
-- Hazlo valiente
-
-Nuestra fuente tiene mucha personalidad y nos gusta que resalte. Usamos titulares prominentes que llaman la atención. Puedes usarla en tamaño grande, en negrita o ambas opciones.
-
-Respete el tiempo del lector y confíe en lo que decimos. Redacte un texto conciso y convincente, y luego utilice la jerarquía tipográfica para guiar al lector a través de la historia.
-
-- Haz estas cosas
-
-Utilice nuestras fuentes: Red Hat Display, Text y Mono.
-
-Utilice márgenes generosos y mucho espacio en blanco.
-
-Utilice mayúsculas y minúsculas (sí, incluso para los titulares).
-
-Asegúrese de que el texto sea legible y legible.
-
-Deje que las palabras hablen por sí solas.
-
-Capte la atención con titulares grandes, llamativos o ambas cosas.
-
-- Evite estas cosas
-
-No utilice fuentes aleatorias.
-
-No llenes un espacio entero con texto, es abrumador.
-
-Nunca uses mayúsculas, es demasiado agresivo.
-
-Evite el texto que no tenga el contraste adecuado.
-
-Evite la ornamentación innecesaria.
-
-No aumente ni disminuya el seguimiento de texto.
+- **SÍ:** Utiliza las clases globales `.glastor-h*` (ej: `.glastor-h1`, `.glastor-h4`) o las etiquetas nativas HTML para heredar estos estilos.
+- **SÍ:** Usa mucho espacio en blanco lateral para dar respiro al peso brutalista.
+- **NO:** No mezcles familias (ej. no uses Inter para un H1 masivo).
+- **NO:** No modifiques el _tracking_ manual ni el _leading_ si utilizas las clases `.glastor-h*`, estas ya están matemáticamente calibradas.
 
 ---
 

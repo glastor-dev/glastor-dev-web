@@ -38,16 +38,15 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
               <!-- Technical HUD Label -->
               <div class="flex items-center gap-4 animate-fade-in-up">
                 <div class="h-px bg-[#41BF84] w-12"></div>
-                <span class="text-[#41BF84] font-mono text-[10px] uppercase font-black tracking-widest">SISTEMA DE INVENTARIO B2B</span>
+                <h5 class="glastor-h5">SISTEMA DE INVENTARIO B2B</h5>
               </div>
 
-              <h1 [class]="'text-5xl md:text-7xl lg:text-[5.5rem] font-sans font-black tracking-tighter uppercase leading-[0.85] ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">
+              <h1 [class]="'glastor-h1 ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">
                 Catálogo <br class="hidden md:block"> 
-                <span class="inline-flex items-start text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-500">GLASTOR<span class="text-[0.3em] mt-[0.1em] ml-2 font-black text-[#41BF84] -translate-y-2 inline-block">®</span></span><br class="hidden lg:block"> 
                 Megastore
               </h1>
               
-              <p [class]="'text-sm md:text-lg max-w-xl leading-relaxed font-light ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
+              <p [class]="'glastor-subtitle max-w-xl ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
                 Nuestra selección premium de tecnología, componentes de computación avanzados y herramientas industriales para profesionales. Filtra por categoría o realiza búsquedas dinámicas en tiempo real.
               </p>
               
@@ -82,59 +81,39 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
       <main class="max-w-7xl mx-auto px-4 py-10 space-y-8">
       
       <!-- FILTER & SEARCH BAR BLOCK -->
-      <div [class]="'border rounded-lg p-5 md:p-6 space-y-5 text-left ' + 
-                     (isCinematicGlow() ? 'bg-zinc-900/40 border-zinc-800/80 shadow-black/30' : 'bg-white border-zinc-200/60 shadow-sm')">
+      <div [class]="'sticky top-[80px] z-40 backdrop-blur-xl border rounded-lg p-5 md:p-6 space-y-5 text-left ' + 
+                     (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800/80 shadow-black/30' : 'bg-white/80 border-zinc-200/60 shadow-sm')">
         
-        <!-- Live Input search control (Full width) -->
-        <div class="relative w-full">
-          <hugeicons-icon [icon]="Search01Icon" [size]="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"  [strokeWidth]="1.5" />
-          <input type="text" [formControl]="searchControl" placeholder="Buscar en el catálogo (Makita, iPhone, AMD, etc)..."
-                 [class]="'w-full border rounded-xl pl-12 pr-4 py-3.5 text-sm font-semibold focus:outline-none transition-all ' + 
-                          (isCinematicGlow() 
-                           ? 'bg-zinc-950 hover:bg-zinc-900 border-zinc-800 focus:border-amber-500/50 text-white placeholder:text-zinc-600 shadow-inner' 
-                           : 'bg-zinc-50 hover:bg-zinc-100 border-zinc-200 focus:border-zinc-400 text-zinc-900 placeholder:text-zinc-400')">
+        <!-- Live Input search control and sort (Full width) -->
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <div class="relative flex-grow">
+            <hugeicons-icon [icon]="Search01Icon" [size]="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"  [strokeWidth]="1.5" />
+            <input type="text" [formControl]="searchControl" placeholder="Buscar en el catálogo (Makita, iPhone, AMD, etc)..."
+                   [class]="'w-full border rounded-xl pl-12 pr-4 py-3.5 text-sm font-semibold focus:outline-none transition-all ' + 
+                            (isCinematicGlow() 
+                             ? 'bg-zinc-950 hover:bg-zinc-900 border-zinc-800 focus:border-amber-500/50 text-white placeholder:text-zinc-600 shadow-inner' 
+                             : 'bg-zinc-50 hover:bg-zinc-100 border-zinc-200 focus:border-zinc-400 text-zinc-900 placeholder:text-zinc-400')">
+          </div>
+          
+          <!-- Sort Dropdown -->
+          <div class="shrink-0 relative">
+             <select #sortSelect (change)="setSortOrder(sortSelect.value)"
+                     [class]="'w-full md:w-auto appearance-none border rounded-xl pl-4 pr-10 py-3.5 text-sm font-semibold focus:outline-none transition-all cursor-pointer ' + 
+                              (isCinematicGlow() 
+                               ? 'bg-zinc-950 hover:bg-zinc-900 border-zinc-800 focus:border-amber-500/50 text-white shadow-inner' 
+                               : 'bg-zinc-50 hover:bg-zinc-100 border-zinc-200 focus:border-zinc-400 text-zinc-900')">
+               <option value="default" [selected]="sortOrder() === 'default'">Orden por Relevancia</option>
+               <option value="price-asc" [selected]="sortOrder() === 'price-asc'">Precio: Menor a Mayor</option>
+               <option value="price-desc" [selected]="sortOrder() === 'price-desc'">Precio: Mayor a Menor</option>
+               <option value="name-asc" [selected]="sortOrder() === 'name-asc'">Nombre: A - Z</option>
+             </select>
+             <hugeicons-icon [icon]="ArrowDown01Icon" [size]="16" class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500"  [strokeWidth]="2" />
+          </div>
         </div>
 
         <!-- Scrollable Category pills selection -->
         <div class="flex overflow-x-auto whitespace-nowrap hide-scrollbar gap-2 pb-2">
-          <button (click)="setCategory('todos')"
-                  [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
-                           (selectedCategory() === 'todos' 
-                            ? (isCinematicGlow() ? 'bg-amber-600 border-amber-500 text-zinc-950 shadow-md shadow-amber-500/20' : 'bg-zinc-900 border-zinc-900 text-white shadow-sm') 
-                            : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300'))">
-            Todos
-          </button>
-          <button (click)="setCategory('tecnologia')"
-                  [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
-                           (selectedCategory() === 'tecnologia' 
-                            ? (isCinematicGlow() ? 'bg-amber-600 border-amber-500 text-zinc-950 shadow-md shadow-amber-500/20' : 'bg-zinc-900 border-zinc-900 text-white shadow-sm') 
-                            : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300'))">
-            Tecnología
-          </button>
-          <button (click)="setCategory('herramientas')"
-                  [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
-                           (selectedCategory() === 'herramientas' 
-                            ? (isCinematicGlow() ? 'bg-amber-600 border-amber-500 text-zinc-950 shadow-md shadow-amber-500/20' : 'bg-zinc-900 border-zinc-900 text-white shadow-sm') 
-                            : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300'))">
-            Herramientas
-          </button>
-          <button (click)="setCategory('computacion')"
-                  [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
-                           (selectedCategory() === 'computacion' 
-                            ? (isCinematicGlow() ? 'bg-amber-600 border-amber-500 text-zinc-950 shadow-md shadow-amber-500/20' : 'bg-zinc-900 border-zinc-900 text-white shadow-sm') 
-                            : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300'))">
-            Computación
-          </button>
-          <button (click)="setCategory('accesorios')"
-                  [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
-                           (selectedCategory() === 'accesorios' 
-                            ? (isCinematicGlow() ? 'bg-amber-600 border-amber-500 text-zinc-950 shadow-md shadow-amber-500/20' : 'bg-zinc-900 border-zinc-900 text-white shadow-sm') 
-                            : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300'))">
-            Accesorios
-          </button>
-          
-          <!-- Dynamic Custom Categories -->
-          @for (cat of customCategories(); track cat.value) {
+          @for (cat of allCategories(); track cat.value) {
             <button (click)="setCategory(cat.value)"
                     [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
                              (selectedCategory() === cat.value 
@@ -183,8 +162,8 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
             <hugeicons-icon [icon]="SearchRemoveIcon" [size]="24"  [strokeWidth]="1.5" />
           </div>
           <div class="space-y-1">
-            <h3 [class]="'text-sm font-black uppercase tracking-wider ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">No se encontraron artículos coincidentes</h3>
-            <p [class]="'text-xs leading-normal ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
+            <h6 [class]="'glastor-h6 ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">No se encontraron artículos coincidentes</h6>
+            <p [class]="'glastor-desc ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
               No disponemos de piezas que coincidan con "{{ appState.searchQuery() }}". Por favor, intente redefinir los términos de búsqueda o limpie los selectores de categoría.
             </p>
           </div>
@@ -207,11 +186,24 @@ export class CatalogPageComponent implements OnInit {
   isCinematicGlow = this.appState.isCinematicGlow;
   customCategories = this.appState.customCategories;
   selectedCategory = this.appState.selectedCategory;
+  sortOrder = this.appState.sortOrder;
   publicProducts = this.appState.publicProducts;
   
   searchControl = new FormControl(this.appState.searchQuery());
   private destroyRef = inject(DestroyRef);
   private breakpointObserver = inject(BreakpointObserver);
+
+  standardCategories = [
+    { value: 'todos', label: 'Todos' },
+    { value: 'tecnologia', label: 'Tecnología' },
+    { value: 'herramientas', label: 'Herramientas' },
+    { value: 'computacion', label: 'Computación' },
+    { value: 'accesorios', label: 'Accesorios' }
+  ];
+
+  allCategories = computed(() => {
+    return [...this.standardCategories, ...this.customCategories()];
+  });
 
   columns = signal(4);
   
@@ -259,8 +251,13 @@ export class CatalogPageComponent implements OnInit {
     this.appState.selectedCategory.set(cat);
   }
 
+  setSortOrder(order: string) {
+    this.appState.sortOrder.set(order as any);
+  }
+
   clearFilters() {
     this.appState.selectedCategory.set('todos');
+    this.appState.sortOrder.set('default');
     this.searchControl.setValue('');
   }
 

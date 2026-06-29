@@ -31,10 +31,10 @@ interface Story {
       <div class="max-w-7xl mx-auto px-4 relative z-10 mb-12">
         <div class="text-left space-y-2">
           <span class="text-[10px] font-mono tracking-widest text-[#41BF84] uppercase font-black block">HISTORIAS GLASTOR</span>
-          <h2 class="text-5xl md:text-[4.5rem] leading-[0.9] font-black tracking-tight uppercase text-white">
+          <h2 class="glastor-h1 text-white">
             CONSTRUYO PORQUE
           </h2>
-          <p class="text-sm md:text-base text-zinc-400 max-w-lg mt-4 font-light">
+          <p class="text-sm md:text-base text-zinc-400 max-w-lg mt-6 font-light">
             Descubre las historias de los profesionales que desafían los límites. Conoce sus proyectos, su pasión y por qué eligen Glastor para construir su legado.
           </p>
         </div>
@@ -69,7 +69,7 @@ interface Story {
         
         <!-- Left: Text content -->
         <div class="w-full md:w-5/12 text-left animate-fade-in">
-          <h2 class="font-black text-5xl md:text-[4rem] text-white uppercase tracking-tighter leading-none mb-6">
+          <h2 class="glastor-h1 text-white mb-6">
             {{ activeStory().title }}
           </h2>
           <p class="text-zinc-400 text-base md:text-lg leading-relaxed font-light mb-8 max-w-md">

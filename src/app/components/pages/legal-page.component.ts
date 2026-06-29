@@ -18,8 +18,8 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
       
       <!-- Header -->
       <div class="max-w-7xl mx-auto mb-16 border-b border-white/10 pb-8">
-        <h1 class="text-5xl md:text-7xl font-display font-medium tracking-tight text-white mb-4" [class.text-transparent]="isCinematicGlow()" [class.bg-clip-text]="isCinematicGlow()" [class.bg-gradient-to-r]="isCinematicGlow()" [class.from-zinc-100]="isCinematicGlow()" [class.to-zinc-500]="isCinematicGlow()">Centro Legal y Cumplimiento</h1>
-        <p class="text-zinc-400 text-lg max-w-2xl font-light">Transparencia, normativa vigente y directrices de protección al consumidor para GLASTOR®.</p>
+        <h1 class="glastor-h1 mb-4" [class.text-transparent]="isCinematicGlow()" [class.bg-clip-text]="isCinematicGlow()" [class.bg-gradient-to-r]="isCinematicGlow()" [class.from-zinc-100]="isCinematicGlow()" [class.to-zinc-500]="isCinematicGlow()">Centro Legal y Cumplimiento</h1>
+        <p class="glastor-subtitle max-w-2xl font-light">Transparencia, normativa vigente y directrices de protección al consumidor para GLASTOR®.</p>
       </div>
 
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
@@ -27,7 +27,7 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
         <!-- Sidebar Navigation -->
         <aside class="w-full md:w-80 shrink-0">
           <div class="sticky top-28 bg-zinc-900/50 backdrop-blur-xl border border-white/5 rounded-2xl p-6">
-            <h3 class="text-xs font-mono tracking-widest uppercase text-zinc-500 mb-6">Documentos</h3>
+            <h3 class="glastor-h5 mb-6 text-zinc-500">Documentos</h3>
             <nav class="flex flex-col gap-2">
               @for (doc of documents; track doc.id) {
                 <button (click)="setActiveTab(doc.id)"
@@ -66,13 +66,13 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
           @switch (activeTab()) {
             @case ('privacidad') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Política de Privacidad de Datos</h2>
+                <h2 class="glastor-h2 text-white mb-6">Política de Privacidad de Datos</h2>
                 <p>En <strong>GLASTOR S.A.</strong> (en adelante "GLASTOR®"), nos tomamos muy en serio la privacidad de nuestros clientes, socios y usuarios. Esta política describe cómo recopilamos, procesamos y salvaguardamos tu información.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">1. Recopilación de Información</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">1. Recopilación de Información</h3>
                 <p>Recopilamos información personal de identificación (Nombre, correo electrónico, CUIT/DNI, dirección de facturación) y datos de telemetría de navegación estrictamente necesarios para procesar sus pedidos de equipamiento de alto rendimiento e interactuar con nuestro portal B2B.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">2. Uso de la Información</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">2. Uso de la Información</h3>
                 <p>Sus datos son utilizados exclusivamente para:</p>
                 <ul>
                   <li>Gestión de la compra, envío y soporte técnico de Hardware.</li>
@@ -80,14 +80,14 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
                   <li>Envío de alertas del sistema sobre el Centro DevOps.</li>
                 </ul>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">3. Terceros y Compartición</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">3. Terceros y Compartición</h3>
                 <p>GLASTOR® no vende ni alquila bases de datos. Los datos sólo se comparten con socios logísticos aprobados (transporte de equipos) y pasarelas de pago cifradas de extremo a extremo.</p>
               </div>
             }
 
             @case ('aviso') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Aviso Legal</h2>
+                <h2 class="glastor-h2 text-white mb-6">Aviso Legal</h2>
                 <p>En cumplimiento con las disposiciones vigentes en materia de servicios de la sociedad de la información y comercio electrónico, indicamos los datos de información general de este sitio web:</p>
                 
                 <div class="bg-zinc-950 p-6 rounded-lg border border-white/5 mt-6 mb-8 font-mono text-sm text-zinc-400">
@@ -98,20 +98,20 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
                   <p><strong>Email de Contacto:</strong> legales&#64;glastor.com</p>
                 </div>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">Propiedad Intelectual</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Propiedad Intelectual</h3>
                 <p>Todos los contenidos del portal (textos, gráficos, logotipos, código fuente y estructura arquitectónica del frontend y backend) son propiedad exclusiva de GLASTOR® o de terceros que han autorizado su uso.</p>
               </div>
             }
 
             @case ('cookies') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Política de Cookies</h2>
+                <h2 class="glastor-h2 text-white mb-6">Política de Cookies</h2>
                 <p>GLASTOR® utiliza tecnologías de rastreo y cookies para garantizar el funcionamiento del portal y mejorar la experiencia de usuario.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">Cookies Técnicas (Estrictamente Necesarias)</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Cookies Técnicas (Estrictamente Necesarias)</h3>
                 <p>Aquellas que permiten al usuario la navegación a través de la plataforma y la utilización del carrito de compras, el acceso al portal de administrador (DevOps Hub) y la seguridad del sistema.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">Cookies de Rendimiento</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Cookies de Rendimiento</h3>
                 <p>Permiten rastrear métricas de velocidad de carga y telemetría de errores del frontend. No recopilan datos identificables personalmente.</p>
                 
                 <div class="mt-8">
@@ -122,24 +122,24 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
 
             @case ('ventas') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Condiciones Generales de Venta</h2>
+                <h2 class="glastor-h2 text-white mb-6">Condiciones Generales de Venta</h2>
                 <p>Las presentes Condiciones Generales regulan la compra de hardware y licencias de software ofrecidas en el catálogo B2B de GLASTOR®.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">1. Proceso de Compra</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">1. Proceso de Compra</h3>
                 <p>Los pedidos se procesan de forma automatizada. GLASTOR® se reserva el derecho de cancelar transacciones que presenten irregularidades algorítmicas de fraude o falta de stock en el pipeline logístico.</p>
 
-                <h3 class="text-xl text-white mt-8 mb-4">2. Garantía Técnica</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">2. Garantía Técnica</h3>
                 <p>Todo el hardware suministrado por GLASTOR® (estaciones de trabajo, POS, equipos rugerizados) cuenta con una garantía industrial estándar de 3 años, expandible a 5 años mediante programas de cobertura Enterprise.</p>
               </div>
             }
 
             @case ('accesibilidad') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Declaración de Accesibilidad</h2>
+                <h2 class="glastor-h2 text-white mb-6">Declaración de Accesibilidad</h2>
                 <p>GLASTOR® se compromete a proporcionar un sitio web que sea accesible para el público más amplio posible, independientemente de la tecnología o capacidad.</p>
                 <p class="mt-4">Trabajamos continuamente para aumentar la usabilidad general de nuestra plataforma, operando bajo las directrices de las <strong>Pautas de Accesibilidad al Contenido en la Web (WCAG) 2.1</strong> en nivel AA.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">Ajustes Implementados</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Ajustes Implementados</h3>
                 <ul>
                   <li>Contraste dinámico adaptativo (Modo Oscuro Premium).</li>
                   <li>Estructura semántica de etiquetas HTML5 para lectores de pantalla.</li>
@@ -150,7 +150,7 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
 
             @case ('confidencialidad') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Aviso de Confidencialidad</h2>
+                <h2 class="glastor-h2 text-white mb-6">Aviso de Confidencialidad</h2>
                 <p>Este portal y todos sus módulos internos, particularmente el <strong>DevOps Hub</strong> y la consola de administración, contienen información privilegiada y herramientas de infraestructura crítica.</p>
                 <div class="bg-red-950/30 border border-red-500/30 p-6 rounded-lg mt-6">
                   <p class="text-red-400 font-medium mb-2">Advertencia Estricta</p>
@@ -161,10 +161,10 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
 
             @case ('consumidor') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">Defensa del Consumidor (Ley 24.240)</h2>
+                <h2 class="glastor-h2 text-white mb-6">Defensa del Consumidor (Ley 24.240)</h2>
                 <p>De conformidad con las leyes de protección al consumidor de la República Argentina, GLASTOR® asegura el cumplimiento total de los derechos del cliente.</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">Botón de Arrepentimiento</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Botón de Arrepentimiento</h3>
                 <p>Usted tiene el derecho irrevocable a revocar la aceptación de cualquier compra realizada online dentro del plazo de <strong>10 (diez) días corridos</strong> desde la recepción del bien o celebración del contrato, lo último que ocurra.</p>
                 
                 <p class="mt-4">Para ejercer este derecho, comuníquese con nuestro departamento comercial. Los gastos de devolución corren por cuenta de GLASTOR®.</p>
@@ -173,13 +173,13 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
 
             @case ('rgpd') {
               <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 class="text-3xl font-display text-white mb-6">RGPD / Marco Europeo y Argentino 2026</h2>
+                <h2 class="glastor-h2 text-white mb-6">RGPD / Marco Europeo y Argentino 2026</h2>
                 <p>Este apartado rige el tratamiento transfronterizo de los datos personales, asegurando compatibilidad con el <strong>Reglamento General de Protección de Datos (RGPD) Europeo</strong> y la Ley de Protección de Datos Personales Argentina (Ley 25.326 y sus reformas al 2026).</p>
                 
-                <h3 class="text-xl text-white mt-8 mb-4">Derechos ARCO</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Derechos ARCO</h3>
                 <p>Usted puede ejercer sus derechos de Acceso, Rectificación, Cancelación y Oposición sobre sus datos enviando una solicitud formal al oficial de cumplimiento normativo en <code>dpo&#64;glastor.com</code>.</p>
 
-                <h3 class="text-xl text-white mt-8 mb-4">Portabilidad de Datos</h3>
+                <h3 class="glastor-h4 text-white mt-8 mb-4">Portabilidad de Datos</h3>
                 <p>Nuestros sistemas Cloud Native permiten exportar su historial de telemetría y facturación en formato JSON/CSV a petición del interesado de forma automatizada y sin costo, en un plazo máximo de 72 horas.</p>
               </div>
             }

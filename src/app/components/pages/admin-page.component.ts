@@ -121,6 +121,7 @@ export class AdminPageComponent implements OnInit {
     stock: new FormControl<number>(10, { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
     status: new FormControl<'draft' | 'published' | 'archived'>('published'),
     publishDate: new FormControl(''),
+    badgesRaw: new FormControl(''),
     seo: new FormGroup({
       slug: new FormControl(''),
       metaTitle: new FormControl(''),
@@ -305,6 +306,7 @@ export class AdminPageComponent implements OnInit {
       stock: prod.stock,
       status: prod.status || 'published',
       publishDate: prod.publishDate || '',
+      badgesRaw: prod.badges ? prod.badges.join('\n') : '',
       seo: prod.seo || { slug: '', metaTitle: '', metaDescription: '', altText: '' },
       aboutModel: prod.aboutModel || '',
       features: prod.features || '',
@@ -331,7 +333,7 @@ export class AdminPageComponent implements OnInit {
       id: '', name: '', category: 'tecnologia', price: 299,
       description: '', image: '', galleryRaw: '',
       material: '', dimensions: '', weight: '', stock: 10,
-      status: 'published', publishDate: '',
+      status: 'published', publishDate: '', badgesRaw: '',
       aboutModel: '', features: '', specifications: ''
     });
     this.dynamicAttributes.clear();
@@ -341,7 +343,10 @@ export class AdminPageComponent implements OnInit {
   async deleteProduct(id: string) {
     if (!confirm('¿ESTÁS ABSOLUTAMENTE SEGURO? Esta acción purgará el nodo de SQLite y reconstruirá el sitemap.')) return;
     try {
-      const res = await fetch(`/api/productos/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/productos/${id}`, { 
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${this.adminToken}` }
+      });
       if (res.ok) {
         this.appState.triggerToast('success', 'NODO ELIMINADO', `Pieza ${id} destruida del catálogo.`);
         this.appState.loadProducts(); // recargar
@@ -362,13 +367,17 @@ export class AdminPageComponent implements OnInit {
     const prod: any = {
       ...val,
       gallery: val.galleryRaw ? (val.galleryRaw as string).split('\n').filter(s => s.trim()) : [],
+      badges: val.badgesRaw ? (val.badgesRaw as string).split('\n').filter(s => s.trim()) : [],
       id: isEdit ? this.editingProductId() : 'prod_' + Date.now()
     };
     
     try {
       const res = await fetch('/api/productos/guardar', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.adminToken}`
+        },
         body: JSON.stringify(prod)
       });
       if (res.ok) {

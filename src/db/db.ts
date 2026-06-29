@@ -68,7 +68,7 @@ export async function seedDatabaseIfEmpty() {
   let shouldReseed = false;
   try {
     const productsCount = await db.select({ count: drizzleSql<number>`cast(count(*) as integer)` }).from(schema.products);
-    if (productsCount[0].count < 30) {
+    if (productsCount[0].count === 0) {
       shouldReseed = true;
     }
   } catch (err) {

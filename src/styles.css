@@ -495,3 +495,57 @@ nav.scrolled {
     color: #025928; /* Dark green for 7:1 contrast on white */
   }
 }
+
+/* ==========================================================================
+   GLASTOR TYPOGRAPHY SYSTEM
+   Base definitions for semantic elements and custom components
+   ========================================================================== */
+@layer base {
+  h1, h2, h3 {
+    @apply font-display font-black uppercase tracking-tighter;
+  }
+  h4 {
+    @apply font-sans font-bold uppercase tracking-tight text-white;
+  }
+  h5 {
+    @apply font-mono font-black uppercase tracking-[0.2em] text-[#41BF84];
+  }
+  h6 {
+    @apply font-sans font-bold uppercase tracking-wider text-zinc-300;
+  }
+}
+
+@layer components {
+  /* H1: Massive hero headings */
+  .glastor-h1 {
+    @apply text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.85] font-display font-black uppercase tracking-tighter;
+  }
+  /* H2: Section / Page headings */
+  .glastor-h2 {
+    @apply text-[clamp(1.75rem,3.5vw,3rem)] leading-[0.9] font-display font-black uppercase tracking-tight;
+  }
+  /* H3: Card / Inner section headings */
+  .glastor-h3 {
+    @apply text-[clamp(1.25rem,2vw,2rem)] leading-[0.95] font-display font-black uppercase tracking-tight;
+  }
+  /* H4: Component titles */
+  .glastor-h4 {
+    @apply text-2xl md:text-3xl font-sans font-bold uppercase tracking-tight text-white leading-tight;
+  }
+  /* H5: Overlines, technical metadata */
+  .glastor-h5 {
+    @apply text-[10px] md:text-xs font-mono font-black uppercase tracking-[0.2em] text-[#41BF84];
+  }
+  /* H6: UI micro-titles */
+  .glastor-h6 {
+    @apply text-sm font-sans font-bold uppercase tracking-wider text-zinc-300;
+  }
+  
+  /* Body Text */
+  .glastor-subtitle {
+    @apply text-lg md:text-xl font-sans font-light text-zinc-300 leading-relaxed;
+  }
+  .glastor-desc {
+    @apply text-sm md:text-base font-sans font-normal text-zinc-400 leading-relaxed;
+  }
+}

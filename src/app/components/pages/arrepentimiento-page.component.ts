@@ -25,8 +25,8 @@ import { DeliveryBox01Icon, SentIcon, Refresh01Icon, CheckmarkBadge01Icon } from
                 [class.bg-opacity-10]="isCinematicGlow()" [class.text-rose-500]="isCinematicGlow()" [class.text-white]="!isCinematicGlow()">
             <hugeicons-icon [icon]="DeliveryBox01Icon" [size]="32" [strokeWidth]="1.5"></hugeicons-icon>
           </span>
-          <h1 class="text-3xl md:text-5xl font-display font-medium tracking-tight mb-4 uppercase">Botón de Arrepentimiento</h1>
-          <p class="text-sm md:text-base font-light" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+          <h1 class="glastor-h2 text-center mb-4">Botón de Arrepentimiento</h1>
+          <p class="glastor-subtitle max-w-xl mx-auto" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
             Formulario directo de revocación de compra (Ley 24.240). Complete los datos de la operación para iniciar el proceso de devolución de manera automática y sin trabas.
           </p>
         </div>
@@ -124,7 +124,7 @@ import { DeliveryBox01Icon, SentIcon, Refresh01Icon, CheckmarkBadge01Icon } from
               <hugeicons-icon [icon]="CheckmarkBadge01Icon" [size]="48" [strokeWidth]="1.5"></hugeicons-icon>
             </div>
 
-            <h2 class="text-2xl font-black uppercase text-emerald-500 tracking-tight">Trámite Iniciado Correctamente</h2>
+            <h2 class="glastor-h2 text-center text-emerald-500">Trámite Iniciado Correctamente</h2>
             <p class="text-sm font-medium" [class.text-zinc-300]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()">
               Hemos registrado su solicitud de revocación. Nuestro sistema automatizado procesará la devolución.
             </p>

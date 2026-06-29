@@ -27,8 +27,8 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
           </div>
 
           <div class="space-y-2">
-            <h2 [class]="'text-xl md:text-2xl font-black uppercase ' + 'text-white'">¡Pedido Autorizado y Procesado!</h2>
-            <p class="text-xs text-zinc-500 leading-normal max-w-sm mx-auto">
+            <h2 class="glastor-h2 text-white">¡Pedido Autorizado y Procesado!</h2>
+            <p class="glastor-desc max-w-sm mx-auto">
               La planta logística de GLASTOR ® preparará su despacho premium paletizado de manera inmediata.
             </p>
           </div>
@@ -71,8 +71,8 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
         <div class="space-y-6">
           <div class="text-left space-y-1">
             <span class="text-[10px] font-mono tracking-widest text-zinc-400 uppercase font-black block">Pasarela Criptológica Segura</span>
-            <h1 [class]="'text-2xl md:text-3xl font-black tracking-tight ' + 'text-white'">Formulario de Checkup</h1>
-            <p [class]="'text-xs ' + 'text-zinc-400'">Por favor, complete las directivas de entrega y el canal de liquidación bancaria.</p>
+            <h1 class="glastor-h1 text-white">Formulario de Checkup</h1>
+            <p class="glastor-desc">Por favor, complete las directivas de entrega y el canal de liquidación bancaria.</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -85,7 +85,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                                'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20'">
                   <hugeicons-icon [icon]="UserIcon" [size]="20" class="scale-80" [strokeWidth]="1.5" />
                 </span>
-                <h3 [class]="'text-xs font-black uppercase tracking-wider ' + 'text-white'">1. Datos Personales y Archivo de Envío</h3>
+                <h3 class="glastor-h5 text-white">1. Datos Personales y Archivo de Envío</h3>
               </div>
 
               <form [formGroup]="checkoutForm" (ngSubmit)="processCheckout()" class="space-y-5">
@@ -150,7 +150,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                                    'bg-[#41BF84]/10 text-[#41BF84] border border-[#41BF84]/20'">
                       <hugeicons-icon [icon]="Wallet01Icon" [size]="20" class="scale-85" [strokeWidth]="1.5" />
                     </span>
-                    <h3 [class]="'text-xs font-black uppercase tracking-wider ' + 'text-white'">2. Método de Pago Seguro</h3>
+                    <h3 class="glastor-h5 text-white">2. Método de Pago Seguro</h3>
                   </div>
 
                   <!-- Unified payment method selectors -->
@@ -333,9 +333,9 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
             <div class="lg:col-span-5 space-y-6">
               
               <!-- Cart items listing -->
-              <div [class]="'border rounded-lg p-6 space-y-5 text-left ' + 
+              <div [class]="'rounded-lg border p-6 space-y-5 lg:sticky lg:top-28 ' + 
                              'bg-zinc-900/40 border-zinc-800/80 shadow-black/30'">
-                <h3 [class]="'text-xs font-black uppercase tracking-wider ' + 'text-white'">Resumen del Pedido</h3>
+                <h3 class="glastor-h5 text-white">Resumen de tu Orden</h3>
                 
                 @if (cart.length > 0) {
                   <div [class]="'divide-y max-h-72 overflow-y-auto pr-1 ' + 'divide-zinc-850'">
@@ -399,7 +399,9 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
               <!-- DETAILED INVOICE COST BOX -->
               <div [class]="'border rounded-lg p-6 space-y-3.5 text-left ' + 
                              'bg-zinc-950 border-zinc-850'">
-                <h3 [class]="'text-xs font-black uppercase tracking-wider ' + 'text-white'">Resumen de tu Orden</h3>
+                <div class="flex items-center gap-2 pb-4">
+                  <h3 class="glastor-h5 text-white">Resumen del Pedido</h3>
+                </div>
 
                 <div [class]="'space-y-2 text-xs ' + 'text-zinc-400'">
                   <div class="flex justify-between">

@@ -16,7 +16,7 @@ import gsap from 'gsap';
         <div class="flex flex-col items-center justify-center text-center mb-16 animate-fade-in-up">
           <div class="h-px bg-[#41BF84] w-12 mb-6"></div>
           <span class="text-[#41BF84] font-mono text-[10px] uppercase font-black tracking-widest mb-2 block">// ESTÁNDARES GLASTOR</span>
-          <h2 class="font-sans font-black text-4xl md:text-5xl text-white uppercase tracking-tighter">Pilares de <span class="text-zinc-500">Confianza</span></h2>
+          <h2 class="glastor-h1 text-white">Pilares de <span class="text-zinc-500">Confianza</span></h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -38,18 +38,30 @@ export class AppStateService {
   customCategories = signal<Array<{value: string, label: string}>>([]);
   searchQuery = signal<string>('');
   selectedCategory = signal<string>('todos');
+  sortOrder = signal<'default' | 'price-asc' | 'price-desc' | 'name-asc'>('default');
 
   filteredProducts = computed(() => {
     const term = this.searchQuery().toLowerCase().trim();
     const cat = this.selectedCategory();
+    const order = this.sortOrder();
     
-    return this.products().filter(p => {
+    let filtered = this.products().filter(p => {
       const matchCat = (cat === 'todos' || p.category === cat);
       const matchSearch = p.name.toLowerCase().includes(term) || 
                           p.description.toLowerCase().includes(term) ||
                           p.category.toLowerCase().includes(term);
       return matchCat && matchSearch;
     });
+
+    if (order === 'price-asc') {
+      filtered = filtered.sort((a, b) => a.price - b.price);
+    } else if (order === 'price-desc') {
+      filtered = filtered.sort((a, b) => b.price - a.price);
+    } else if (order === 'name-asc') {
+      filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return filtered;
   });
 
   publicProducts = computed(() => {

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AppStateService } from "../../app-state.service";
 import { Product } from "../../models";
 import { HugeiconsIconComponent } from '@hugeicons/angular';
-import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Icon, Location01Icon, ShieldCheck, Shield01Icon, DeliveryBox01Icon } from '@hugeicons/core-free-icons';
+import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Icon, Location01Icon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: "app-product-detail-page",
@@ -36,29 +36,15 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
         </div>
       </div>
 
-      <!-- Split Layout content detail -->
+            <!-- Split Layout content detail -->
       @if (product(); as product) {
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start relative">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start relative mb-16">
           
-          <!-- LEFT COLUMN: Image Gallery (4/12) -->
-          <div class="lg:col-span-4 flex flex-col md:flex-row gap-4 lg:sticky lg:top-28">
-            <!-- Thumbnails strip (Hidden on small, flex on md+) -->
-            <div class="hidden md:flex flex-row md:flex-col gap-3 md:w-16 shrink-0 overflow-x-auto md:overflow-visible">
-              @for (img of [product.image].concat(product.gallery || []); track img; let idx = $index) {
-                <button (click)="selectedGalleryImage.set(img); selectedPerspectiveIndex.set(idx)"
-                        [class]="'border rounded-lg overflow-hidden aspect-square p-1 transition-all flex items-center justify-center cursor-pointer relative shrink-0 w-16 md:w-full ' + 
-                                 ((selectedGalleryImage() || product.image) === img 
-                                  ? (isCinematicGlow() ? 'border-amber-500 bg-zinc-900 ring-2 ring-[#41BF84]/50' : 'border-zinc-950 bg-white ring-2 ring-zinc-900') 
-                                  : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 hover:border-zinc-700' : 'bg-white border-zinc-200 hover:border-zinc-300'))">
-                  <img [src]="img" referrerpolicy="no-referrer" 
-                       [class]="'w-full h-full object-cover rounded-lg ' + 
-                                ((!product.gallery || product.gallery.length === 0) && idx === 1 ? 'scale-125 saturate-110' : ((!product.gallery || product.gallery.length === 0) && idx === 2 ? 'contrast-115 sepia-20' : ((!product.gallery || product.gallery.length === 0) && idx === 3 ? 'scale-150 grayscale' : '')))">
-                </button>
-              }
-            </div>
-
+          <!-- LEFT COLUMN: Image Gallery (7/12) -->
+          <div class="lg:col-span-7 flex flex-col gap-4 lg:sticky lg:top-28">
+            
             <!-- 3D Perspective Viewport for Product Preview -->
-            <div class="container-3d w-full flex-grow aspect-square md:aspect-[4/5] lg:aspect-square">
+            <div class="container-3d w-full flex-grow aspect-square md:aspect-[4/3] lg:aspect-[4/3]">
               <div class="tilt-card-3d w-full h-full relative border rounded-lg overflow-hidden shadow-sm group"
                    id="interactive-3d-tilt-preview"
                    [class.bg-zinc-950]="isCinematicGlow()"
@@ -67,7 +53,7 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
                    [class.border-zinc-200]="!isCinematicGlow()">
                 
                 <img [src]="selectedGalleryImage() || product.image" [alt]="product.name" referrerpolicy="no-referrer"
-                     class="w-full h-full object-contain p-1 transition-all duration-700 ease-out select-none"
+                     class="w-full h-full object-contain p-2 transition-all duration-700 ease-out select-none"
                      [class.scale-125]="(!product.gallery || product.gallery.length === 0) && selectedPerspectiveIndex() === 1"
                      [class.saturate-120]="(!product.gallery || product.gallery.length === 0) && selectedPerspectiveIndex() === 1"
                      [class.brightness-105]="(!product.gallery || product.gallery.length === 0) && selectedPerspectiveIndex() === 1"
@@ -75,10 +61,10 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
                      [class.sepia-20]="(!product.gallery || product.gallery.length === 0) && selectedPerspectiveIndex() === 2"
                      [class.saturate-85]="(!product.gallery || product.gallery.length === 0) && selectedPerspectiveIndex() === 2">
                 
-                <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 
                 <!-- Perspective labels overlay -->
-                <div class="absolute bottom-4 left-4 bg-zinc-950/80 backdrop-blur-md text-white px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wide font-medium z-10 pointer-events-none uppercase">
+                <div class="absolute bottom-4 left-4 bg-zinc-950/90 backdrop-blur-md text-white px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wide font-medium z-10 pointer-events-none uppercase border border-white/10">
                   @if (selectedPerspectiveIndex() === 0) {
                     VISTA GENERAL
                   } @else if (selectedPerspectiveIndex() === 1) {
@@ -89,23 +75,43 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
                 </div>
               </div>
             </div>
+
+            <!-- Thumbnails strip (horizontal) -->
+            <div class="flex flex-row gap-3 overflow-x-auto w-full pb-2 scrollbar-hide">
+              @for (img of [product.image].concat(product.gallery || []); track img; let idx = $index) {
+                <button (click)="selectedGalleryImage.set(img); selectedPerspectiveIndex.set(idx)"
+                        [class]="'border rounded-lg overflow-hidden aspect-square p-1 transition-all flex items-center justify-center cursor-pointer relative shrink-0 w-20 md:w-24 ' + 
+                                 ((selectedGalleryImage() || product.image) === img 
+                                  ? (isCinematicGlow() ? 'border-amber-500 bg-zinc-900 ring-2 ring-[#41BF84]/50' : 'border-zinc-950 bg-white ring-2 ring-zinc-900') 
+                                  : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 hover:border-zinc-700' : 'bg-white border-zinc-200 hover:border-zinc-300'))">
+                  <img [src]="img" referrerpolicy="no-referrer" 
+                       [class]="'w-full h-full object-cover rounded-lg ' + 
+                                ((!product.gallery || product.gallery.length === 0) && idx === 1 ? 'scale-125 saturate-110' : ((!product.gallery || product.gallery.length === 0) && idx === 2 ? 'contrast-115 sepia-20' : ((!product.gallery || product.gallery.length === 0) && idx === 3 ? 'scale-150 grayscale' : '')))">
+                </button>
+              }
+            </div>
           </div>
 
-          <!-- MIDDLE COLUMN: Product Info & Variations (5/12) -->
-          <div class="lg:col-span-5 space-y-7 lg:px-4">
+          <!-- RIGHT COLUMN: Buy Box & Info (5/12) -->
+          <div class="lg:col-span-5 space-y-7 lg:sticky lg:top-28">
             
-            <!-- Category & Brand -->
-            <div class="space-y-1">
-              <span class="text-xs text-[#41BF84] font-black tracking-widest uppercase cursor-pointer hover:underline" [class.text-[#41BF84]]="isCinematicGlow()">GLASTOR ® DIRECTCO</span>
-              <h1 [class]="'text-2xl md:text-3xl font-black tracking-tight leading-tight font-sans ' + 
+            <!-- Category, Brand & SKU -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-[#41BF84] font-black tracking-widest uppercase cursor-pointer hover:underline" [class.text-[#41BF84]]="isCinematicGlow()">GLASTOR ® DIRECTCO</span>
+                <span class="text-[10px] font-mono font-bold px-2 py-1 rounded-md" [class]="isCinematicGlow() ? 'bg-white/10 text-white' : 'bg-zinc-100 text-zinc-600'">
+                  MODELO: GLX-{{ product.id.slice(0,4).toUpperCase() }}
+                </span>
+              </div>
+              <h1 [class]="'glastor-h2 ' + 
                            (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">
                 {{ product.name }}
               </h1>
             </div>
 
             <!-- Ratings & Badges -->
-            <div class="flex flex-wrap items-center gap-3 border-b pb-4" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-              <div class="flex items-center gap-1 text-[#41BF84] cursor-pointer hover:text-[#41BF84]">
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="flex items-center gap-1 text-[#41BF84] cursor-pointer hover:text-[#41BF84]" (click)="activeTab.set('RESEÑAS')">
                 <span class="text-sm font-black">{{ product.rating.toFixed(1) }}</span>
                 <div class="flex gap-0.5">
                   @for (i of [1, 2, 3, 4, 5]; track i) {
@@ -128,143 +134,57 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
               }
             </div>
 
-            <!-- Variations (Simulated mapping from customizerConfig) -->
-
-
-            <!-- "Sobre este artículo" Bullets -->
-            <div class="space-y-4 pt-4 max-w-full">
-              <h3 class="text-lg font-black uppercase tracking-widest" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">Sobre este artículo</h3>
-              <div class="product-description-html break-words whitespace-normal overflow-hidden w-full" 
+            <!-- "Sobre este artículo" Bullets (Shortened for top section) -->
+            <div class="space-y-4 pt-2">
+              <div class="product-description-html break-words whitespace-normal overflow-hidden w-full line-clamp-3" 
                    [class]="'prose prose-sm max-w-none ' + (isCinematicGlow() ? 'prose-invert prose-p:text-zinc-400 prose-strong:text-white' : 'prose-p:text-zinc-600 prose-strong:text-zinc-900')" 
                    [innerHTML]="product.description">
               </div>
+              <button class="text-xs font-bold text-[#41BF84] uppercase tracking-wider hover:underline" (click)="activeTab.set('RESUMEN')">Ver descripción completa</button>
             </div>
 
-            <!-- Interactive Accordion -->
-            <div class="mt-8 border-t" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-              
-              <!-- Accordion Item 1: Acerca del Modelo -->
-              <div class="border-b" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-                <button (click)="toggleAccordion('ACERCA DEL MODELO')" 
-                        class="w-full flex items-center gap-3 py-4 text-left focus:outline-none group">
-                  <hugeicons-icon [icon]="ArrowRight01Icon" [size]="22" class="font-bold transition-transform duration-300"
-                        [class.rotate-90]="expandedAccordion() === 'ACERCA DEL MODELO'"
-                        [class.text-cyan-500]="isCinematicGlow()" [class.text-cyan-700]="!isCinematicGlow()"  [strokeWidth]="1.5" />
-                  <span class="text-xl font-black uppercase tracking-widest" 
-                        [class.text-white]="isCinematicGlow()" [class.text-black]="!isCinematicGlow()">
-                    ACERCA DEL MODELO
-                  </span>
-                </button>
-                <div class="grid transition-all duration-300"
-                     [style.gridTemplateRows]="expandedAccordion() === 'ACERCA DEL MODELO' ? '1fr' : '0fr'">
-                  <div class="overflow-hidden">
-                    <div class="pb-6 pl-10 pr-4 text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
-                      @if (product.aboutModel) {
-                        <div [innerHTML]="product.aboutModel"></div>
-                      } @else {
-                        Este producto pertenece a la línea profesional de <span class="font-bold text-[#41BF84] capitalize">{{ product.category }}</span>. Su ingeniería ha sido optimizada para garantizar la máxima durabilidad en condiciones de alta exigencia, combinando ergonomía de vanguardia con un rendimiento industrial ininterrumpido.
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Accordion Item 2: Caracteristicas -->
-              <div class="border-b" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-                <button (click)="toggleAccordion('FEATURES')" 
-                        class="w-full flex items-center gap-3 py-4 text-left focus:outline-none group">
-                  <hugeicons-icon [icon]="ArrowRight01Icon" [size]="22" class="font-bold transition-transform duration-300"
-                        [class.rotate-90]="expandedAccordion() === 'FEATURES'"
-                        [class.text-cyan-500]="isCinematicGlow()" [class.text-cyan-700]="!isCinematicGlow()"  [strokeWidth]="1.5" />
-                  <span class="text-xl font-black uppercase tracking-widest" 
-                        [class.text-white]="isCinematicGlow()" [class.text-black]="!isCinematicGlow()">
-                    CARACTERÍSTICAS PRINCIPALES
-                  </span>
-                </button>
-                <div class="grid transition-all duration-300"
-                     [style.gridTemplateRows]="expandedAccordion() === 'FEATURES' ? '1fr' : '0fr'">
-                  <div class="overflow-hidden">
-                    <div class="pb-6 pl-10 pr-4 text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
-                      <div [class]="'prose prose-sm ' + (isCinematicGlow() ? 'prose-invert' : '')" [innerHTML]="product.features"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Accordion Item 3: Especificaciones -->
-              <div class="border-b" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-                <button (click)="toggleAccordion('SPECS')" 
-                        class="w-full flex items-center gap-3 py-4 text-left focus:outline-none group">
-                  <hugeicons-icon [icon]="ArrowRight01Icon" [size]="22" class="font-bold transition-transform duration-300"
-                        [class.rotate-90]="expandedAccordion() === 'SPECS'"
-                        [class.text-cyan-500]="isCinematicGlow()" [class.text-cyan-700]="!isCinematicGlow()"  [strokeWidth]="1.5" />
-                  <span class="text-xl font-black uppercase tracking-widest" 
-                        [class.text-white]="isCinematicGlow()" [class.text-black]="!isCinematicGlow()">
-                    ESPECIFICACIONES TÉCNICAS
-                  </span>
-                </button>
-                <div class="grid transition-all duration-300"
-                     [style.gridTemplateRows]="expandedAccordion() === 'SPECS' ? '1fr' : '0fr'">
-                  <div class="overflow-hidden">
-                    <div class="pb-6 pl-10 pr-4 text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
-                      <div [class]="'prose prose-sm ' + (isCinematicGlow() ? 'prose-invert' : '')" [innerHTML]="product.specifications"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-
-          </div>
-
-          <!-- RIGHT COLUMN: Sticky Buy Box (3/12) -->
-          <div class="lg:col-span-3 lg:sticky lg:top-28 space-y-4">
-            
+            <!-- BUY BOX -->
             <div id="product-detail-pricing-cta"
                  [class]="isCinematicGlow() 
-                    ? 'bg-[#050505]/60 backdrop-blur-xl border border-white/5 shadow-[0_0_40px_rgba(0,0,0,0.5)]' 
-                    : 'bg-white border border-zinc-200 shadow-xl'"
-                 class="rounded-lg p-6 flex flex-col space-y-5 transition-all">
+                    ? 'bg-[#050505]/80 backdrop-blur-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.4)]' 
+                    : 'bg-white border border-zinc-200 shadow-2xl'"
+                 class="rounded-xl p-6 sm:p-8 flex flex-col space-y-6 transition-all mt-4">
               
               <!-- Price Block -->
-              <div class="space-y-1 text-left">
-                <span class="text-[10px] font-mono text-zinc-400 block font-bold tracking-wider">PRECIO DE INVERSIÓN</span>
-                <span class="text-3xl font-black font-mono flex items-baseline gap-1.5" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">
-                  {{ formatPrice((selectedVariantObj()?.price || product.price)) }}
-                </span>
-                <span class="text-[10px] text-[#41BF84] block font-bold font-mono uppercase tracking-widest">IVA del 21% incluido y envío prioritario gratuito.</span>
+              <div class="space-y-1 text-left flex justify-between items-start">
+                <div>
+                  <span class="text-[10px] font-mono text-zinc-400 block font-bold tracking-wider">PRECIO DE INVERSIÓN (ARS)</span>
+                  <span class="text-4xl font-black font-mono flex items-baseline gap-1.5" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">
+                    {{ formatPrice((selectedVariantObj()?.price || product.price)) }}
+                  </span>
+                  <span class="text-[10px] text-[#41BF84] block font-bold font-mono uppercase tracking-widest mt-1">IVA del 21% incluido.</span>
+                </div>
+                <!-- Stock status -->
+                @if ((selectedVariantObj()?.stock ?? product.stock) > 0) {
+                  <div class="text-sm font-black text-[#41BF84] bg-[#41BF84]/10 px-3 py-1.5 rounded-lg border border-[#41BF84]/20 uppercase tracking-widest">Disponible</div>
+                } @else {
+                  <div class="text-sm font-black text-rose-500 bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20 uppercase tracking-widest">Agotado</div>
+                }
               </div>
 
               <!-- Shipping Info Mini -->
-              <div class="space-y-1.5 text-xs" [class.text-zinc-300]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()">
+              <div class="space-y-1.5 text-xs border-y py-4" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-100]="!isCinematicGlow()" [class.text-zinc-300]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()">
                 <div class="flex gap-2">
                   <hugeicons-icon [icon]="TruckIcon" [size]="16" [strokeWidth]="1.5" />
-                  <span>Entrega GRATIS el <span class="font-bold">{{ deliveryDate() }}</span>. Realiza el pedido en <span class="text-[#41BF84] font-bold">{{ orderCountdown() }}</span>.</span>
-                </div>
-                <div class="flex gap-2 text-[#41BF84] cursor-pointer hover:underline mt-1">
-                  <hugeicons-icon [icon]="Location01Icon" [size]="14" [strokeWidth]="1.5" />
-                  <span class="font-bold text-[11px]">Enviar a Zona Logística Primaria</span>
+                  <span>Envío <span class="text-[#41BF84] font-black uppercase tracking-wider">GRATIS</span> el <span class="font-bold">{{ deliveryDate() }}</span>. <br>Pedido antes de: <span class="text-[#41BF84] font-bold">{{ orderCountdown() }}</span>.</span>
                 </div>
               </div>
 
-              <!-- Stock status -->
-              @if ((selectedVariantObj()?.stock ?? product.stock) > 0) {
-                <div class="text-xl font-black text-[#41BF84]">Disponible</div>
-              } @else {
-                <div class="text-xl font-black text-rose-500">Agotado</div>
-              }
-
               <!-- Variant Selector -->
               @if (product.variants && product.variants.length > 0) {
-                <div class="flex flex-col gap-1 mt-2">
+                <div class="flex flex-col gap-2">
                   <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Variante</label>
                   <div class="flex flex-wrap gap-2">
                     @for (v of product.variants; track v.id) {
                       <button (click)="selectedVariantId.set(v.id)"
-                              [class]="'px-3 py-2 border rounded-lg text-xs font-bold transition-all cursor-pointer ' + 
+                              [class]="'px-4 py-2.5 border rounded-lg text-xs font-black transition-all cursor-pointer ' + 
                                        (selectedVariantId() === v.id 
-                                        ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84] bg-[#41BF84]/10' : 'border-[#41BF84] text-[#41BF84] bg-[#41BF84]/10') 
+                                        ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84] bg-[#41BF84]/10 ring-1 ring-[#41BF84]/50' : 'border-zinc-900 text-white bg-zinc-900 ring-1 ring-zinc-900') 
                                         : (isCinematicGlow() ? 'border-zinc-700 text-zinc-400 hover:border-zinc-500' : 'border-zinc-200 text-zinc-600 hover:border-zinc-400'))">
                         {{ v.name }}
                       </button>
@@ -273,169 +193,220 @@ import { ArrowLeft01Icon, StarIcon, StarHalfIcon, ArrowRight01Icon, ShoppingCart
                 </div>
               }
 
-              <!-- Quantity Selector -->
-              <div class="flex flex-col gap-1">
-                <select [class]="'w-full p-2.5 rounded-lg border text-sm font-bold cursor-pointer outline-none transition-colors ' + 
-                                 (isCinematicGlow() ? 'bg-zinc-950 border-zinc-800 text-white focus:border-[#41BF84]' : 'bg-zinc-50 border-zinc-200 text-zinc-900 focus:border-zinc-500')"
-                        [disabled]="(selectedVariantObj()?.stock ?? product.stock) === 0"
-                        (change)="selectedQuantity.set(+$any($event.target).value)">
-                  @for (qty of getQuantityOptions(selectedVariantObj()?.stock ?? product.stock); track qty) {
-                    <option [value]="qty">Cantidad: {{ qty }}</option>
-                  }
-                </select>
-              </div>
-
-              <!-- Action buttons -->
+              <!-- Action Area -->
               <div class="flex flex-col gap-3 pt-2">
-                <button id="btn-detail-add-to-cart"
-                        (click)="addToCart(product)"
-                        [class]="'w-full py-3.5 rounded-full text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95 ' + 
-                                 (isCinematicGlow() ? 'bg-[#41BF84] hover:bg-[#359f6b] text-black shadow-[0_0_20px_rgba(0,255,102,0.25)]' : 'bg-[#41BF84] hover:bg-[#359f6b] text-black')">
-                  Añadir al carrito
-                </button>
+                <div class="flex gap-3">
+                  <!-- Quantity Selector -->
+                  <div class="w-1/3">
+                    <select [class]="'w-full h-full p-3.5 rounded-lg border text-sm font-black cursor-pointer outline-none transition-colors ' + 
+                                     (isCinematicGlow() ? 'bg-zinc-950 border-zinc-800 text-white focus:border-[#41BF84]' : 'bg-zinc-50 border-zinc-200 text-zinc-900 focus:border-zinc-500')"
+                            [disabled]="(selectedVariantObj()?.stock ?? product.stock) === 0"
+                            (change)="selectedQuantity.set(+$any($event.target).value)">
+                      @for (qty of getQuantityOptions(selectedVariantObj()?.stock ?? product.stock); track qty) {
+                        <option [value]="qty">{{ qty }} UND</option>
+                      }
+                    </select>
+                  </div>
+                  <!-- Add to Cart Ghost Button -->
+                  <button id="btn-detail-add-to-cart"
+                          (click)="addToCart(product)"
+                          [class]="'w-2/3 py-3.5 rounded-lg text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95 uppercase tracking-wider border-2 ' + 
+                                   (isCinematicGlow() ? 'bg-transparent border-[#41BF84] text-[#41BF84] hover:bg-[#41BF84] hover:text-black hover:shadow-[0_0_30px_rgba(0,255,102,0.3)]' : 'bg-white border-[#41BF84] text-[#41BF84] hover:bg-[#41BF84] hover:text-white')">
+                    Añadir al carrito
+                  </button>
+                </div>
+                
                 <button (click)="addToCart(product)"
-                        [class]="'w-full py-3.5 rounded-full text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95 ' + 
-                                 (isCinematicGlow() ? 'bg-transparent hover:bg-white/5 border border-white/10 hover:border-white/30 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-white')">
-                  Comprar ahora
+                        [class]="'w-full py-3.5 rounded-lg text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95 uppercase tracking-wider ' + 
+                                 (isCinematicGlow() ? 'bg-zinc-800 hover:bg-zinc-700 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-white')">
+                  Comprar ahora (1-Clic)
                 </button>
               </div>
-
-              <!-- Seller Info Matrix -->
-              <div class="grid grid-cols-[1fr_2fr] gap-x-2 gap-y-1 text-[10px] pt-4" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
-                <span>Remitente</span>
-                <span class="font-bold" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">GLASTOR ® Direct</span>
-                <span>Vendedor</span>
-                <span class="font-bold" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">GLASTOR ® Automations</span>
-                <span>Devoluciones</span>
-                <span class="text-[#41BF84] cursor-pointer hover:underline">Reembolso en 30 días</span>
-                <span>Atención</span>
-                <span class="text-[#41BF84] cursor-pointer hover:underline">Soporte GLASTOR Care</span>
-              </div>
-
+              
               <!-- Add to List -->
-              <div class="pt-4 border-t flex items-center gap-3" [class.border-white/10]="isCinematicGlow()">
-                <button (click)="toggleWishlist(product.id, $event)"
-                        [class]="'h-12 w-12 rounded-lg border flex items-center justify-center transition-all flex-shrink-0 cursor-pointer active:scale-95 ' + 
-                                 (isInWishlist(product.id) 
-                                  ? (isCinematicGlow() ? 'bg-[#050505]/80 backdrop-blur-md border-[#41BF84]/30 text-[#41BF84] shadow-[0_0_15px_rgba(0,255,102,0.2)]' : 'bg-zinc-950 border-zinc-950 text-white shadow-md') 
-                                  : (isCinematicGlow() ? 'bg-[#050505]/40 backdrop-blur-md border-white/10 text-zinc-400 hover:text-white hover:border-white/30' : 'bg-white border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300'))">
-                  <hugeicons-icon [icon]="FavouriteIcon" [size]="20" [strokeWidth]="1.5" [class]="isInWishlist(product.id) ? 'fill-current scale-110' : ''" />
+              <div class="pt-2 flex justify-center">
+                <button (click)="toggleWishlist(product.id, $event)" class="text-xs font-bold text-zinc-500 hover:text-[#41BF84] flex items-center gap-2 transition-colors uppercase tracking-widest">
+                  <hugeicons-icon [icon]="FavouriteIcon" [size]="16" [strokeWidth]="2" [class]="isInWishlist(product.id) ? 'fill-current text-[#41BF84]' : ''" />
+                  Agregar a lista de deseos
                 </button>
-                <div class="text-[10px] uppercase tracking-wider text-zinc-500 font-bold leading-tight">
-                    Agregar este equipo <br> a mi lista de deseos
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- TABS SECTION -->
+        <div class="mt-8 border-t pt-2" [class.border-zinc-850]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
+          
+          <!-- Tabs Navigation -->
+          <div class="flex overflow-x-auto scrollbar-hide border-b" [class.border-zinc-850]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
+            <button (click)="activeTab.set('RESUMEN')"
+                    [class]="'px-6 py-4 text-sm font-black uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 ' + 
+                             (activeTab() === 'RESUMEN' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-500 hover:text-zinc-300')">
+              Resumen
+            </button>
+            <button (click)="activeTab.set('ESPECIFICACIONES')"
+                    [class]="'px-6 py-4 text-sm font-black uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 ' + 
+                             (activeTab() === 'ESPECIFICACIONES' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-500 hover:text-zinc-300')">
+              Especificaciones Técnicas
+            </button>
+            <button (click)="activeTab.set('RESEÑAS')"
+                    [class]="'px-6 py-4 text-sm font-black uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 ' + 
+                             (activeTab() === 'RESEÑAS' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-500 hover:text-zinc-300')">
+              Reseñas ({{ totalReviewsCount }})
+            </button>
+          </div>
+
+          <!-- Tabs Content -->
+          <div class="pt-8 lg:pt-12 pb-16 min-h-[400px]">
+            
+            <!-- RESUMEN TAB -->
+            <div [class.hidden]="activeTab() !== 'RESUMEN'" class="animate-fade-in space-y-12">
+              <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="space-y-6">
+                  <h3 class="glastor-h3" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">Acerca del Modelo</h3>
+                  <div class="text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+                    @if (product.aboutModel) {
+                      <div [innerHTML]="product.aboutModel"></div>
+                    } @else {
+                      Este producto pertenece a la línea profesional de <span class="font-bold text-[#41BF84] capitalize">{{ product.category }}</span>. Su ingeniería ha sido optimizada para garantizar la máxima durabilidad en condiciones de alta exigencia, combinando ergonomía de vanguardia con un rendimiento industrial ininterrumpido.
+                    }
+                  </div>
+                </div>
+                <div class="space-y-6">
+                  <h3 class="glastor-h3" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">Características Principales</h3>
+                  <div class="text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+                    <div [class]="'prose prose-sm ' + (isCinematicGlow() ? 'prose-invert' : '')" [innerHTML]="product.features || product.description"></div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- GOURMET SERVICES STATS -->
-            <div id="product-detail-gourmet-perks" 
-                 [class]="'grid grid-cols-3 gap-2 py-4 px-2 text-center text-[9px] font-black uppercase ' + 
-                          (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
-              <div class="space-y-1.5 flex flex-col items-center">
-                <hugeicons-icon [icon]="ShieldCheck" [size]="20" [strokeWidth]="1.5" class="text-zinc-400 block mb-1" />
-                <span>Transacción<br>Segura</span>
+            <!-- ESPECIFICACIONES TAB -->
+            <div [class.hidden]="activeTab() !== 'ESPECIFICACIONES'" class="animate-fade-in max-w-4xl mx-auto">
+              <h3 class="glastor-h3 mb-8" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">Especificaciones del Producto</h3>
+              
+              <div class="border rounded-lg overflow-hidden" [class.border-zinc-850]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
+                <table class="w-full text-left text-sm">
+                  <tbody class="divide-y" [class.divide-zinc-850]="isCinematicGlow()" [class.divide-zinc-200]="!isCinematicGlow()">
+                    <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px] w-1/3" [class.text-zinc-500]="isCinematicGlow()">Modelo / SKU</th>
+                      <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">GLX-{{ product.id.slice(0,4).toUpperCase() }}</td>
+                    </tr>
+                    <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-500]="isCinematicGlow()">Material Base</th>
+                      <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">{{ product.material || 'Aleación de Grado Industrial' }}</td>
+                    </tr>
+                    <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-500]="isCinematicGlow()">Dimensiones (LxWxH)</th>
+                      <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">{{ product.dimensions || 'N/A' }}</td>
+                    </tr>
+                    <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-500]="isCinematicGlow()">Peso Operativo</th>
+                      <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">{{ product.weight || 'N/A' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div class="space-y-1.5 border-x border-dashed flex flex-col items-center" [class.border-zinc-800]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-                <hugeicons-icon [icon]="Shield01Icon" [size]="20" [strokeWidth]="1.5" class="text-zinc-400 block mb-1" />
-                <span>Garantía de<br>5 años</span>
-              </div>
-              <div class="space-y-1.5 flex flex-col items-center">
-                <hugeicons-icon [icon]="DeliveryBox01Icon" [size]="20" [strokeWidth]="1.5" class="text-zinc-400 block mb-1" />
-                <span>Devoluciones<br>gratis</span>
+
+              @if(product.specifications) {
+                <div class="mt-8 text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+                  <div [class]="'prose prose-sm max-w-none ' + (isCinematicGlow() ? 'prose-invert' : '')" [innerHTML]="product.specifications"></div>
+                </div>
+              }
+            </div>
+
+            <!-- RESEÑAS TAB -->
+            <div [class.hidden]="activeTab() !== 'RESEÑAS'" class="animate-fade-in">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- Rating overview header -->
+                <div id="rating-overview-card"
+                     [class]="isCinematicGlow() ? 'bg-[#050505] border-white/5 text-white' : 'bg-zinc-50 border-zinc-200'"
+                     class="lg:col-span-4 border p-8 rounded-lg text-center space-y-4 transition-colors lg:sticky lg:top-28">
+                  <h5 class="glastor-h5 text-zinc-400">Calificación Global</h5>
+                  <div class="space-y-1">
+                    <span class="text-6xl font-black font-mono tracking-tight" [class.text-white]="isCinematicGlow()" [class.text-zinc-950]="!isCinematicGlow()">
+                      {{ product.rating.toFixed(1) }}
+                    </span>
+                    <span class="text-zinc-400 text-xs block font-mono">SOBRE 5.0 ESTRELLAS</span>
+                  </div>
+                  <div class="flex justify-center gap-1 text-[#41BF84]">
+                      @for (i of [1, 2, 3, 4, 5]; track i) {
+                        @if (product.rating >= i) {
+                          <svg viewBox="0 0 24 24" fill="currentColor" class="w-[20px] h-[20px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        } @else if (product.rating >= i - 0.5) {
+                          <svg viewBox="0 0 24 24" class="w-[20px] h-[20px] text-[#41BF84]"><defs><linearGradient [id]="'half2'+i" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half2'+i+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        } @else {
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[20px] h-[20px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        }
+                      }
+                  </div>
+                  <p class="text-[10px] text-[#41BF84] font-mono font-black uppercase tracking-widest bg-[#41BF84]/10 px-3 py-1.5 rounded-md inline-block">
+                    RECOMENDADO POR EL {{ recommendationPercent() }}%
+                  </p>
+
+                  <!-- Progress bars -->
+                  <div id="rating-breakdown-panel" class="pt-6 space-y-3 font-mono text-[10px]">
+                    @for (item of ratingBreakdown(); track item.stars) {
+                      <div class="flex items-center gap-4">
+                        <span class="w-16 text-zinc-400 font-bold uppercase tracking-widest text-left">{{ item.stars }} Estrellas</span>
+                        <div [class]="'flex-grow h-2.5 rounded-full overflow-hidden relative ' + (isCinematicGlow() ? 'bg-zinc-850' : 'bg-zinc-200/40')">
+                          <div class="bg-[#41BF84] shadow-[0_0_8px_rgba(0,255,102,0.4)] h-full rounded-full transition-all duration-700" [style.width.%]="item.pct"></div>
+                        </div>
+                        <span class="w-8 text-right font-black" [class.text-white]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()">{{ item.pct }}%</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Reviews List -->
+                <div class="lg:col-span-8 space-y-6">
+                  <div class="text-left space-y-1.5 border-b pb-4"
+                       [class.border-white/10]="isCinematicGlow()"
+                       [class.border-zinc-200]="!isCinematicGlow()">
+                    <h6 [class.text-white]="isCinematicGlow()" [class.text-zinc-950]="!isCinematicGlow()" class="glastor-h6">
+                      Reseñas de clientes comerciales
+                    </h6>
+                    <p [class]="'text-sm font-medium ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">Coleccionamos impresiones directas de ferreterías, empresas y comercios para auditar la calidad distribuidora.</p>
+                  </div>
+
+                  <div class="space-y-6">
+                    @for (rev of dynamicReviews(); track rev.author) {
+                      <div class="border-b pb-6 space-y-3 text-left transition-colors" [class.border-white/5]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
+                        <div class="flex justify-between items-start gap-4">
+                          <div class="space-y-1">
+                            <span [class.text-white]="isCinematicGlow()" [class.text-zinc-800]="!isCinematicGlow()" class="block font-black text-sm">{{ rev.author }}</span>
+                            <span class="flex items-center gap-1 text-[10px] font-mono text-[#41BF84] font-bold uppercase tracking-widest"><hugeicons-icon [icon]="Tick01Icon" [size]="14" [strokeWidth]="2" /> Compra Verificada</span>
+                          </div>
+                          
+                          <div class="text-right">
+                            <div class="flex gap-0.5 text-[#41BF84] justify-end mb-1">
+                              @for (star of [1,2,3,4,5]; track star) {
+                                @if (rev.stars >= star) {
+                                  <svg viewBox="0 0 24 24" fill="currentColor" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                } @else if (rev.stars >= star - 0.5) {
+                                  <svg viewBox="0 0 24 24" class="w-[14px] h-[14px] text-[#41BF84]"><defs><linearGradient [id]="'half3'+star" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half3'+star+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                } @else {
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                }
+                              }
+                            </div>
+                            <span class="block text-[10px] font-mono text-zinc-500 font-bold uppercase tracking-widest">{{ rev.date }}</span>
+                          </div>
+                        </div>
+                        <p [class.text-zinc-300]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()" class="text-sm leading-relaxed font-sans">
+                          "{{ rev.comment }}"
+                        </p>
+                      </div>
+                    }
+                  </div>
+                </div>
               </div>
             </div>
 
           </div>
         </div>
-
-        <!-- REVIEWS SUMMARY BLOCK & LIST SECTION -->
-        <section id="product-reviews-section" 
-                 [class]="'max-w-6xl mx-auto pt-10 border-t space-y-8 ' + (isCinematicGlow() ? 'border-zinc-850' : 'border-zinc-200/80')">
-          
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            
-            <!-- Rating overview header (4 cols) -->
-            <div id="rating-overview-card"
-                 [class]="isCinematicGlow() ? 'bg-[#050505] border-white/5 text-white' : 'bg-zinc-50 border-zinc-200'"
-                 class="md:col-span-4 border p-6 rounded-lg text-center space-y-3 transition-colors">
-              <h4 class="text-[10px] font-black uppercase font-mono text-zinc-400 tracking-wider">Calificación Global</h4>
-              <div class="space-y-1">
-                <span class="text-4xl font-black font-mono tracking-tight" [class.text-white]="isCinematicGlow()" [class.text-zinc-950]="!isCinematicGlow()">
-                  {{ product.rating.toFixed(1) }}
-                </span>
-                <span class="text-zinc-400 text-[10px] block font-mono">SOBRE 5.0 ESTRELLAS</span>
-              </div>
-              <div class="flex justify-center gap-0.5 text-[#41BF84]">
-                  @for (i of [1, 2, 3, 4, 5]; track i) {
-                    @if (product.rating >= i) {
-                      <svg viewBox="0 0 24 24" fill="currentColor" class="w-[16px] h-[16px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    } @else if (product.rating >= i - 0.5) {
-                      <svg viewBox="0 0 24 24" class="w-[16px] h-[16px] text-[#41BF84]"><defs><linearGradient [id]="'half2'+i" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half2'+i+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    } @else {
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[16px] h-[16px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    }
-                  }
-              </div>
-              <p class="text-[10px] text-[#41BF84] font-mono font-black uppercase tracking-widest bg-[#41BF84]/10 px-2 py-1 rounded-md inline-block">
-                RECOMENDADO POR EL {{ recommendationPercent() }}%
-              </p>
-            </div>
-
-            <!-- Progress bars review ratios (8 cols) -->
-            <div id="rating-breakdown-panel" class="md:col-span-8 space-y-3 font-mono text-[10px]">
-              @for (item of ratingBreakdown(); track item.stars) {
-                <div class="flex items-center gap-4">
-                  <span class="w-16 text-zinc-400 font-bold uppercase tracking-widest text-left">{{ item.stars }} Estrellas</span>
-                  <div [class]="'flex-grow h-2.5 rounded-full overflow-hidden relative ' + (isCinematicGlow() ? 'bg-zinc-850' : 'bg-zinc-200/40')">
-                    <div class="bg-[#41BF84] shadow-[0_0_8px_rgba(0,255,102,0.4)] h-full rounded-full transition-all duration-700" [style.width.%]="item.pct"></div>
-                  </div>
-                  <span class="w-8 text-right font-black" [class.text-white]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()">{{ item.pct }}%</span>
-                </div>
-              }
-            </div>
-
-          </div>
-
-          <div class="space-y-4">
-            <div class="text-left space-y-1.5 border-b pb-3"
-                 [class.border-white/5]="isCinematicGlow()"
-                 [class.border-zinc-150]="!isCinematicGlow()">
-              <h3 [class.text-white]="isCinematicGlow()" [class.text-zinc-950]="!isCinematicGlow()" class="text-sm font-black uppercase tracking-wider font-mono">
-                Reseñas de clientes comerciales GLASTOR ®
-              </h3>
-              <p [class]="'text-xs font-medium ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">Coleccionamos impresiones directas de ferreterías, empresas y comercios para auditar la calidad distribuidora.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              @for (rev of dynamicReviews(); track rev.author) {
-                <div [class]="isCinematicGlow() ? 'bg-[#050505] border-white/5' : 'bg-white border-zinc-200/80'"
-                     class="border rounded-lg p-5 space-y-3 shadow-2xs text-left transition-colors">
-                  <div class="flex justify-between items-start gap-4">
-                    <div class="space-y-0.5">
-                      <span [class.text-white]="isCinematicGlow()" [class.text-zinc-800]="!isCinematicGlow()" class="block font-black text-xs">{{ rev.author }}</span>
-                      <span class="block text-[10px] font-mono text-zinc-400 font-bold uppercase tracking-widest">{{ rev.date }}</span>
-                    </div>
-
-                    <div class="flex gap-0.5 text-[#41BF84]">
-                      @for (star of [1,2,3,4,5]; track star) {
-                        @if (rev.stars >= star) {
-                          <svg viewBox="0 0 24 24" fill="currentColor" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        } @else if (rev.stars >= star - 0.5) {
-                          <svg viewBox="0 0 24 24" class="w-[14px] h-[14px] text-[#41BF84]"><defs><linearGradient [id]="'half3'+star" x1="0" y1="0" x2="1" y2="0"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path [attr.fill]="'url(#half3'+star+')'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        } @else {
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" class="w-[14px] h-[14px] text-[#41BF84]"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        }
-                      }
-                    </div>
-                  </div>
-                  <p [class.text-zinc-300]="isCinematicGlow()" [class.text-zinc-650]="!isCinematicGlow()" class="text-xs leading-relaxed font-sans italic">
-                    "{{ rev.comment }}"
-                  </p>
-                </div>
-              }
-            </div>
-          </div>
-        </section>
       }
 
       @if (product()) {
@@ -471,17 +442,11 @@ export class ProductDetailPageComponent implements OnInit, OnDestroy {
 
   isCinematicGlow = this.appState.isCinematicGlow;
   ArrowLeft01Icon = ArrowLeft01Icon;
-  StarIcon = StarIcon;
-  StarHalfIcon = StarHalfIcon;
-  ArrowRight01Icon = ArrowRight01Icon;
   ShoppingCart01Icon = ShoppingCart01Icon;
   FavouriteIcon = FavouriteIcon;
   TruckIcon = TruckIcon;
   Tick01Icon = Tick01Icon;
   Location01Icon = Location01Icon;
-  ShieldCheck = ShieldCheck;
-  Shield01Icon = Shield01Icon;
-  DeliveryBox01Icon = DeliveryBox01Icon;
 
   product = computed(() => {
     const id = this.route.snapshot.paramMap.get('id');
@@ -497,7 +462,7 @@ export class ProductDetailPageComponent implements OnInit, OnDestroy {
 
   selectedVariantId = signal<string | null>(null);
   selectedGalleryImage = signal<string | null>(null);
-  expandedAccordion = signal<string | null>('ACERCA DEL MODELO');
+  activeTab = signal<string>('RESUMEN');
   selectedPerspectiveIndex = signal<number>(0);
 
   private sub: any;
@@ -775,5 +740,5 @@ export class ProductDetailPageComponent implements OnInit, OnDestroy {
     return Array.from({ length: limit }, (_, i) => i + 1);
   }
   toggleWishlist(id: string, event: Event) { this.appState.toggleWishlist(id, event as MouseEvent); }
-  toggleAccordion(section: string) { this.expandedAccordion.set(this.expandedAccordion() === section ? null : section); }
+  
 }

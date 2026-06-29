@@ -5,6 +5,7 @@ import { GoogleGenAI } from '@google/genai';
 import * as cheerio from 'cheerio';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import { z } from 'zod';
 import { db, seedDatabaseIfEmpty } from './src/db/db';
 import { products, orders, orderItems } from './src/db/schema';
@@ -538,13 +539,48 @@ const angularBuildPath = path.join(__dirname, 'dist', 'app');
 app.use(express.static(angularBuildPath));
 
 // Fallback all non-API paths directly to compiled Angular routing index
-app.get('{*any}', (req, res, next) => {
+app.get(/^(.*)$/, async (req, res, next) => {
   if (req.path.startsWith('/api')) {
     return next();
   }
   
-  // Deliver index of build
-  res.sendFile(path.join(angularBuildPath, 'index.html'), (err) => {
+  const indexHtmlPath = path.join(angularBuildPath, 'index.html');
+
+  // Server-Side Dynamic Meta Injection for Product Detail pages
+  if (req.path.startsWith('/producto/')) {
+    const id = req.path.split('/')[2];
+    if (id) {
+      try {
+        const prod = await db.select().from(products).where(eq(products.id, id));
+        if (prod && prod.length > 0) {
+          const p = prod[0];
+          let html = fs.readFileSync(indexHtmlPath, 'utf8');
+          
+          const ogTags = `
+    <title>${p.name} - Glastor</title>
+    <meta name="description" content="${p.description}">
+    <meta property="og:title" content="${p.name} - Glastor">
+    <meta property="og:description" content="${p.description}">
+    <meta property="og:image" content="${p.image}">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://glastor.com/producto/${p.id}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="${p.image}">
+  </head>`;
+          
+          html = html.replace(/<title>.*?<\/title>/, ''); // Remove existing title if any
+          html = html.replace('</head>', ogTags); // Inject right before head closes
+          
+          return res.send(html);
+        }
+      } catch (err) {
+        logger.error(`Error in SEO injection for ${id}:`, err);
+      }
+    }
+  }
+
+  // Deliver generic index if not product or product not found
+  res.sendFile(indexHtmlPath, (err) => {
     if (err) {
       // If index not found or compiled yet: friendly boot state
       res.status(200).send(`

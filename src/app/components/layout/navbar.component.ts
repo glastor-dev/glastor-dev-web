@@ -8,47 +8,14 @@ import { CallIcon, Mail01Icon, FavouriteIcon, ShoppingCart01Icon, Menu01Icon } f
   standalone: true,
   imports: [CommonModule, HugeiconsIconComponent],
   template: `
-  <!-- TOP B2B CONTACT BAR -->
-  <div class="text-[9px] font-mono uppercase tracking-widest py-1.5 px-6 border-b flex justify-between items-center transition-all z-50 relative"
-       [class.bg-[#050505]]="isCinematicGlow"
-       [class.border-white/5]="isCinematicGlow"
-       [class.text-zinc-500]="isCinematicGlow"
-       [class.bg-zinc-100]="!isCinematicGlow"
-       [class.border-zinc-200]="!isCinematicGlow"
-       [class.text-zinc-500]="!isCinematicGlow">
-    <div class="hidden md:flex items-center gap-4">
-      <span class="flex items-center gap-2">
-        <span class="flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-[#41BF84]/10 border border-[#41BF84]/30 text-[#41BF84] shadow-[0_0_10px_rgba(0,255,102,0.15)]">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#41BF84] animate-pulse"></span> 
-          <span>Operaciones en línea</span>
-        </span>
-      </span>
-      <span class="text-zinc-800">/</span>
-      <span class="hover:text-zinc-300 transition-colors cursor-default">Logística Oficial 24/48h</span>
-    </div>
-    <div class="flex items-center gap-5 mx-auto md:mx-0">
-      <a href="tel:+34900123456" class="group hover:text-white transition-colors flex items-center gap-2 cursor-pointer">
-        <hugeicons-icon [icon]="CallIcon" [size]="12" [strokeWidth]="2" class="group-hover:text-[#41BF84] group-hover:drop-shadow-[0_0_8px_rgba(0,255,102,0.8)] transition-all" /> 
-        <span>Asesoramiento Comercial</span>
-      </a>
-      <a href="mailto:b2b@glastor.com" class="group hover:text-white transition-colors flex items-center gap-2 cursor-pointer">
-        <hugeicons-icon [icon]="Mail01Icon" [size]="12" [strokeWidth]="2" class="group-hover:text-[#41BF84] group-hover:drop-shadow-[0_0_8px_rgba(0,255,102,0.8)] transition-all" /> 
-        <span>b2b@glastor.com</span>
-      </a>
-      <span class="text-zinc-800 hidden sm:block">/</span>
-      <a href="#" class="group hover:text-white transition-colors hidden sm:flex items-center gap-2 cursor-pointer">
-        <span class="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-[#41BF84] transition-colors"></span>
-        <span>Soporte Técnico Oficial</span>
-      </a>
-    </div>
-  </div>
+
 
   <!-- HEADER NAVIGATION BAR (DOCK GLASSMORPHIC) -->
   <div class="sticky top-4 z-40 px-4 w-full transition-all duration-500">
     <nav [class]="'mx-auto max-w-7xl transition-all duration-500 px-6 py-3 border shadow-lg backdrop-blur-xl ' + 
                    (isScrolled ? 'scrolled scale-[0.99] rounded-lg md:rounded-full ' : 'rounded-lg ') + 
                    (isCinematicGlow 
-                    ? (isScrolled ? 'bg-[#050505]/75 border-white/10 text-zinc-100 shadow-[0_12px_40px_rgba(0,0,0,0.8)]' : 'bg-[#050505]/90 border-white/5 text-zinc-100 shadow-[0_8px_30px_rgba(0,0,0,0.6)]') 
+                    ? (isScrolled ? 'bg-[#050505]/60 border-white/10 text-zinc-100 shadow-[0_12px_40px_rgba(0,0,0,0.8)]' : 'bg-[#050505]/20 border-white/5 text-zinc-100 shadow-[0_8px_30px_rgba(0,0,0,0.6)]') 
                     : (isScrolled ? 'bg-white/80 border-zinc-200/65 text-zinc-900 shadow-[0_12px_40px_rgba(0,0,0,0.06)]' : 'bg-white/95 border-zinc-200/40 text-zinc-900 shadow-[0_8px_30px_rgba(0,0,0,0.03)]'))">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         
