@@ -601,7 +601,11 @@ app.get(/^(.*)$/, async (req, res, next) => {
 
 // Start listening safely
 const port = process.env['PORT'] || 3000;
-app.listen(port, () => {
-  console.log(`🚀 SÖDRA Backend Server running on port ${port}`);
-  console.log(`📂 Serving static client assets from: ${angularBuildPath}`);
-});
+if (process.env['NODE_ENV'] !== 'production' || (!process.env['VERCEL'] && !process.env['VERCEL_URL'])) {
+  app.listen(port, () => {
+    console.log(`🚀 SÖDRA Backend Server running on port ${port}`);
+    console.log(`📂 Serving static client assets from: ${angularBuildPath}`);
+  });
+}
+
+export default app;
