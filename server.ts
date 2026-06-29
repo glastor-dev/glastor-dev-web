@@ -18,7 +18,7 @@ import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import cors from 'cors';
 import sanitizeHtml from 'sanitize-html';
-import logger from './src/utils/logger.js';
+import logger from './src/utils/logger';
 
 const app = express();
 app.use(helmet());
