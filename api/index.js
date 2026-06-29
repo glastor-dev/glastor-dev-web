@@ -1,1 +1,2 @@
-module.exports = (req, res) => { res.status(200).json({ message: 'Diagnostic: CJS Serverless function works' }); };
+const server = require('../server');
+module.exports = server.default || server;
