@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import gsap from 'gsap';
+import { NgOptimizedImage } from '@angular/common';
 
 interface Slide {
   id: string;
@@ -24,13 +25,14 @@ interface HeroDimensions {
 @Component({
   selector: 'app-hero-section',
   standalone: true,
+  imports: [NgOptimizedImage],
   styleUrl: './hero-section.component.css',
   template: `
     <div #heroContainer class="hero-container relative w-full h-[650px] md:h-[750px] overflow-hidden bg-[#0D0D0D] rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/5">
       
       <!-- Mobile Static Hero (Visible only on small screens) -->
       <div class="block md:hidden absolute inset-0 bg-[#050505] z-50">
-        <img [src]="slides[0].bgImage" class="absolute inset-0 w-full h-full object-cover" fetchpriority="high" loading="eager" decoding="sync" alt="Glastor" />
+        <img [ngSrc]="slides[0].bgImage" fill priority class="absolute inset-0 object-cover" alt="Glastor" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"></div>
         
         <div class="absolute inset-0 flex flex-col justify-end px-6 pb-12 z-10">
@@ -51,7 +53,9 @@ interface HeroDimensions {
         <div class="indicator"></div>
 
       @for (slide of slides; track slide.id; let i = $index) {
-        <div class="card" [id]="'card' + i" [style.backgroundImage]="'url(' + slide.bgImage + ')'"></div>
+        <div class="card" [id]="'card' + i">
+          <img [ngSrc]="slide.bgImage" fill [priority]="i === 0" class="object-cover object-center" alt="" />
+        </div>
         <div class="card-content hidden md:block" [id]="'card-content-' + i">
           <div class="content-start"></div>
           <div class="content-place">{{ slide.tag }}</div>

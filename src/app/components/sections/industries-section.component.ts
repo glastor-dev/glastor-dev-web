@@ -1,10 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-industries-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgOptimizedImage],
   template: `
     <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24 font-sans bg-transparent relative">
       
@@ -30,8 +30,8 @@ import { CommonModule } from '@angular/common';
         <!-- Intro Background Image -->
         <div class="absolute right-0 top-0 h-full w-1/2 z-0 hidden md:block">
           <div class="absolute inset-0 bg-gradient-to-r from-zinc-900/40 to-transparent z-10"></div>
-          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80" 
-               class="w-full h-full object-cover opacity-30 grayscale mix-blend-luminosity" alt="Catalog Highlight">
+          <img [ngSrc]="'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80'" fill
+               class="object-cover opacity-30 grayscale mix-blend-luminosity" alt="Catalog Highlight">
         </div>
       </div>
 
@@ -46,8 +46,8 @@ import { CommonModule } from '@angular/common';
                
               <!-- Image Area (Full coverage, hidden until hover) -->
               <div class="absolute inset-0 overflow-hidden bg-zinc-900">
-                <img [src]="ind.image" [alt]="ind.name" referrerpolicy="no-referrer"
-                     class="w-full h-full object-cover transition-all duration-700 opacity-0 group-hover:opacity-40 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0">
+                <img [ngSrc]="ind.image" [alt]="ind.name" fill referrerpolicy="no-referrer"
+                     class="object-cover transition-all duration-700 opacity-0 group-hover:opacity-40 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0">
               </div>
 
               <!-- Text Area (Center aligned, slides up on hover) -->

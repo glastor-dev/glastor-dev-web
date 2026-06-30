@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, inject, signal, computed } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { AppStateService } from '../../app-state.service';
 import { HugeiconsIconComponent } from '@hugeicons/angular';
 import { ShoppingCart01Icon, FavouriteIcon, PlayIcon } from '@hugeicons/core-free-icons';
@@ -18,7 +18,7 @@ interface Story {
 @Component({
   selector: 'app-builder-stories-section',
   standalone: true,
-  imports: [CommonModule, HugeiconsIconComponent],
+  imports: [CommonModule, HugeiconsIconComponent, NgOptimizedImage],
   template: `
     <section class="w-full bg-[#050505] relative border-y border-white/5 font-sans overflow-hidden py-12 md:py-16">
       
@@ -54,7 +54,7 @@ interface Story {
               }
               <div class="absolute inset-0 transition-all z-10"
                    [ngClass]="activeStory().id === story.id ? 'bg-black/40 group-hover:bg-transparent' : 'bg-black/60 group-hover:bg-transparent'"></div>
-              <img [src]="story.image" [alt]="story.name" class="w-full h-full object-cover">
+              <img [ngSrc]="story.image" [alt]="story.name" fill class="object-cover">
               <div class="absolute bottom-2 left-0 w-full text-center z-20">
                 <span class="text-white text-[10px] font-bold uppercase tracking-wider drop-shadow-md">{{ story.name }}</span>
               </div>
@@ -95,9 +95,9 @@ interface Story {
           </div>
 
           <!-- Video Image -->
-          <div (click)="isVideoModalOpen.set(true)" class="relative overflow-hidden border border-white/10 shadow-2xl block group cursor-pointer">
-            <img [src]="activeStory().image" 
-                 [alt]="activeStory().title" class="w-full h-full object-cover aspect-video grayscale-[20%] group-hover:scale-105 transition-transform duration-700">
+          <div (click)="isVideoModalOpen.set(true)" class="relative overflow-hidden border border-white/10 shadow-2xl block group cursor-pointer w-full h-full aspect-video">
+            <img [ngSrc]="activeStory().image" fill
+                 [alt]="activeStory().title" class="object-cover grayscale-[20%] group-hover:scale-105 transition-transform duration-700">
             
             <!-- Play Overlay -->
             <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">

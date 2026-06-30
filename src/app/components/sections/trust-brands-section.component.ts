@@ -16,59 +16,59 @@ import { Component } from '@angular/core';
       <div class="marquee-container flex overflow-hidden group">
         <!-- Original Track -->
         <div class="marquee-track flex shrink-0 gap-16 md:gap-24 items-center pr-16 md:pr-24 opacity-60 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100">
-          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" />
-          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" />
-          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" />
-          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" />
+          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" width="120" height="40" />
+          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" width="120" height="40" />
           <!-- Repeating to prevent gap -->
-          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" />
-          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" />
-          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" />
-          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" />
+          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" width="120" height="40" />
+          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" width="120" height="40" />
         </div>
         <!-- Duplicate Track -->
         <div class="marquee-track flex shrink-0 gap-16 md:gap-24 items-center pr-16 md:pr-24 opacity-60 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100" aria-hidden="true">
-          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" />
-          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" />
-          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" />
-          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" />
+          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" width="120" height="40" />
+          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" width="120" height="40" />
           <!-- Repeating to prevent gap -->
-          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" />
-          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" />
-          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" />
-          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" />
-          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" />
+          <img src="assets/logos/Honeywell_logo.svg" alt="Honeywell" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bitcoin-custom.svg" alt="Bitcoin" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/apple-custom.svg" alt="Apple" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/Milwaukee_Logo.svg" alt="Milwaukee" class="h-8 md:h-10 object-contain" width="120" height="40" />
+          <img src="assets/logos/amazon-custom.svg" alt="Amazon" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/hp-custom.svg" alt="HP" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/zebra-technologies-logo.svg" alt="Zebra" class="h-6 md:h-8 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/datalogic.svg" alt="Datalogic" class="h-10 md:h-14 object-contain invert" width="120" height="40" />
+          <img src="assets/logos/nvidia-custom.svg" alt="NVIDIA" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/bosch-custom.svg" alt="Bosch" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/stripe-custom.svg" alt="Stripe" class="h-6 md:h-8 object-contain" width="120" height="40" />
+          <img src="assets/logos/dell-custom.svg" alt="Dell" class="h-6 md:h-8 object-contain" width="120" height="40" />
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { NeonBadgeComponent } from '../neon-badge/neon-badge.component';
 import { HugeiconsIconComponent } from '@hugeicons/angular';
 import { ShoppingCart01Icon, FavouriteIcon } from '@hugeicons/core-free-icons';
@@ -8,7 +8,7 @@ import { ParallaxDirective } from '../../../../directives/parallax.directive';
 @Component({
   selector: 'app-glass-card',
   standalone: true,
-  imports: [CommonModule, NeonBadgeComponent, HugeiconsIconComponent, ParallaxDirective],
+  imports: [CommonModule, NeonBadgeComponent, HugeiconsIconComponent, ParallaxDirective, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="relative group rounded-lg flex flex-col bg-[#050505] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:z-10" style="min-height: 380px;">
@@ -25,9 +25,10 @@ import { ParallaxDirective } from '../../../../directives/parallax.directive';
         <!-- Bottom shadow for text visibility -->
         <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10 pointer-events-none"></div>
         
-        <img [src]="product.image" [alt]="product.name" referrerpolicy="no-referrer"
-             [appParallax]="40"
-             class="w-[120%] h-[120%] -left-[10%] -top-[10%] absolute object-cover group-hover:scale-105 opacity-80 group-hover:opacity-100 transition-all duration-700 ease-out">
+        <div class="w-[120%] h-[120%] -left-[10%] -top-[10%] absolute" [appParallax]="40">
+          <img [ngSrc]="product.image" [alt]="product.name" fill referrerpolicy="no-referrer"
+               class="object-cover group-hover:scale-105 opacity-80 group-hover:opacity-100 transition-all duration-700 ease-out">
+        </div>
       </div>
 
       <!-- Bottom Drawer Section (Glassmorphism) -->
