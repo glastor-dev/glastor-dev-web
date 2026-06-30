@@ -36,12 +36,13 @@ interface HeroDimensions {
         <div class="absolute inset-0 flex flex-col justify-end px-6 pb-12 z-10">
           <div class="h-px bg-[#41BF84] w-8 mb-4"></div>
           <div class="text-[#41BF84] font-mono text-[10px] font-black uppercase tracking-widest mb-2">{{ slides[0].tag }}</div>
-          <div class="font-display font-black text-[clamp(3rem,10vw,4.5rem)] text-white uppercase leading-[0.85] tracking-tighter">{{ slides[0].title1 }}</div>
-          <div class="font-display font-black text-[clamp(3rem,10vw,4.5rem)] text-white uppercase leading-[0.85] tracking-tighter mb-4">{{ slides[0].title2 }}</div>
+          <h1 class="font-display font-black text-[clamp(3rem,10vw,4.5rem)] text-white uppercase leading-[0.85] tracking-tighter mb-4">
+            {{ slides[0].title1 }}<br/>{{ slides[0].title2 }}
+          </h1>
           <p class="text-zinc-400 text-xs mb-8">{{ slides[0].description }}</p>
-          <button class="w-full bg-[#41BF84] text-black font-bold uppercase tracking-widest py-3.5 rounded-full text-xs" (click)="onNavigate('tienda')">
+          <a href="/tienda" class="w-full bg-[#41BF84] text-black font-bold uppercase tracking-widest py-3.5 rounded-full text-xs flex justify-center items-center" (click)="onNavigate('tienda'); $event.preventDefault()">
             Explorar Catálogo
-          </button>
+          </a>
         </div>
       </div>
 
@@ -61,8 +62,8 @@ interface HeroDimensions {
 
       <div class="details" id="details-even">
         <div class="place-box"><div class="text"></div></div>
-        <div class="title-box-1"><div class="title-1"></div></div>
-        <div class="title-box-2"><div class="title-2"></div></div>
+        <h1 class="title-box-1"><div class="title-1"></div></h1>
+        <h2 class="title-box-2"><div class="title-2"></div></h2>
         <div class="desc"></div>
         <div class="cta">
           <button class="bookmark" (click)="onNavigate('tienda')">
@@ -70,14 +71,14 @@ interface HeroDimensions {
               <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd" />
             </svg>
           </button>
-          <button class="discover" (click)="onNavigate('tienda')">Explorar Catálogo</button>
+          <a href="/tienda" class="discover flex items-center justify-center" (click)="onNavigate('tienda'); $event.preventDefault()">Explorar Catálogo</a>
         </div>
       </div>
 
       <div class="details" id="details-odd">
         <div class="place-box"><div class="text"></div></div>
-        <div class="title-box-1"><div class="title-1"></div></div>
-        <div class="title-box-2"><div class="title-2"></div></div>
+        <h1 class="title-box-1"><div class="title-1"></div></h1>
+        <h2 class="title-box-2"><div class="title-2"></div></h2>
         <div class="desc"></div>
         <div class="cta">
           <button class="bookmark" (click)="onNavigate('tienda')">
@@ -85,7 +86,7 @@ interface HeroDimensions {
               <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd" />
             </svg>
           </button>
-          <button class="discover" (click)="onNavigate('tienda')">Explorar Catálogo</button>
+          <a href="/tienda" class="discover flex items-center justify-center" (click)="onNavigate('tienda'); $event.preventDefault()">Explorar Catálogo</a>
         </div>
       </div>
 

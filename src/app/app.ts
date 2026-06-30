@@ -81,7 +81,9 @@ export class AppComponent implements OnInit {
     // Initialize premium mix-blend custom cursor follower
     if (typeof window !== 'undefined') {
       try {
-        if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+        if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+          // Skip cursor initialization on touch devices
+        } else {
           const cursor = document.getElementById('sodra-custom-cursor');
         if (cursor) {
           // Use GSAP quickTo for smooth performant interpolation
@@ -165,6 +167,7 @@ export class AppComponent implements OnInit {
             gsap.to(cursor, { opacity: 0, duration: 0.3 });
           });
         }
+        } // Close else block
       } catch (err) {
         console.warn('Custom cursor initialization failed:', err);
       }

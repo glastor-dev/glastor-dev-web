@@ -19,13 +19,13 @@ import { GlassCardComponent } from '../ui/design-system/glass-card/glass-card.co
             <h2 [class]="'glastor-h1 ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">Productos Estrella del Mes</h2>
             <p class="text-sm md:text-base text-zinc-500 max-w-lg mt-6">Nuestra selección de herramientas y tecnología con la mejor calificación en rendimiento y durabilidad industrial.</p>
           </div>
-          <button (click)="onNavigate('tienda')" 
+          <a href="/tienda" (click)="onNavigate('tienda'); $event.preventDefault()" 
                   class="bg-zinc-900 hover:bg-zinc-850 text-white pl-6 pr-2 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all self-start md:self-auto hover:-translate-y-0.5 shadow-md flex items-center gap-4 cursor-pointer btn-shimmer group whitespace-nowrap w-fit shrink-0">
             <span>Ver catálogo completo</span>
             <span class="shrink-0 w-8 h-8 rounded-full bg-zinc-800 text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
               <hugeicons-icon [icon]="ArrowRight01Icon" [size]="18"  [strokeWidth]="1.5" />
             </span>
-          </button>
+          </a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">

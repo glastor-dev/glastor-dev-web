@@ -17,10 +17,10 @@ import { CommonModule } from '@angular/common';
       <div class="relative overflow-hidden bg-zinc-900/40 border border-white/5 mb-12 flex flex-col md:flex-row items-center justify-between p-10 md:p-24 rounded-lg shadow-2xl">
         <div class="z-10 relative w-full md:w-3/5 text-center md:text-left">
           <h5 class="glastor-h5 mb-4">CATÁLOGO B2B</h5>
-          <h1 class="glastor-h1 mb-6">Soluciones por<br><span class="italic font-serif text-white/70">Industria</span></h1>
-          <h2 class="glastor-subtitle max-w-lg md:ml-0">
+          <h2 class="glastor-h1 mb-6">Soluciones por<br><span class="italic font-serif text-white/70">Industria</span></h2>
+          <h3 class="glastor-subtitle max-w-lg md:ml-0">
             Encuentra las soluciones tecnológicas perfectas para tu sector. Equipos de alto rendimiento para entornos exigentes.
-          </h2>
+          </h3>
           <button (click)="randomizeGrid()" 
                   class="mt-10 bg-white text-black px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wider hover:scale-105 hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(52,211,153,0.4)] transition-all duration-500 mx-auto md:ml-0 block md:inline-block font-mono">
             Reorganizar Cuadrícula

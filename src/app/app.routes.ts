@@ -6,11 +6,11 @@ export const routes: Routes = [
     path: '', 
     component: PortalComponent,
     children: [
-      { path: '', redirectTo: 'inicio', pathMatch: 'full' },
       { 
-        path: 'inicio', 
+        path: '', 
         loadComponent: () => import('./components/pages/home-page.component').then(m => m.HomePageComponent) 
       },
+      { path: 'inicio', redirectTo: '', pathMatch: 'full' },
       { 
         path: 'tienda', 
         loadComponent: () => import('./components/pages/catalog-page.component').then(m => m.CatalogPageComponent) 
@@ -37,5 +37,5 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: 'inicio' }
+  { path: '**', redirectTo: '' }
 ];

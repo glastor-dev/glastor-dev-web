@@ -6,27 +6,28 @@
      [class.dark-theme]="isCinematicGlow()"
      [class.light-theme]="!isCinematicGlow()">
 
-  <app-navbar 
-    [isCinematicGlow]="isCinematicGlow()"
-    [isScrolled]="isScrolled()"
-    [wishlistCount]="wishlistCount()"
-    [cartCount]="cartCount()"
-    (openMenu)="isMenuOpen.set(true)"
-    (openCart)="isCartOpen.set(true)"
-    (openWishlist)="isWishlistOpen.set(true)"
-    (navigate)="setView($event)">
-  </app-navbar>
+  <div [attr.inert]="isAnyOverlayOpen() ? true : null">
+    <app-navbar 
+      [isCinematicGlow]="isCinematicGlow()"
+      [isScrolled]="isScrolled()"
+      [wishlistCount]="wishlistCount()"
+      [cartCount]="cartCount()"
+      (openMenu)="isMenuOpen.set(true)"
+      (openCart)="isCartOpen.set(true)"
+      (openWishlist)="isWishlistOpen.set(true)"
+      (navigate)="setView($event)">
+    </app-navbar>
 
+    <!-- ================= DYNAMIC VIEWS ROUTER ================= -->
+    <router-outlet></router-outlet>
 
-  <!-- ================= DYNAMIC VIEWS ROUTER ================= -->
-  <router-outlet></router-outlet>
-
-  <!-- ================= MASTER FOOTER NAVIGATION PLATFORM ================= -->
-  @defer (on viewport) {
-    <app-footer (navigate)="setView($event)"></app-footer>
-  } @placeholder {
-    <div style="min-height: 500px"></div>
-  }
+    <!-- ================= MASTER FOOTER NAVIGATION PLATFORM ================= -->
+    @defer (on viewport) {
+      <app-footer (navigate)="setView($event)"></app-footer>
+    } @placeholder {
+      <div style="min-height: 500px"></div>
+    }
+  </div>
   <!-- ================= OVERLAY CAROUSEL SHOPPING CART DRAWER ================= -->
   @defer (when isCartOpen()) {
     @if (isCartOpen()) {

@@ -299,6 +299,8 @@ export class PortalComponent implements OnInit, OnDestroy {
   isMenuOpen = signal<boolean>(false);
   isCartOpen = signal<boolean>(false);
   isWishlistOpen = signal<boolean>(false);
+
+  isAnyOverlayOpen = computed(() => this.isMenuOpen() || this.isCartOpen() || this.isWishlistOpen());
   isSeoPanelOpen = signal<boolean>(false);
   isCheckoutOpen = signal<boolean>(false);
   orderPlaced = signal<boolean>(false);
@@ -1479,6 +1481,8 @@ export class PortalComponent implements OnInit, OnDestroy {
         }
         if (productId) {
           this.router.navigate(['/tienda', productId]);
+        } else if (validView === 'inicio') {
+          this.router.navigate(['/']);
         } else {
           this.router.navigate(['/' + validView]);
         }
