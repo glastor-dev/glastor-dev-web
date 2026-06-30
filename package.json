@@ -87,5 +87,8 @@
   },
   "author": "Andres A. Cardoso",
   "cms": "glastor core",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "overrides": {
+    "uuid": ">=11.1.1"
+  }
 }
