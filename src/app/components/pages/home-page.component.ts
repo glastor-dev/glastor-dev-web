@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AppStateService } from '../../app-state.service';
 import { HeroSectionComponent } from '../sections/hero-section.component';
 import { TrustBrandsSectionComponent } from '../sections/trust-brands-section.component';
-import { PillarsSectionComponent } from '../sections/pillars-section.component';
 import { IndustriesSectionComponent } from '../sections/industries-section.component';
 import { IconsOfTheMonthSectionComponent } from '../sections/icons-of-the-month-section.component';
 import { BuilderStoriesSectionComponent } from '../sections/builder-stories-section.component';
@@ -18,7 +17,6 @@ import { Product } from '../../models';
     CommonModule,
     HeroSectionComponent,
     TrustBrandsSectionComponent,
-    PillarsSectionComponent,
     IndustriesSectionComponent,
     IconsOfTheMonthSectionComponent,
     BuilderStoriesSectionComponent,
@@ -35,7 +33,9 @@ import { Product } from '../../models';
       @defer (on viewport) {
         <app-trust-brands-section appScrollReveal></app-trust-brands-section>
       } @placeholder {
-        <div class="h-[100px] w-full"></div>
+        <div class="h-[120px] w-full animate-pulse bg-zinc-900/60 rounded-lg mx-auto my-4 flex items-center justify-center">
+          <div class="w-32 h-2 bg-zinc-800 rounded-full"></div>
+        </div>
       }
       
       <!-- CURATED PIECES DISCOVER GRID -->
@@ -50,14 +50,32 @@ import { Product } from '../../models';
           (toggleWishlist)="toggleWishlist($event.id, $event.event)"
         ></app-icons-of-the-month-section>
       } @placeholder {
-        <div class="h-[600px] w-full mt-24 sm:mt-32"></div>
+        <div class="h-[600px] w-full mt-24 sm:mt-32 animate-pulse">
+          <div class="max-w-7xl mx-auto px-4">
+            <div class="h-8 w-48 bg-zinc-900 rounded mb-6"></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              @for (i of [1,2,3,4]; track i) {
+                <div class="aspect-video bg-zinc-900/80 rounded-lg"></div>
+              }
+            </div>
+          </div>
+        </div>
       }
 
       <!-- B2B INDUSTRIES GRID -->
       @defer (on viewport) {
         <app-industries-section class="block mt-24 sm:mt-32" appScrollReveal></app-industries-section>
       } @placeholder {
-        <div class="h-[800px] w-full mt-24 sm:mt-32"></div>
+        <div class="h-[800px] w-full mt-24 sm:mt-32 animate-pulse">
+          <div class="max-w-7xl mx-auto px-4">
+            <div class="h-8 w-56 bg-zinc-900 rounded mb-6"></div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+              @for (i of [1,2,3,4,5,6]; track i) {
+                <div class="h-48 bg-zinc-900/80 rounded-xl"></div>
+              }
+            </div>
+          </div>
+        </div>
       }
 
       <!-- I BUILD BECAUSE / STORIES SECTION -->
@@ -71,7 +89,16 @@ import { Product } from '../../models';
           (toggleWishlist)="toggleWishlist($event.id, $event.event)"
         ></app-builder-stories-section>
       } @placeholder {
-        <div class="h-[800px] w-full mt-24 sm:mt-32"></div>
+        <div class="h-[800px] w-full mt-24 sm:mt-32 animate-pulse">
+          <div class="max-w-7xl mx-auto px-4">
+            <div class="h-8 w-64 bg-zinc-900 rounded mb-8"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              @for (i of [1,2,3,4]; track i) {
+                <div class="h-56 bg-zinc-900/80 rounded-xl"></div>
+              }
+            </div>
+          </div>
+        </div>
       }
 
 

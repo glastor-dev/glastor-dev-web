@@ -173,6 +173,29 @@
   box-shadow: 0 0 20px rgba(65,191,132,0.4);
   transform: skewX(-6deg) scale(1.05);
 }
+.details > .cta > .quote-cta {
+  border: 1px solid rgba(65,191,132,0.4);
+  background-color: transparent;
+  height: 44px;
+  border-radius: 4px;
+  color: #41BF84;
+  padding: 4px 20px;
+  font-size: 12px;
+  margin-left: 10px;
+  text-transform: uppercase;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  transform: skewX(-6deg);
+}
+.details > .cta > .quote-cta:hover {
+  background-color: rgba(65,191,132,0.1);
+  box-shadow: 0 0 12px rgba(65,191,132,0.2);
+}
 .indicator {
   position: absolute;
   left: 0;

@@ -19,6 +19,8 @@ import { FavouriteIcon, StarIcon, ViewIcon, ShoppingCart01Icon } from '@hugeicon
         <div [class]="'relative aspect-video overflow-hidden shrink-0 ' + (isCinematicGlow ? 'bg-[#050505]' : 'bg-zinc-150')">
           <img [ngSrc]="product.image" [alt]="product.name" width="400" height="225" referrerpolicy="no-referrer"
                class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-90">
+          <!-- Uniform dark overlay for image coherence across different image sources -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20 pointer-events-none mix-blend-multiply"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           
           <!-- Wishlist Toggle overlay -->

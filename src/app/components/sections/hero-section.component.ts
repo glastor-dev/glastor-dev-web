@@ -42,10 +42,15 @@ interface HeroDimensions {
           <h1 class="font-display font-black text-[clamp(2rem,10vw,4.5rem)] max-w-full break-words whitespace-normal text-white uppercase italic leading-[0.85] tracking-tighter mb-4 transform -skew-x-6 origin-left drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)]">
             {{ slides[0].title1 }}<br/>{{ slides[0].title2 }}
           </h1>
-          <p class="text-zinc-400 text-xs mb-8">{{ slides[0].description }}</p>
-          <a href="/tienda" class="w-full bg-[#41BF84] text-black font-black uppercase tracking-widest py-3.5 shadow-[4px_4px_0px_rgba(0,0,0,1)] flex justify-center items-center transform -skew-x-6 active:scale-95 transition-transform" (click)="onNavigate('tienda'); $event.preventDefault()">
-            Explorar Catálogo
-          </a>
+          <p class="text-zinc-400 text-xs mb-6">{{ slides[0].description }}</p>
+          <div class="flex flex-col gap-3">
+            <a href="/tienda" class="w-full bg-[#41BF84] text-black font-black uppercase tracking-widest py-3.5 shadow-[4px_4px_0px_rgba(0,0,0,1)] flex justify-center items-center transform -skew-x-6 active:scale-95 transition-transform" (click)="onNavigate('tienda'); $event.preventDefault()">
+              Explorar Catálogo
+            </a>
+            <a href="mailto:ventas@glastor.es" class="w-full border border-[#41BF84]/40 text-[#41BF84] font-mono font-bold uppercase tracking-widest py-3 flex justify-center items-center text-xs transform -skew-x-6 active:scale-95 transition-all hover:bg-[#41BF84]/10">
+              Solicitar cotización →
+            </a>
+          </div>
         </div>
       </div>
 
@@ -77,6 +82,7 @@ interface HeroDimensions {
             </svg>
           </button>
           <a href="/tienda" class="discover flex items-center justify-center" (click)="onNavigate('tienda'); $event.preventDefault()">Explorar Catálogo</a>
+          <a href="mailto:ventas@glastor.es" class="quote-cta">Cotizar →</a>
         </div>
       </div>
 
@@ -92,6 +98,7 @@ interface HeroDimensions {
             </svg>
           </button>
           <a href="/tienda" class="discover flex items-center justify-center" (click)="onNavigate('tienda'); $event.preventDefault()">Explorar Catálogo</a>
+          <a href="mailto:ventas@glastor.es" class="quote-cta">Cotizar →</a>
         </div>
       </div>
 
