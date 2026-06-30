@@ -23,7 +23,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                   [class]="'inline-flex items-center gap-1.5 text-xs font-black transition-colors cursor-pointer px-3 py-1.5 rounded-lg border shadow-2xs ' + 
                            (isCinematicGlow() 
                             ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white' 
-                            : 'bg-white border-zinc-200 text-zinc-500 hover:text-zinc-950')">
+                            : 'bg-white border-zinc-200 text-zinc-400 hover:text-zinc-950')">
             <hugeicons-icon [icon]="ArrowLeft01Icon" [size]="16" class="scale-75"  [strokeWidth]="1.5" />
             Volver a la galería
           </button>
@@ -99,7 +99,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-xs text-[#41BF84] font-black tracking-widest uppercase cursor-pointer hover:underline" [class.text-[#41BF84]]="isCinematicGlow()">GLASTOR ® DIRECTCO</span>
-                <span class="text-[10px] font-mono font-bold px-2 py-1 rounded-md" [class]="isCinematicGlow() ? 'bg-white/10 text-white' : 'bg-zinc-100 text-zinc-600'">
+                <span class="text-[10px] font-mono font-bold px-2 py-1 rounded-md" [class]="isCinematicGlow() ? 'bg-white/10 text-white' : 'bg-zinc-100 text-zinc-400'">
                   MODELO: GLX-{{ product.id.slice(0,4).toUpperCase() }}
                 </span>
               </div>
@@ -137,7 +137,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
             <!-- "Sobre este artículo" Bullets (Shortened for top section) -->
             <div class="space-y-4 pt-2">
               <div class="product-description-html break-words whitespace-normal overflow-hidden w-full line-clamp-3" 
-                   [class]="'prose prose-sm max-w-none ' + (isCinematicGlow() ? 'prose-invert prose-p:text-zinc-400 prose-strong:text-white' : 'prose-p:text-zinc-600 prose-strong:text-zinc-900')" 
+                   [class]="'prose prose-sm max-w-none ' + (isCinematicGlow() ? 'prose-invert prose-p:text-zinc-400 prose-strong:text-white' : 'prose-p:text-zinc-400 prose-strong:text-zinc-900')" 
                    [innerHTML]="product.description">
               </div>
               <button class="text-xs font-bold text-[#41BF84] uppercase tracking-wider hover:underline" (click)="activeTab.set('RESUMEN')">Ver descripción completa</button>
@@ -185,7 +185,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                               [class]="'px-4 py-2.5 border rounded-lg text-xs font-black transition-all cursor-pointer ' + 
                                        (selectedVariantId() === v.id 
                                         ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84] bg-[#41BF84]/10 ring-1 ring-[#41BF84]/50' : 'border-zinc-900 text-white bg-zinc-900 ring-1 ring-zinc-900') 
-                                        : (isCinematicGlow() ? 'border-zinc-700 text-zinc-400 hover:border-zinc-500' : 'border-zinc-200 text-zinc-600 hover:border-zinc-400'))">
+                                        : (isCinematicGlow() ? 'border-zinc-700 text-zinc-400 hover:border-zinc-500' : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'))">
                         {{ v.name }}
                       </button>
                     }
@@ -225,7 +225,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
               
               <!-- Add to List -->
               <div class="pt-2 flex justify-center">
-                <button (click)="toggleWishlist(product.id, $event)" class="text-xs font-bold text-zinc-500 hover:text-[#41BF84] flex items-center gap-2 transition-colors uppercase tracking-widest">
+                <button (click)="toggleWishlist(product.id, $event)" class="text-xs font-bold text-zinc-400 hover:text-[#41BF84] flex items-center gap-2 transition-colors uppercase tracking-widest">
                   <hugeicons-icon [icon]="FavouriteIcon" [size]="16" [strokeWidth]="2" [class]="isInWishlist(product.id) ? 'fill-current text-[#41BF84]' : ''" />
                   Agregar a lista de deseos
                 </button>
@@ -242,17 +242,17 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
           <div class="flex overflow-x-auto scrollbar-hide border-b" [class.border-zinc-850]="isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
             <button (click)="activeTab.set('RESUMEN')"
                     [class]="'px-6 py-4 text-sm font-black uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 ' + 
-                             (activeTab() === 'RESUMEN' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-500 hover:text-zinc-300')">
+                             (activeTab() === 'RESUMEN' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-400 hover:text-zinc-300')">
               Resumen
             </button>
             <button (click)="activeTab.set('ESPECIFICACIONES')"
                     [class]="'px-6 py-4 text-sm font-black uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 ' + 
-                             (activeTab() === 'ESPECIFICACIONES' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-500 hover:text-zinc-300')">
+                             (activeTab() === 'ESPECIFICACIONES' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-400 hover:text-zinc-300')">
               Especificaciones Técnicas
             </button>
             <button (click)="activeTab.set('RESEÑAS')"
                     [class]="'px-6 py-4 text-sm font-black uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 ' + 
-                             (activeTab() === 'RESEÑAS' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-500 hover:text-zinc-300')">
+                             (activeTab() === 'RESEÑAS' ? (isCinematicGlow() ? 'border-[#41BF84] text-[#41BF84]' : 'border-zinc-900 text-zinc-900') : 'border-transparent text-zinc-400 hover:text-zinc-300')">
               Reseñas ({{ totalReviewsCount }})
             </button>
           </div>
@@ -265,7 +265,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
               <div class="grid lg:grid-cols-2 gap-12 items-start">
                 <div class="space-y-6">
                   <h3 class="glastor-h3" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">Acerca del Modelo</h3>
-                  <div class="text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+                  <div class="text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-400]="!isCinematicGlow()">
                     @if (product.aboutModel) {
                       <div [innerHTML]="product.aboutModel"></div>
                     } @else {
@@ -275,7 +275,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                 </div>
                 <div class="space-y-6">
                   <h3 class="glastor-h3" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">Características Principales</h3>
-                  <div class="text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+                  <div class="text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-400]="!isCinematicGlow()">
                     <div [class]="'prose prose-sm ' + (isCinematicGlow() ? 'prose-invert' : '')" [innerHTML]="product.features || product.description"></div>
                   </div>
                 </div>
@@ -290,19 +290,19 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                 <table class="w-full text-left text-sm">
                   <tbody class="divide-y" [class.divide-zinc-850]="isCinematicGlow()" [class.divide-zinc-200]="!isCinematicGlow()">
                     <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
-                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px] w-1/3" [class.text-zinc-500]="isCinematicGlow()">Modelo / SKU</th>
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px] w-1/3" [class.text-zinc-400]="isCinematicGlow()">Modelo / SKU</th>
                       <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">GLX-{{ product.id.slice(0,4).toUpperCase() }}</td>
                     </tr>
                     <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
-                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-500]="isCinematicGlow()">Material Base</th>
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-400]="isCinematicGlow()">Material Base</th>
                       <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">{{ product.material || 'Aleación de Grado Industrial' }}</td>
                     </tr>
                     <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
-                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-500]="isCinematicGlow()">Dimensiones (LxWxH)</th>
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-400]="isCinematicGlow()">Dimensiones (LxWxH)</th>
                       <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">{{ product.dimensions || 'N/A' }}</td>
                     </tr>
                     <tr [class]="isCinematicGlow() ? 'hover:bg-zinc-900/50' : 'hover:bg-zinc-50'">
-                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-500]="isCinematicGlow()">Peso Operativo</th>
+                      <th class="py-4 px-6 font-bold uppercase tracking-wider text-[10px]" [class.text-zinc-400]="isCinematicGlow()">Peso Operativo</th>
                       <td class="py-4 px-6 font-mono font-bold" [class.text-white]="isCinematicGlow()">{{ product.weight || 'N/A' }}</td>
                     </tr>
                   </tbody>
@@ -310,7 +310,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
               </div>
 
               @if(product.specifications) {
-                <div class="mt-8 text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+                <div class="mt-8 text-sm leading-relaxed product-description-html" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-400]="!isCinematicGlow()">
                   <div [class]="'prose prose-sm max-w-none ' + (isCinematicGlow() ? 'prose-invert' : '')" [innerHTML]="product.specifications"></div>
                 </div>
               }
@@ -324,7 +324,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                 <div id="rating-overview-card"
                      [class]="isCinematicGlow() ? 'bg-[#050505] border-white/5 text-white' : 'bg-zinc-50 border-zinc-200'"
                      class="lg:col-span-4 border p-8 rounded-lg text-center space-y-4 transition-colors lg:sticky lg:top-28">
-                  <h5 class="glastor-h5 text-zinc-400">Calificación Global</h5>
+                  <p class="glastor-h5 text-zinc-400">Calificación Global</p>
                   <div class="space-y-1">
                     <span class="text-6xl font-black font-mono tracking-tight" [class.text-white]="isCinematicGlow()" [class.text-zinc-950]="!isCinematicGlow()">
                       {{ product.rating.toFixed(1) }}
@@ -368,7 +368,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                     <h6 [class.text-white]="isCinematicGlow()" [class.text-zinc-950]="!isCinematicGlow()" class="glastor-h6">
                       Reseñas de clientes comerciales
                     </h6>
-                    <p [class]="'text-sm font-medium ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">Coleccionamos impresiones directas de ferreterías, empresas y comercios para auditar la calidad distribuidora.</p>
+                    <p [class]="'text-sm font-medium ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-400')">Coleccionamos impresiones directas de ferreterías, empresas y comercios para auditar la calidad distribuidora.</p>
                   </div>
 
                   <div class="space-y-6">
@@ -392,7 +392,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
                                 }
                               }
                             </div>
-                            <span class="block text-[10px] font-mono text-zinc-500 font-bold uppercase tracking-widest">{{ rev.date }}</span>
+                            <span class="block text-[10px] font-mono text-zinc-400 font-bold uppercase tracking-widest">{{ rev.date }}</span>
                           </div>
                         </div>
                         <p [class.text-zinc-300]="isCinematicGlow()" [class.text-zinc-700]="!isCinematicGlow()" class="text-sm leading-relaxed font-sans">
@@ -417,7 +417,7 @@ import { ArrowLeft01Icon, ShoppingCart01Icon, FavouriteIcon, TruckIcon, Tick01Ic
              [class.bg-white]="!isCinematicGlow()"
              [class.border-zinc-200]="!isCinematicGlow()">
           <div class="flex flex-col">
-            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">Inversión Final</span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Inversión Final</span>
             <span class="font-mono text-lg font-black leading-none" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">
               {{ formatPrice((selectedVariantObj()?.price || product()!.price)) }}
             </span>

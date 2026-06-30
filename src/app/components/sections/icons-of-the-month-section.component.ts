@@ -17,7 +17,7 @@ import { GlassCardComponent } from '../ui/design-system/glass-card/glass-card.co
           <div class="text-left space-y-2">
             <span class="text-[10px] font-mono tracking-widest text-[#41BF84] uppercase font-black block">EQUIPOS DESTACADOS</span>
             <h2 [class]="'glastor-h1 ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">Productos Estrella del Mes</h2>
-            <p class="text-sm md:text-base text-zinc-500 max-w-lg mt-6">Nuestra selección de herramientas y tecnología con la mejor calificación en rendimiento y durabilidad industrial.</p>
+            <p class="text-sm md:text-base text-zinc-400 max-w-lg mt-6">Nuestra selección de herramientas y tecnología con la mejor calificación en rendimiento y durabilidad industrial.</p>
           </div>
           <a href="/tienda" (click)="onNavigate('tienda'); $event.preventDefault()" 
                   class="bg-zinc-900 hover:bg-zinc-850 text-white pl-6 pr-2 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all self-start md:self-auto hover:-translate-y-0.5 shadow-md flex items-center gap-4 cursor-pointer btn-shimmer group whitespace-nowrap w-fit shrink-0">

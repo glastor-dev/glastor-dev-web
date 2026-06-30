@@ -21,13 +21,13 @@ import { ParallaxDirective } from '../../../../directives/parallax.directive';
       <!-- Product Image (Full Cover with Vignette) -->
       <div class="absolute inset-0 w-full h-full overflow-hidden bg-[#050505] z-0">
         <!-- Top shadow for badge visibility -->
-        <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
         <!-- Bottom shadow for text visibility -->
-        <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#050505] via-black/60 to-transparent z-10 pointer-events-none"></div>
         
-        <div class="w-[120%] h-[120%] -left-[10%] -top-[10%] absolute" [appParallax]="40">
+        <div class="absolute inset-0 flex items-center justify-center p-4">
           <img [ngSrc]="product.image" [alt]="product.name" fill referrerpolicy="no-referrer"
-               class="object-cover group-hover:scale-105 opacity-80 group-hover:opacity-100 transition-all duration-700 ease-out">
+               class="object-contain group-hover:scale-105 opacity-90 group-hover:opacity-100 transition-all duration-700 ease-out">
         </div>
       </div>
 

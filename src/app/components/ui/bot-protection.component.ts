@@ -25,7 +25,7 @@ import { ShieldCheck, SecurityIcon } from '@hugeicons/core-free-icons';
         </div>
         <div class="flex flex-col">
           <span class="text-xs font-bold" [class.text-white]="isCinematicGlow()" [class.text-zinc-800]="!isCinematicGlow()">Verificar humanidad</span>
-          <span class="text-[10px] font-mono tracking-widest uppercase text-zinc-500">
+          <span class="text-[10px] font-mono tracking-widest uppercase text-zinc-400">
             {{ status() === 'verified' ? 'Seguro' : 'Requerido para continuar' }}
           </span>
         </div>

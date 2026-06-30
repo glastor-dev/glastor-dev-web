@@ -36,13 +36,14 @@ interface HeroDimensions {
         <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"></div>
         
         <div class="absolute inset-0 flex flex-col justify-end px-6 pb-12 z-10">
-          <div class="h-px bg-[#41BF84] w-8 mb-4"></div>
-          <div class="text-[#41BF84] font-mono text-[10px] font-black uppercase tracking-widest mb-2">{{ slides[0].tag }}</div>
-          <h1 class="font-display font-black text-[clamp(3rem,10vw,4.5rem)] text-white uppercase leading-[0.85] tracking-tighter mb-4">
+          <div class="mb-4 transform -skew-x-6 origin-left w-fit">
+            <span class="bg-[#41BF84] text-black font-black uppercase tracking-widest text-xs px-3 py-1 shadow-[4px_4px_0px_rgba(0,0,0,1)]">{{ slides[0].tag }}</span>
+          </div>
+          <h1 class="font-display font-black text-[clamp(2rem,10vw,4.5rem)] max-w-full break-words whitespace-normal text-white uppercase italic leading-[0.85] tracking-tighter mb-4 transform -skew-x-6 origin-left drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)]">
             {{ slides[0].title1 }}<br/>{{ slides[0].title2 }}
           </h1>
           <p class="text-zinc-400 text-xs mb-8">{{ slides[0].description }}</p>
-          <a href="/tienda" class="w-full bg-[#41BF84] text-black font-bold uppercase tracking-widest py-3.5 rounded-full text-xs flex justify-center items-center" (click)="onNavigate('tienda'); $event.preventDefault()">
+          <a href="/tienda" class="w-full bg-[#41BF84] text-black font-black uppercase tracking-widest py-3.5 shadow-[4px_4px_0px_rgba(0,0,0,1)] flex justify-center items-center transform -skew-x-6 active:scale-95 transition-transform" (click)="onNavigate('tienda'); $event.preventDefault()">
             Explorar Catálogo
           </a>
         </div>
@@ -70,7 +71,7 @@ interface HeroDimensions {
         <h2 class="title-box-2"><div class="title-2"></div></h2>
         <div class="desc"></div>
         <div class="cta">
-          <button class="bookmark" (click)="onNavigate('tienda')">
+          <button class="bookmark" (click)="onNavigate('tienda')" aria-label="Guardar Favorito">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd" />
             </svg>
@@ -85,7 +86,7 @@ interface HeroDimensions {
         <h2 class="title-box-2"><div class="title-2"></div></h2>
         <div class="desc"></div>
         <div class="cta">
-          <button class="bookmark" (click)="onNavigate('tienda')">
+          <button class="bookmark" (click)="onNavigate('tienda')" aria-label="Guardar Favorito">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd" />
             </svg>
@@ -136,8 +137,8 @@ export class HeroSectionComponent implements AfterViewInit, OnDestroy {
     {
       id: 'slide-1',
       tag: 'INGENIERÍA DE VANGUARDIA',
-      title1: 'ESTÁNDARES',
-      title2: 'DE LA INDUSTRIA',
+      title1: 'PURA',
+      title2: 'FUERZA',
       description: 'Potencia algorítmica y física al servicio de la construcción moderna. Equipos de ultra-alto rendimiento.',
       bgImage: 'assets/logos/h1.webp'
     },
@@ -172,10 +173,13 @@ export class HeroSectionComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.ctx = gsap.context(() => {
-      this.initAnimation();
-      window.addEventListener('resize', this.onResize);
-    }, this.heroContainer.nativeElement);
+    // Delay GSAP initialization slightly to unblock the main thread during initial render (TBT optimization)
+    setTimeout(() => {
+      this.ctx = gsap.context(() => {
+        this.initAnimation();
+        window.addEventListener('resize', this.onResize);
+      }, this.heroContainer.nativeElement);
+    }, 100);
   }
 
   ngOnDestroy() {
@@ -257,15 +261,16 @@ export class HeroSectionComponent implements AfterViewInit, OnDestroy {
     gsap.set('.indicator', { x: -width });
 
     const startDelay = 0.6;
+    const initialDuration = 1.2;
     gsap.to('.cover', {
-      x: width + 400, delay: 0.5, ease,
+      x: width + 400, delay: 0.5, ease, duration: 1.5,
       onComplete: () => this.startLoop(),
     });
 
     rest.forEach((i, index) => {
       const x = offsetLeft + index * (cardWidth + gap);
-      gsap.to(this.getCard(i),        { x, zIndex: 30, delay: startDelay + 0.05 * index, ease });
-      gsap.to(this.getCardContent(i), { x, zIndex: 40, delay: startDelay + 0.05 * index, ease });
+      gsap.to(this.getCard(i),        { x, zIndex: 30, delay: startDelay + 0.05 * index, ease, duration: initialDuration });
+      gsap.to(this.getCardContent(i), { x, zIndex: 40, delay: startDelay + 0.05 * index, ease, duration: initialDuration });
     });
 
     gsap.to('#pagination',   { y: 0, opacity: 1, ease, delay: startDelay });
@@ -293,6 +298,7 @@ export class HeroSectionComponent implements AfterViewInit, OnDestroy {
     const { width, height, isMobile, offsetTop, offsetLeft, cardWidth, cardHeight, gap } = this.getDimensions();
     const ease       = 'sine.inOut';
     const numberSize = 50;
+    const animDuration = 1.2;
 
     gsap.fromTo('.indicator', { x: -width }, {
       x: 0, duration: 4, ease: 'none',
@@ -311,28 +317,28 @@ export class HeroSectionComponent implements AfterViewInit, OnDestroy {
             this.updateDetailsText(detailsActive, active);
 
             gsap.set(detailsActive,  { zIndex: 22 });
-            gsap.to(detailsActive,   { opacity: 1, delay: 0.4, ease });
-            gsap.to(detailsActive + ' .text',    { y: 0, delay: 0.10, duration: 0.7, ease });
-            gsap.to(detailsActive + ' .title-1', { y: 0, delay: 0.15, duration: 0.7, ease });
-            gsap.to(detailsActive + ' .title-2', { y: 0, delay: 0.15, duration: 0.7, ease });
-            gsap.to(detailsActive + ' .desc',    { y: 0, delay: 0.30, duration: 0.4, ease });
-            gsap.to(detailsActive + ' .cta',     { y: 0, delay: 0.35, duration: 0.4, ease });
+            gsap.to(detailsActive,   { opacity: 1, delay: 0.4, ease, duration: animDuration });
+            gsap.to(detailsActive + ' .text',    { y: 0, delay: 0.10, duration: 1, ease });
+            gsap.to(detailsActive + ' .title-1', { y: 0, delay: 0.15, duration: 1, ease });
+            gsap.to(detailsActive + ' .title-2', { y: 0, delay: 0.15, duration: 1, ease });
+            gsap.to(detailsActive + ' .desc',    { y: 0, delay: 0.30, duration: 0.8, ease });
+            gsap.to(detailsActive + ' .cta',     { y: 0, delay: 0.35, duration: 0.8, ease });
 
             gsap.set(detailsInactive, { zIndex: 12 });
 
             gsap.set(this.getCard(prv),  { zIndex: 10 });
             gsap.set(this.getCard(active),{ zIndex: 20 });
-            gsap.to(this.getCard(prv),   { scale: 1.5, ease });
-            gsap.to(this.getCardContent(active), { y: offsetTop + cardHeight - 10, opacity: 0, duration: 0.3, ease });
+            gsap.to(this.getCard(prv),   { scale: 1.5, ease, duration: animDuration });
+            gsap.to(this.getCardContent(active), { y: offsetTop + cardHeight - 10, opacity: 0, duration: 0.5, ease });
 
-            gsap.to(this.getSliderItem(active), { x: 0, ease });
-            gsap.to(this.getSliderItem(prv),    { x: -numberSize, ease });
+            gsap.to(this.getSliderItem(active), { x: 0, ease, duration: animDuration });
+            gsap.to(this.getSliderItem(prv),    { x: -numberSize, ease, duration: animDuration });
             gsap.to('.progress-sub-foreground', {
-              width: ((1 / this.order.length) * (active + 1) * 100) + '%', ease,
+              width: ((1 / this.order.length) * (active + 1) * 100) + '%', ease, duration: animDuration
             });
 
             gsap.to(this.getCard(active), {
-              x: 0, y: 0, width, height, borderRadius: 0, ease,
+              x: 0, y: 0, width, height, borderRadius: 0, ease, duration: animDuration,
               onComplete: () => {
                 const xNew = offsetLeft + (rest.length - 1) * (cardWidth + gap);
                 gsap.set(this.getCard(prv),        { x: xNew, y: offsetTop, width: cardWidth, height: cardHeight, zIndex: 30, borderRadius: 20, scale: 1 });
@@ -355,9 +361,9 @@ export class HeroSectionComponent implements AfterViewInit, OnDestroy {
               if (i !== prv) {
                 const xNew = offsetLeft + index * (cardWidth + gap);
                 gsap.set(this.getCard(i), { zIndex: 30 });
-                gsap.to(this.getCard(i),        { x: xNew, y: offsetTop, width: cardWidth, height: cardHeight, ease, delay: 0.1 * (index + 1) });
-                gsap.to(this.getCardContent(i), { x: xNew, y: offsetTop + cardHeight - 60, opacity: 1, zIndex: 40, ease, delay: 0.1 * (index + 1) });
-                gsap.to(this.getSliderItem(i),  { x: (index + 1) * numberSize, ease });
+                gsap.to(this.getCard(i),        { x: xNew, y: offsetTop, width: cardWidth, height: cardHeight, ease, duration: animDuration, delay: 0.1 * (index + 1) });
+                gsap.to(this.getCardContent(i), { x: xNew, y: offsetTop + cardHeight - 60, opacity: 1, zIndex: 40, ease, duration: animDuration, delay: 0.1 * (index + 1) });
+                gsap.to(this.getSliderItem(i),  { x: (index + 1) * numberSize, ease, duration: animDuration });
               }
             });
           }

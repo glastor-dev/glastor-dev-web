@@ -27,7 +27,7 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
         <!-- Sidebar Navigation -->
         <aside class="w-full md:w-80 shrink-0">
           <div class="sticky top-28 bg-zinc-900/50 backdrop-blur-xl border border-white/5 rounded-2xl p-6">
-            <h3 class="glastor-h5 mb-6 text-zinc-500">Documentos</h3>
+            <h3 class="glastor-h5 mb-6 text-zinc-400">Documentos</h3>
             <nav class="flex flex-col gap-2">
               @for (doc of documents; track doc.id) {
                 <button (click)="setActiveTab(doc.id)"
@@ -53,7 +53,7 @@ type LegalTab = 'privacidad' | 'aviso' | 'cookies' | 'ventas' | 'accesibilidad' 
               }
             </nav>
 
-            <div class="mt-8 pt-6 border-t border-white/10 text-xs text-zinc-500">
+            <div class="mt-8 pt-6 border-t border-white/10 text-xs text-zinc-400">
               <p>Última actualización: {{ formattedDate }}</p>
               <p class="mt-2">GLASTOR® - Marca Registrada</p>
             </div>

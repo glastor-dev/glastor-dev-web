@@ -49,7 +49,7 @@ import { Tick02Icon, Tick01Icon } from '@hugeicons/core-free-icons';
           </li>
         </ul>
         
-        <p class="text-[10px] leading-relaxed text-zinc-500 pt-4 border-t border-zinc-800">
+        <p class="text-[10px] leading-relaxed text-zinc-400 pt-4 border-t border-zinc-800">
           Algunas cookies son necesarias para fines técnicos, por lo que están exentas de consentimiento. Otras, no obligatorias, pueden utilizarse para anuncios y contenidos personalizados, medición de anuncios y contenidos, conocimiento de la audiencia y desarrollo de productos, datos precisos de geolocalización e identificación a través del escaneo de dispositivos, almacenar y/o acceder a información en un dispositivo. Si da su consentimiento, este será válido en todos los subdominios de GLASTOR®. Si rechaza las cookies, no podrá utilizar el chatbot de la consola. Puede retirar su consentimiento en cualquier momento haciendo clic en Aviso de consentimiento en la parte inferior derecha de la página.
         </p>
       </div>
@@ -58,7 +58,7 @@ import { Tick02Icon, Tick01Icon } from '@hugeicons/core-free-icons';
       <div class="relative z-10 flex flex-col sm:flex-row gap-3">
         <button (click)="configure.emit()" class="flex-1 py-2.5 px-4 rounded-full border border-zinc-700 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors text-center">Configurar</button>
         <button (click)="reject.emit()" class="flex-1 py-2.5 px-4 rounded-full bg-zinc-800 border border-zinc-700 text-xs font-semibold text-white hover:bg-zinc-700 transition-colors text-center">No estoy de acuerdo</button>
-        <button (click)="accept.emit()" class="flex-1 py-2.5 px-4 rounded-full bg-emerald-600 text-xs font-semibold text-white hover:bg-[#41BF84]/200 hover:shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-all text-center">Estoy de acuerdo</button>
+        <button (click)="accept.emit()" class="flex-1 py-2.5 px-4 rounded-full bg-[#41BF84] text-xs font-semibold text-zinc-950 hover:bg-[#41BF84]/80 hover:shadow-[0_0_15px_rgba(65,191,132,0.4)] transition-all text-center">Estoy de acuerdo</button>
       </div>
     </div>
   `

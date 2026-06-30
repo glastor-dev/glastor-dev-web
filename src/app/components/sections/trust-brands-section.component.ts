@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0D0D0D] to-transparent z-10 pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto px-4 mb-6">
-        <span class="text-[10px] uppercase font-mono tracking-[0.2em] text-zinc-500 font-bold">Distribuidor Oficial Autorizado</span>
+        <span class="text-[10px] uppercase font-mono tracking-[0.2em] text-zinc-400 font-bold">Distribuidor Oficial Autorizado</span>
       </div>
 
       <div class="marquee-container flex overflow-hidden group">

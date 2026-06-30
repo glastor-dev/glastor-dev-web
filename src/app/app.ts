@@ -78,13 +78,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Initialize premium mix-blend custom cursor follower
+    // Initialize premium mix-blend custom cursor follower slightly delayed
     if (typeof window !== 'undefined') {
-      try {
-        if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-          // Skip cursor initialization on touch devices
-        } else {
-          const cursor = document.getElementById('sodra-custom-cursor');
+      setTimeout(() => {
+        try {
+          if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+            // Skip cursor initialization on touch devices
+          } else {
+            const cursor = document.getElementById('sodra-custom-cursor');
         if (cursor) {
           // Use GSAP quickTo for smooth performant interpolation
           const xTo = gsap.quickTo(cursor, "left", { duration: 0.4, ease: "power3" });
@@ -168,9 +169,10 @@ export class AppComponent implements OnInit {
           });
         }
         } // Close else block
-      } catch (err) {
-        console.warn('Custom cursor initialization failed:', err);
-      }
+        } catch (err) {
+          console.warn('Custom cursor initialization failed:', err);
+        }
+      }, 300); // Close setTimeout
     }
 
     // Initialize Preloader

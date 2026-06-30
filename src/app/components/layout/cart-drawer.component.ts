@@ -27,8 +27,8 @@ import { ShoppingBag01Icon, Cancel01Icon, Delete01Icon, ShoppingCart01Icon, Sett
             <h2 class="text-xs font-black uppercase text-white tracking-wider">Cesta de Compra</h2>
           </div>
           
-          <button (click)="handleClose()" 
-                  class="w-7 h-7 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white cursor-pointer flex items-center justify-center transition-colors">
+          <button (click)="handleClose()" aria-label="Cerrar carrito"
+                  class="w-8 h-8 rounded bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center hover:bg-white hover:text-black hover:scale-105 active:scale-95 transition-all text-white cursor-pointer group">
             <hugeicons-icon [icon]="Cancel01Icon" [size]="20" class="scale-75" [strokeWidth]="1.5" />
           </button>
         </div>
@@ -49,17 +49,17 @@ import { ShoppingBag01Icon, Cancel01Icon, Delete01Icon, ShoppingCart01Icon, Sett
                     
                     <!-- Quantity adjustments -->
                     <div class="flex items-center gap-2 pt-1 font-mono text-white">
-                      <button (click)="appState.updateQuantity(item.product.id, -1)" 
+                      <button (click)="appState.updateQuantity(item.product.id, -1)" aria-label="Reducir cantidad"
                               class="w-5 h-5 rounded bg-zinc-800 hover:bg-[#41BF84] hover:text-black flex items-center justify-center text-zinc-300 cursor-pointer font-bold text-xs transition-colors">-</button>
                       <span class="text-xs font-bold px-1">{{ item.quantity }}</span>
-                      <button (click)="appState.updateQuantity(item.product.id, 1)" 
+                      <button (click)="appState.updateQuantity(item.product.id, 1)" aria-label="Aumentar cantidad"
                               class="w-5 h-5 rounded bg-zinc-800 hover:bg-[#41BF84] hover:text-black flex items-center justify-center text-zinc-300 cursor-pointer font-bold text-xs transition-colors">+</button>
                     </div>
                   </div>
 
                   <!-- Item Delete trash icon -->
-                  <button (click)="appState.removeFromCart(item.product.id)" 
-                          class="absolute top-2.5 right-2.5 w-6 h-6 rounded-md hover:bg-rose-500/10 flex items-center justify-center text-zinc-500 hover:text-rose-500 cursor-pointer transition-colors">
+                  <button (click)="appState.removeFromCart(item.product.id)" aria-label="Eliminar producto"
+                          class="absolute top-2.5 right-2.5 w-6 h-6 rounded-md hover:bg-rose-500/10 flex items-center justify-center text-zinc-400 hover:text-rose-500 cursor-pointer transition-colors">
                     <hugeicons-icon [icon]="Delete01Icon" [size]="20" class="scale-75" [strokeWidth]="1.5" />
                   </button>
                 </div>
@@ -69,7 +69,7 @@ import { ShoppingBag01Icon, Cancel01Icon, Delete01Icon, ShoppingCart01Icon, Sett
             <div class="h-full flex flex-col items-center justify-center p-8 text-center space-y-3.5">
               <hugeicons-icon [icon]="ShoppingCart01Icon" [size]="20" class="text-zinc-800 scale-150" [strokeWidth]="1.5" />
               <h3 class="text-xs font-black uppercase text-white tracking-wider">Tu selección está vacía</h3>
-              <p class="text-xs text-zinc-500 max-w-xs leading-normal">
+              <p class="text-xs text-zinc-400 max-w-xs leading-normal">
                 Descubre la ingeniería que transformará tu espacio.
               </p>
             </div>
@@ -80,7 +80,7 @@ import { ShoppingBag01Icon, Cancel01Icon, Delete01Icon, ShoppingCart01Icon, Sett
         <div class="p-5 border-t border-zinc-800/80 bg-zinc-950/50 space-y-4">
           <div class="space-y-2 text-xs text-zinc-400">
             <div class="flex justify-between">
-              <span>Subtotal <span class="text-[9px] text-zinc-500 font-bold uppercase tracking-wider ml-1">(IVA 21% INCLUIDO)</span></span>
+              <span>Subtotal <span class="text-[9px] text-zinc-400 font-bold uppercase tracking-wider ml-1">(IVA 21% INCLUIDO)</span></span>
               <span class="font-mono text-white font-bold">{{ formatPrice(appState.subtotal()) }}</span>
             </div>
             <div class="flex justify-between items-center">
@@ -100,7 +100,7 @@ import { ShoppingBag01Icon, Cancel01Icon, Delete01Icon, ShoppingCart01Icon, Sett
 
           <!-- Checkout actions inside drawer -->
           <button (click)="handleOpenCheckout()" [disabled]="appState.cart().length === 0"
-                  class="w-full bg-[#41BF84] hover:bg-white text-black disabled:bg-zinc-800 disabled:text-zinc-500 font-black text-xs py-3.5 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md uppercase tracking-wider">
+                  class="w-full bg-[#41BF84] hover:bg-white text-black disabled:bg-zinc-800 disabled:text-zinc-400 font-black text-xs py-3.5 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md uppercase tracking-wider">
             <hugeicons-icon [icon]="Settings01Icon" [size]="20" class="scale-75" [strokeWidth]="1.5" />
             Proceder a mi Orden
           </button>

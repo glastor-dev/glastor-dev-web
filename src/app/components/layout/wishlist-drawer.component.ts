@@ -28,7 +28,7 @@ import { Product } from '../../portal'; // Reusing Product interface
             <h2 class="text-xs font-black uppercase text-white tracking-wider">Lista de Favoritos ({{ wishlistCount() }})</h2>
           </div>
           
-          <button (click)="handleClose()" 
+          <button (click)="handleClose()" aria-label="Cerrar favoritos"
                   class="w-7 h-7 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white cursor-pointer flex items-center justify-center transition-colors">
             <hugeicons-icon [icon]="Cancel01Icon" [size]="20" class="scale-75" [strokeWidth]="1.5" />
           </button>
@@ -78,7 +78,7 @@ import { Product } from '../../portal'; // Reusing Product interface
             <div class="h-full flex flex-col items-center justify-center p-8 text-center space-y-3.5">
               <hugeicons-icon [icon]="FavouriteIcon" [size]="20" class="text-zinc-800 scale-150" [strokeWidth]="1.5" />
               <h3 class="text-xs font-black uppercase text-white tracking-wider">No hay favoritos</h3>
-              <p class="text-xs text-zinc-500 max-w-xs leading-normal">
+              <p class="text-xs text-zinc-400 max-w-xs leading-normal">
                 Su lista de deseos se encuentra vacía. Pulse sobre el icono de corazón en cualquiera de nuestras exclusivas piezas del catálogo para guardarla para más tarde.
               </p>
             </div>

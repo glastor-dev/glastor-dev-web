@@ -19,7 +19,7 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
   template: `
     <div class="page-transition">
       <!-- Full-Width Catalog Introduction Hero -->
-      <section class="relative w-full overflow-hidden text-left flex flex-col justify-end min-h-[400px] md:min-h-[500px] border-b transition-colors -mt-[140px] pt-[140px]"
+      <section class="relative w-full overflow-hidden text-left flex flex-col justify-end min-h-[400px] md:min-h-[500px] border-b transition-colors pt-[80px]"
                [class]="isCinematicGlow() ? 'bg-[#050505] border-white/5' : 'bg-zinc-50 border-zinc-200'">
            
         <!-- Brutalist SVG Noise Texture Overlay -->
@@ -27,31 +27,38 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
              style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);">
         </div>
         
+        <!-- Background Image (Blueprint style) -->
+        <div class="absolute inset-0 z-0 opacity-40 pointer-events-none overflow-hidden" *ngIf="isCinematicGlow()">
+           <img src="/assets/logos/catalogo1.webp" class="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[70%] lg:w-[50%] h-auto object-contain mix-blend-screen filter blur-[1px]">
+        </div>
+
         <!-- Gradient Overlay for readability -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/90 to-transparent z-10" *ngIf="isCinematicGlow()"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent z-10" *ngIf="isCinematicGlow()"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-zinc-50 via-zinc-50/60 to-transparent z-10" *ngIf="!isCinematicGlow()"></div>
 
-        <div class="z-20 relative max-w-7xl mx-auto w-full px-4 pb-12 pt-24">
-          <div class="flex flex-col md:flex-row md:items-end justify-between gap-12">
+        <div class="z-20 relative max-w-7xl mx-auto w-full px-6 md:px-12 pb-16 pt-24">
+          <div class="flex flex-col justify-end gap-12 border-l-4 border-[#41BF84] pl-6 md:pl-10">
             <div class="space-y-6 flex-1 text-left relative z-20">
               
               <!-- Technical HUD Label -->
-              <div class="flex items-center gap-4 animate-fade-in-up">
-                <div class="h-px bg-[#41BF84] w-12"></div>
-                <h5 class="glastor-h5">SISTEMA DE INVENTARIO B2B</h5>
+              <div class="mb-4 transform -skew-x-6 origin-left w-fit animate-fade-in-up">
+                <span class="bg-[#41BF84] text-black font-black uppercase tracking-widest text-xs px-3 py-1 shadow-[4px_4px_0px_rgba(0,0,0,1)]">CATÁLOGO B2B</span>
               </div>
 
-              <h1 [class]="'glastor-h1 ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">
-                Catálogo <br class="hidden md:block"> 
-                Megastore
+              <h1 class="font-display font-black text-[clamp(2rem,8vw,5.5rem)] max-w-full break-words uppercase italic leading-[0.85] tracking-tighter transform -skew-x-6 origin-left drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)] animate-fade-in-up"
+                  [class]="isCinematicGlow() ? 'text-white' : 'text-zinc-950'" style="display: inline-block; padding-right: 0.15em;">
+                CATÁLOGO<br />MEGASTORE
               </h1>
               
-              <p [class]="'glastor-subtitle max-w-xl ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
-                Nuestra selección premium de tecnología, componentes de computación avanzados y herramientas industriales para profesionales. Filtra por categoría o realiza búsquedas dinámicas en tiempo real.
-              </p>
+              <div class="border-l border-white/20 pl-4 mt-6 animate-fade-in-up">
+                <p [class]="'font-mono text-[11px] uppercase font-bold tracking-widest max-w-xl leading-relaxed ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-600')">
+                  ENCUENTRA LAS SOLUCIONES TECNOLÓGICAS PERFECTAS PARA TU SECTOR. EQUIPOS DE ALTO RENDIMIENTO PARA ENTORNOS EXIGENTES.
+                </p>
+              </div>
               
               <!-- Data metrics -->
-              <div class="flex gap-6 pt-4 border-t border-white/10 max-w-sm mt-6">
+              <div class="flex gap-8 pt-6 animate-fade-in-up">
                 <div>
                   <span class="block text-[10px] font-mono text-zinc-500 uppercase font-black tracking-widest">Disponibilidad</span>
                   <span class="block text-white font-mono text-sm uppercase font-bold mt-1">Inmediata</span>
@@ -61,18 +68,6 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
                   <span class="block text-[#41BF84] font-mono text-sm uppercase font-bold mt-1">~12ms</span>
                 </div>
               </div>
-            </div>
-            
-            <div class="hidden md:block shrink-0 relative w-full max-w-[300px] lg:max-w-[450px] animate-fade-in-up group" style="animation-delay: 150ms;">
-              <!-- Glow sutil detrás de la imagen para integrarla mejor con la oscuridad -->
-              <div class="absolute inset-0 bg-[#41BF84]/20 blur-[80px] rounded-full scale-150 -z-10 transition-all duration-700 group-hover:bg-[#41BF84]/30" *ngIf="isCinematicGlow()"></div>
-              
-              <!-- Floating HUD Element -->
-              <div class="absolute top-10 -left-10 bg-black/80 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded text-[10px] font-mono font-black text-[#41BF84] uppercase tracking-widest z-20 shadow-2xl animate-pulse">
-                [ LXT SYSTEM ]
-              </div>
-              
-              <img src="/assets/logos/catalogo1.webp" alt="Glastor Megastore" class="w-full h-auto object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-700 relative z-10">
             </div>
           </div>
         </div>
@@ -91,7 +86,7 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
             <input type="text" [formControl]="searchControl" placeholder="Buscar en el catálogo (Makita, iPhone, AMD, etc)..."
                    [class]="'w-full border rounded-xl pl-12 pr-4 py-3.5 text-sm font-semibold focus:outline-none transition-all ' + 
                             (isCinematicGlow() 
-                             ? 'bg-zinc-950 hover:bg-zinc-900 border-zinc-800 focus:border-amber-500/50 text-white placeholder:text-zinc-600 shadow-inner' 
+                             ? 'bg-zinc-950 hover:bg-zinc-900 border-zinc-800 focus:border-amber-500/50 text-white placeholder:text-zinc-400 shadow-inner' 
                              : 'bg-zinc-50 hover:bg-zinc-100 border-zinc-200 focus:border-zinc-400 text-zinc-900 placeholder:text-zinc-400')">
           </div>
           
@@ -107,7 +102,7 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
                <option value="price-desc" [selected]="sortOrder() === 'price-desc'">Precio: Mayor a Menor</option>
                <option value="name-asc" [selected]="sortOrder() === 'name-asc'">Nombre: A - Z</option>
              </select>
-             <hugeicons-icon [icon]="ArrowDown01Icon" [size]="16" class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500"  [strokeWidth]="2" />
+             <hugeicons-icon [icon]="ArrowDown01Icon" [size]="16" class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400"  [strokeWidth]="2" />
           </div>
         </div>
 
@@ -118,14 +113,14 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
                     [class]="'px-4 py-2 rounded-lg text-xs font-black cursor-pointer transition-all shrink-0 border ' + 
                              (selectedCategory() === cat.value 
                               ? (isCinematicGlow() ? 'bg-amber-600 border-amber-500 text-zinc-950 shadow-md shadow-amber-500/20' : 'bg-zinc-900 border-zinc-900 text-white shadow-sm') 
-                              : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300'))">
+                              : (isCinematicGlow() ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white' : 'bg-white border-zinc-200 text-zinc-400 hover:bg-zinc-50 hover:border-zinc-300'))">
               {{ cat.label }}
             </button>
           }
         </div>
 
         <!-- Meta info -->
-        <div [class]="'flex items-center justify-between pt-4 border-t text-xs font-medium text-zinc-500 ' + (isCinematicGlow() ? 'border-zinc-800/60' : 'border-zinc-200')">
+        <div [class]="'flex items-center justify-between pt-4 border-t text-xs font-medium text-zinc-400 ' + (isCinematicGlow() ? 'border-zinc-800/60' : 'border-zinc-200')">
           <span>Mostrando {{ publicProducts().length }} {{ publicProducts().length === 1 ? 'producto' : 'productos' }}</span>
         </div>
 
@@ -163,7 +158,7 @@ import { Search01Icon, ArrowDown01Icon, SearchRemoveIcon } from '@hugeicons/core
           </div>
           <div class="space-y-1">
             <h6 [class]="'glastor-h6 ' + (isCinematicGlow() ? 'text-white' : 'text-zinc-950')">No se encontraron artículos coincidentes</h6>
-            <p [class]="'glastor-desc ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-500')">
+            <p [class]="'glastor-desc ' + (isCinematicGlow() ? 'text-zinc-400' : 'text-zinc-400')">
               No disponemos de piezas que coincidan con "{{ appState.searchQuery() }}". Por favor, intente redefinir los términos de búsqueda o limpie los selectores de categoría.
             </p>
           </div>

@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppStateService } from '../../app-state.service';
+import { HugeiconsIconComponent } from '@hugeicons/angular';
+import { Alert01Icon, InformationCircleIcon } from '@hugeicons/core-free-icons';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HugeiconsIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="bg-[#080808] text-zinc-300 pt-8 sm:pt-12 pb-0 relative overflow-hidden font-sans selection:bg-amber-500 selection:text-white flex justify-start">
@@ -62,7 +64,7 @@ import { AppStateService } from '../../app-state.service';
           <div class="flex gap-8 md:gap-12 text-[10px] sm:text-[11px] font-bold w-full md:w-auto flex-wrap sm:flex-nowrap md:pt-4">
             <!-- Column 1: SITEMAP -->
             <div class="space-y-4">
-              <h4 class="text-zinc-500 mb-4 capitalize">Sitemap</h4>
+              <p class="text-zinc-400 font-bold mb-4 capitalize">Sitemap</p>
               <ul class="space-y-3 uppercase tracking-wider text-white">
                 <li><a (click)="handleNavigate('inicio'); playBeep(480)" class="hover:text-[#41BF84] cursor-pointer transition-colors">INICIO</a></li>
                 <li><a (click)="handleNavigate('tienda'); playBeep(520)" class="hover:text-[#41BF84] cursor-pointer transition-colors">CATÁLOGO</a></li>
@@ -71,7 +73,7 @@ import { AppStateService } from '../../app-state.service';
 
             <!-- Column 2: LEGAL -->
             <div class="space-y-4">
-              <h4 class="text-zinc-500 mb-4 capitalize">Legal</h4>
+              <p class="text-zinc-400 font-bold mb-4 capitalize">Legal</p>
               <ul class="space-y-3 uppercase tracking-wider text-white">
                 <li><a (click)="handleNavigate('legales'); playBeep(550)" class="hover:text-[#41BF84] cursor-pointer transition-colors">PRIVACIDAD</a></li>
                 <li><a (click)="handleNavigate('legales'); playBeep(530)" class="hover:text-[#41BF84] cursor-pointer transition-colors">COOKIES</a></li>
@@ -81,10 +83,22 @@ import { AppStateService } from '../../app-state.service';
             
             <!-- Column 3: CONSUMER -->
             <div class="space-y-4">
-              <h4 class="text-zinc-500 mb-4 capitalize">Consumidor</h4>
-              <ul class="space-y-3 uppercase tracking-wider text-white">
-                <li><button (click)="handleNavigate('arrepentimiento'); playBeep(500)" class="hover:text-[#41BF84] cursor-pointer transition-colors text-left uppercase whitespace-nowrap">ARREPENTIMIENTO</button></li>
-                <li><a href="https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario" target="_blank" class="hover:text-[#41BF84] cursor-pointer transition-colors flex items-center gap-1 uppercase whitespace-nowrap">DEFENSA AL CONSUMIDOR</a></li>
+              <p class="text-zinc-400 font-bold mb-4 capitalize">Consumidor</p>
+              <ul class="space-y-3 uppercase tracking-wider">
+                <li>
+                  <button (click)="handleNavigate('arrepentimiento'); playBeep(500)" 
+                          class="text-[#41BF84] border border-[#41BF84]/30 bg-[#41BF84]/5 px-3 py-2 rounded-sm hover:bg-[#41BF84]/15 hover:border-[#41BF84]/60 cursor-pointer transition-all text-left uppercase whitespace-nowrap flex items-center justify-between w-full group">
+                    <span class="font-bold">ARREPENTIMIENTO</span>
+                    <hugeicons-icon [icon]="Alert01Icon" [size]="14" class="opacity-50 group-hover:opacity-100 transition-opacity" />
+                  </button>
+                </li>
+                <li>
+                  <a href="https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario" target="_blank" 
+                     class="text-zinc-300 border border-white/10 bg-white/5 px-3 py-2 rounded-sm hover:bg-white/10 hover:border-white/30 hover:text-white cursor-pointer transition-all flex items-center justify-between uppercase whitespace-nowrap w-full group">
+                    <span class="font-bold">DEFENSA AL CONSUMIDOR</span>
+                    <hugeicons-icon [icon]="InformationCircleIcon" [size]="14" class="opacity-50 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -155,7 +169,7 @@ import { AppStateService } from '../../app-state.service';
         <div class="max-w-7xl mx-auto flex flex-col gap-6 relative z-10 w-full mt-2 lg:pr-[24vw] xl:pr-[25vw]">
 
           <!-- Legal strip (Restored) -->
-          <div class="relative z-10 mt-6 flex flex-col gap-2 text-[10px] text-zinc-500 font-mono tracking-wide w-full md:w-3/4">
+          <div class="relative z-10 mt-6 flex flex-col gap-2 text-[10px] text-zinc-400 font-mono tracking-wide w-full md:w-3/4">
             <p>2026 <strong class="text-zinc-400 font-sans tracking-normal">GLASTOR®</strong> es una marca registrada en Argentina (INPI — Reg. 4559568 y 4559567, 19/08/2025).</p>
             <p>CUIT 23253165669 — Convenio Multilateral. Emitimos Factura Electrónica A y B.</p>
             <p>Todos los precios publicados en este sitio web están expresados en Pesos Argentinos (ARS) y ya incluyen el 21% de IVA.</p>
@@ -172,6 +186,8 @@ import { AppStateService } from '../../app-state.service';
 export class FooterComponent {
   appState = inject(AppStateService);
   
+  Alert01Icon = Alert01Icon;
+  InformationCircleIcon = InformationCircleIcon;
   @Output() navigate = new EventEmitter<string>();
 
   handleNavigate(view: string) {

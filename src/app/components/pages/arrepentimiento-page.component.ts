@@ -26,7 +26,7 @@ import { DeliveryBox01Icon, SentIcon, Refresh01Icon, CheckmarkBadge01Icon } from
             <hugeicons-icon [icon]="DeliveryBox01Icon" [size]="32" [strokeWidth]="1.5"></hugeicons-icon>
           </span>
           <h1 class="glastor-h2 text-center mb-4">Botón de Arrepentimiento</h1>
-          <p class="glastor-subtitle max-w-xl mx-auto" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-600]="!isCinematicGlow()">
+          <p class="glastor-subtitle max-w-xl mx-auto" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-400]="!isCinematicGlow()">
             Formulario directo de revocación de compra (Ley 24.240). Complete los datos de la operación para iniciar el proceso de devolución de manera automática y sin trabas.
           </p>
         </div>
@@ -132,13 +132,13 @@ import { DeliveryBox01Icon, SentIcon, Refresh01Icon, CheckmarkBadge01Icon } from
             <div class="p-6 rounded-lg border my-6 text-left"
                  [class.bg-zinc-950]="isCinematicGlow()" [class.border-zinc-800]="isCinematicGlow()"
                  [class.bg-white]="!isCinematicGlow()" [class.border-zinc-200]="!isCinematicGlow()">
-              <p class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase font-black mb-2">Código de Identificación del Trámite</p>
+              <p class="text-[10px] font-mono tracking-widest text-zinc-400 uppercase font-black mb-2">Código de Identificación del Trámite</p>
               <div class="text-2xl md:text-3xl font-mono font-black tracking-widest select-all" [class.text-white]="isCinematicGlow()" [class.text-zinc-900]="!isCinematicGlow()">
                 {{ trackingCode() }}
               </div>
             </div>
 
-            <p class="text-[11px] max-w-sm mx-auto" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-500]="!isCinematicGlow()">
+            <p class="text-[11px] max-w-sm mx-auto" [class.text-zinc-400]="isCinematicGlow()" [class.text-zinc-400]="!isCinematicGlow()">
               Se ha generado este comprobante de forma inmediata. Se le enviarán los detalles e instrucciones logísticas por correo electrónico a <strong [class.text-white]="isCinematicGlow()">{{ arrepentimientoForm.value.email }}</strong> en un plazo máximo de 24 horas.
             </p>
           </div>

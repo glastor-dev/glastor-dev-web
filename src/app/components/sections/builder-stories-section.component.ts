@@ -128,7 +128,7 @@ interface Story {
             <div class="bg-[#0a0a0a] border border-white/5 hover:border-white/20 rounded-lg p-5 flex flex-col items-center justify-between group cursor-pointer transition-all duration-300 relative h-full">
               
               <!-- Heart -->
-              <button (click)="onToggleWishlist(product.id, $event)" class="absolute top-4 right-4 text-zinc-500 hover:text-rose-500 z-10 transition-colors">
+              <button (click)="onToggleWishlist(product.id, $event)" class="absolute top-4 right-4 text-zinc-400 hover:text-rose-500 z-10 transition-colors">
                 <hugeicons-icon [icon]="FavouriteIcon" [size]="18" [class.text-rose-500]="wishlist.includes(product.id)" [strokeWidth]="1.5" />
               </button>
 

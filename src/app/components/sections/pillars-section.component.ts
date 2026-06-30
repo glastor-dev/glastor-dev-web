@@ -16,7 +16,7 @@ import gsap from 'gsap';
         <div class="flex flex-col items-center justify-center text-center mb-16 animate-fade-in-up">
           <div class="h-px bg-[#41BF84] w-12 mb-6"></div>
           <span class="text-[#41BF84] font-mono text-[10px] uppercase font-black tracking-widest mb-2 block">// ESTÁNDARES GLASTOR</span>
-          <h2 class="glastor-h1 text-white">Pilares de <span class="text-zinc-500">Confianza</span></h2>
+          <h2 class="glastor-h1 text-white">Pilares de <span class="text-zinc-400">Confianza</span></h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -32,14 +32,14 @@ import gsap from 'gsap';
           <!-- Metrics Data Block -->
           <ng-container card-metrics>
             <div class="space-y-1">
-              <span class="block text-zinc-500 uppercase font-bold tracking-widest text-[10px] font-mono">Garantía oficial:</span>
+              <span class="block text-zinc-400 uppercase font-bold tracking-widest text-[10px] font-mono">Garantía oficial:</span>
               <span class="flex font-black items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#41BF84]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                 3 Años S.L.
               </span>
             </div>
             <div class="space-y-1">
-              <span class="block text-zinc-500 uppercase font-bold tracking-widest text-[10px] font-mono">Procedencia:</span>
+              <span class="block text-zinc-400 uppercase font-bold tracking-widest text-[10px] font-mono">Procedencia:</span>
               <span class="flex font-black items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#41BF84]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                 Unión Europea
@@ -59,14 +59,14 @@ import gsap from 'gsap';
           <!-- Metrics Data Block -->
           <ng-container card-metrics>
             <div class="space-y-1">
-              <span class="block text-zinc-500 uppercase font-bold tracking-widest text-[10px] font-mono">Asistencia:</span>
+              <span class="block text-zinc-400 uppercase font-bold tracking-widest text-[10px] font-mono">Asistencia:</span>
               <span class="flex font-black items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#41BF84]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
                 Técnica Directa
               </span>
             </div>
             <div class="space-y-1">
-              <span class="block text-zinc-500 uppercase font-bold tracking-widest text-[10px] font-mono">Canal Oficial:</span>
+              <span class="block text-zinc-400 uppercase font-bold tracking-widest text-[10px] font-mono">Canal Oficial:</span>
               <span class="flex font-black items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#41BF84]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                 Soporte Online
@@ -86,14 +86,14 @@ import gsap from 'gsap';
           <!-- Metrics Data Block -->
           <ng-container card-metrics>
             <div class="space-y-1">
-              <span class="block text-zinc-500 uppercase font-bold tracking-widest text-[10px] font-mono">Fletes & Portes:</span>
+              <span class="block text-zinc-400 uppercase font-bold tracking-widest text-[10px] font-mono">Fletes & Portes:</span>
               <span class="flex font-black items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#41BF84]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="12" x="4" y="2" rx="2"/><path d="M4 8h16"/><path d="M8 2v4"/><path d="M16 2v4"/><path d="M4 14h16v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6Z"/></svg>
                 Despacho Directo
               </span>
             </div>
             <div class="space-y-1">
-              <span class="block text-zinc-500 uppercase font-bold tracking-widest text-[10px] font-mono">Alta prioridad:</span>
+              <span class="block text-zinc-400 uppercase font-bold tracking-widest text-[10px] font-mono">Alta prioridad:</span>
               <span class="flex font-black items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#41BF84]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                 Baja Latencia

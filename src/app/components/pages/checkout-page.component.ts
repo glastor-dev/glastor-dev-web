@@ -170,7 +170,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                                      (checkoutForm.get('paymentMethod')?.value === 'crypto' 
                                       ? 'border-amber-600 bg-amber-600 text-zinc-950 shadow-md shadow-amber-500/20' 
                                       : 'border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-400')">
-                      <span class="absolute top-1 right-1 text-[7px] font-bold bg-zinc-9500/20 text-zinc-500 px-1 py-0.5 rounded-sm">PRÓX.</span>
+                      <span class="absolute top-1 right-1 text-[7px] font-bold bg-zinc-9500/20 text-zinc-400 px-1 py-0.5 rounded-sm">PRÓX.</span>
                       <hugeicons-icon [icon]="BitcoinIcon" [size]="20" class="text-lg" [strokeWidth]="1.5" />
                       <span class="text-[9px] font-black uppercase tracking-wider">Crypto</span>
                     </button>
@@ -192,10 +192,10 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                     @if (checkoutForm.get('paymentMethod')?.value === 'card') {
                       <div class="space-y-4">
                         <div class="space-y-1.5">
-                          <label class="text-[10px] font-bold text-zinc-500 block">Número de Tarjeta Credi/Débito (Solo números)</label>
+                          <label class="text-[10px] font-bold text-zinc-400 block">Número de Tarjeta Credi/Débito (Solo números)</label>
                           <input type="text" formControlName="cardNumber" placeholder="1234567812345678"
                                  [class]="'w-full border rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none transition-colors ' + 
-                                          'bg-zinc-950 hover:bg-zinc-900 border-zinc-850 focus:border-zinc-700 text-white placeholder:text-zinc-600'">
+                                          'bg-zinc-950 hover:bg-zinc-900 border-zinc-850 focus:border-zinc-700 text-white placeholder:text-zinc-400'">
                           @if (checkoutForm.get('cardNumber')?.touched && checkoutForm.get('cardNumber')?.invalid) {
                             <span class="text-[9px] text-rose-500 font-bold block">Escriba 16 números continuos sin espacios.</span>
                           }
@@ -203,7 +203,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
 
                         <div class="grid grid-cols-2 gap-4">
                           <div class="space-y-1.5">
-                            <label class="text-[10px] font-bold text-zinc-500 block">Expiración (MM/AA)</label>
+                            <label class="text-[10px] font-bold text-zinc-400 block">Expiración (MM/AA)</label>
                             <input type="text" formControlName="cardExpiry" placeholder="12/28"
                                    [class]="'w-full border rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none transition-colors ' + 
                                             'bg-zinc-950 hover:bg-zinc-900 border-zinc-850 focus:border-zinc-700 text-white placeholder:text-zinc-650'">
@@ -213,7 +213,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                           </div>
 
                           <div class="space-y-1.5">
-                            <label class="text-[10px] font-bold text-zinc-500 block">Código CVC</label>
+                            <label class="text-[10px] font-bold text-zinc-400 block">Código CVC</label>
                             <input type="text" formControlName="cardCvc" placeholder="123"
                                    [class]="'w-full border rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none transition-colors ' + 
                                             'bg-zinc-950 hover:bg-zinc-900 border-zinc-850 focus:border-zinc-700 text-white placeholder:text-zinc-650'">
@@ -236,14 +236,14 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                           
                           <div class="space-y-1">
                             <p [class]="'text-[10px] leading-normal flex items-start gap-1 ' + 'text-zinc-400'">
-                              <hugeicons-icon [icon]="InformationCircleIcon" [size]="20" class="text-[11px] text-zinc-500 mt-0.5" [strokeWidth]="1.5" />
+                              <hugeicons-icon [icon]="InformationCircleIcon" [size]="20" class="text-[11px] text-zinc-400 mt-0.5" [strokeWidth]="1.5" />
                               Transfiere el equivalente en BTC, ETH o USDT a la billetera y copia el ID/Hash de la transacción abajo.
                             </p>
                           </div>
                         </div>
 
                         <div class="space-y-1.5">
-                          <label class="text-[10px] font-bold text-zinc-500 block">Hash de la Transacción / TxID o Billetera Emisora</label>
+                          <label class="text-[10px] font-bold text-zinc-400 block">Hash de la Transacción / TxID o Billetera Emisora</label>
                           <input type="text" formControlName="cryptoTxHash" placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
                                  [class]="'w-full border rounded-lg px-3 py-2.5 text-xs font-mono focus:outline-none transition-colors ' + 
                                           'bg-zinc-950 hover:bg-zinc-900 border-zinc-850 focus:border-zinc-700 text-white placeholder:text-zinc-650'">
@@ -260,26 +260,26 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                         <div [class]="'border rounded-lg p-3 text-left space-y-2 ' + 'bg-zinc-900 border-zinc-800'">
                           <div [class]="'space-y-1 font-mono text-[10px] leading-normal ' + 'text-zinc-400'">
                             <div [class]="'flex justify-between border-b py-1 ' + 'border-zinc-800'">
-                              <span class="font-semibold text-zinc-500 text-[8px]">BANCO:</span>
+                              <span class="font-semibold text-zinc-400 text-[8px]">BANCO:</span>
                               <span class="text-white font-bold text-[9px]">Banco Galicia</span>
                             </div>
                             <div [class]="'flex justify-between border-b py-1 ' + 'border-zinc-800'">
-                              <span class="font-semibold text-zinc-500 text-[8px]">ALIAS:</span>
+                              <span class="font-semibold text-zinc-400 text-[8px]">ALIAS:</span>
                               <span class="text-white font-bold select-all text-[9px]">DIBUJO.DRAGA.PRIMO</span>
                             </div>
                             <div [class]="'flex justify-between border-b py-1 ' + 'border-zinc-800'">
-                              <span class="font-semibold text-zinc-500 text-[8px]">TITULAR:</span>
+                              <span class="font-semibold text-zinc-400 text-[8px]">TITULAR:</span>
                               <span class="text-white font-bold select-all text-[9px]">Andres Antonio Cardoso</span>
                             </div>
                             <div class="flex justify-between pt-1">
-                              <span class="font-semibold text-zinc-500 text-[8px]">CUIT:</span>
+                              <span class="font-semibold text-zinc-400 text-[8px]">CUIT:</span>
                               <span class="text-white font-bold text-[9px]">23253165669</span>
                             </div>
                           </div>
                         </div>
 
                         <div class="space-y-1.5">
-                          <label class="text-[10px] font-bold text-zinc-500 block">Nombre de Titular o Concepto de Transferencia</label>
+                          <label class="text-[10px] font-bold text-zinc-400 block">Nombre de Titular o Concepto de Transferencia</label>
                           <input type="text" formControlName="bankTxRef" placeholder="GLASTOR - TU NOMBRE COMPLETO"
                                  [class]="'w-full border rounded-lg px-3 py-2.5 text-xs font-semibold focus:outline-none transition-colors ' + 
                                           'bg-zinc-950 hover:bg-zinc-900 border-zinc-850 focus:border-zinc-700 text-white placeholder:text-zinc-650'">
@@ -315,13 +315,13 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                 <!-- Big Action Submission Button -->
                 <button type="submit" [disabled]="checkoutForm.invalid"
                         [class]="'w-full font-black text-xs py-3.5 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1 shadow-md ' + 
-                                 'bg-amber-600 hover:bg-[#41BF84]/200 text-zinc-950 disabled:bg-zinc-800 disabled:text-zinc-600 shadow-amber-500/10'">
+                                 'bg-amber-600 hover:bg-[#41BF84]/200 text-zinc-950 disabled:bg-zinc-800 disabled:text-zinc-400 shadow-amber-500/10'">
                   <hugeicons-icon [icon]="CheckmarkBadge01Icon" [size]="20" class="scale-85" [strokeWidth]="1.5" />
                   Confirmar Orden de Compra por {{ formatPrice(total) }} (~{{ formatEUR(total) }})
                 </button>
 
                 @if (checkoutForm.get('paymentMethod')?.value === 'bank') {
-                  <p class="text-center text-[10px] text-zinc-500 font-medium mt-3">
+                  <p class="text-center text-[10px] text-zinc-400 font-medium mt-3">
                     *Al finalizar, por favor envía el comprobante de transferencia por WhatsApp o Email para procesar tu pedido más rápido.
                   </p>
                 }
@@ -371,7 +371,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                     <hugeicons-icon [icon]="Ticket01Icon" [size]="20" class="text-[#41BF84] scale-75"  [strokeWidth]="1.5" />
                     Canjear Códigos Promocionales
                   </h3>
-                  <p class="text-[10px] text-zinc-500 leading-normal">
+                  <p class="text-[10px] text-zinc-400 leading-normal">
                     ¿Posees una clave GLASTOR ®? Pruébalas: <strong class="text-white">MAYORISTA10</strong> o <strong class="text-[#41BF84]">GLASTOR20</strong> para aplicar ventajas directas sobre la bolsa de compras.
                   </p>
                 </div>
@@ -405,10 +405,10 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
 
                 <div [class]="'space-y-2 text-xs ' + 'text-zinc-400'">
                   <div class="flex justify-between">
-                    <span>Subtotal de Cesta <span class="text-[9px] text-zinc-500 font-bold uppercase tracking-wider ml-1">(IVA 21% INCLUIDO)</span></span>
+                    <span>Subtotal de Cesta <span class="text-[9px] text-zinc-400 font-bold uppercase tracking-wider ml-1">(IVA 21% INCLUIDO)</span></span>
                     <div class="flex flex-col items-end">
                       <span class="text-white font-mono font-bold">{{ formatPrice(subtotal) }}</span>
-                      <span class="text-[9px] text-zinc-500 font-mono font-bold tracking-tight">~ {{ formatEUR(subtotal) }}</span>
+                      <span class="text-[9px] text-zinc-400 font-mono font-bold tracking-tight">~ {{ formatEUR(subtotal) }}</span>
                     </div>
                   </div>
 
@@ -417,7 +417,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                       <span>Descuento Aplicado ({{ activeDiscountPercent }}%)</span>
                       <div class="flex flex-col items-end">
                         <span class="font-mono">- {{ formatPrice(discountAmount) }}</span>
-                        <span class="text-[9px] text-zinc-500 font-mono font-bold tracking-tight">~ - {{ formatEUR(discountAmount) }}</span>
+                        <span class="text-[9px] text-zinc-400 font-mono font-bold tracking-tight">~ - {{ formatEUR(discountAmount) }}</span>
                       </div>
                     </div>
                   }
@@ -431,7 +431,7 @@ import { UserIcon, Wallet01Icon, CreditCardIcon, BitcoinIcon, Building03Icon, In
                     } @else {
                       <div class="flex flex-col items-end">
                         <span class="text-white font-mono font-bold">{{ formatPrice(shipping) }}</span>
-                        <span class="text-[9px] text-zinc-500 font-mono font-bold tracking-tight">~ {{ formatEUR(shipping) }}</span>
+                        <span class="text-[9px] text-zinc-400 font-mono font-bold tracking-tight">~ {{ formatEUR(shipping) }}</span>
                       </div>
                     }
                   </div>

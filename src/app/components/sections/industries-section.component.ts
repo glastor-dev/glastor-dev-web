@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -13,102 +13,86 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
            style="-webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 65%); mask-image: radial-gradient(ellipse at center, black 10%, transparent 65%);">
       </div>
 
-      <!-- Catalog Intro -->
-      <div class="relative overflow-hidden bg-zinc-900/40 border border-white/5 mb-12 flex flex-col md:flex-row items-center justify-between p-10 md:p-24 rounded-lg shadow-2xl">
-        <div class="z-10 relative w-full md:w-3/5 text-center md:text-left">
-          <h5 class="glastor-h5 mb-4">CATÁLOGO B2B</h5>
-          <h2 class="glastor-h1 mb-6">Soluciones por<br><span class="italic font-serif text-white/70">Industria</span></h2>
-          <h3 class="glastor-subtitle max-w-lg md:ml-0">
+      <!-- Catalog Intro (High-Impact Style) -->
+      <div class="relative overflow-hidden bg-[#050505] border-l-4 border-[#41BF84] mb-12 flex flex-col md:flex-row items-center justify-between p-10 md:p-20 rounded-r-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div class="z-10 relative w-full md:w-3/5 text-center md:text-left flex flex-col items-center md:items-start">
+          
+          <!-- High-Impact Tag -->
+          <div class="mb-6 transform -skew-x-6 origin-left">
+            <span class="bg-[#41BF84] text-black font-black uppercase tracking-widest text-xs px-4 py-1.5 shadow-[4px_4px_0px_rgba(0,0,0,1)] border border-[#41BF84]/50">CATÁLOGO B2B</span>
+          </div>
+          
+          <!-- Massive Skewed Title -->
+          <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase italic tracking-tighter text-white transform -skew-x-6 leading-[0.85] mb-6 drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)]">
+            SOLUCIONES<br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#41BF84] inline-block pr-4 py-1">POR INDUSTRIA</span>
+          </h2>
+          
+          <h3 class="glastor-subtitle max-w-lg md:ml-0 text-zinc-400 uppercase tracking-wide text-xs md:text-sm font-bold border-l-2 border-white/20 pl-4 mt-2">
             Encuentra las soluciones tecnológicas perfectas para tu sector. Equipos de alto rendimiento para entornos exigentes.
           </h3>
-          <button (click)="randomizeGrid()" 
-                  class="mt-10 bg-white text-black px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wider hover:scale-105 hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(52,211,153,0.4)] transition-all duration-500 mx-auto md:ml-0 block md:inline-block font-mono">
-            Reorganizar Cuadrícula
-          </button>
         </div>
         
-        <!-- Intro Background Image -->
-        <div class="absolute right-0 top-0 h-full w-1/2 z-0 hidden md:block">
-          <div class="absolute inset-0 bg-gradient-to-r from-zinc-900/40 to-transparent z-10"></div>
+        <!-- Intro Background Image (Harsh Contrast) -->
+        <div class="absolute right-0 top-0 h-full w-full md:w-1/2 z-0 opacity-20 md:opacity-40">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/80 to-transparent z-10 hidden md:block"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent z-10 md:hidden"></div>
           <img [ngSrc]="'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80'" fill
-               class="object-cover opacity-30 grayscale mix-blend-luminosity" alt="Catalog Highlight">
+               class="object-cover grayscale contrast-150 mix-blend-screen" alt="Catalog Highlight">
         </div>
       </div>
 
-      <!-- Grid Wrapper -->
-      <div class="relative w-full">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] auto-rows-[250px] grid-flow-dense gap-6">
-          
-          @for (ind of industries; track ind.id) {
-            <a class="relative overflow-hidden cursor-pointer bg-[#0a0a0a] rounded-lg transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,0,0,0.8)] hover:z-10 group border border-white/5 hover:border-white/20"
-               [style.grid-column]="'span ' + ind.spanCols" 
-               [style.grid-row]="'span ' + ind.spanRows">
-               
-              <!-- Image Area (Full coverage, hidden until hover) -->
-              <div class="absolute inset-0 overflow-hidden bg-zinc-900">
-                <img [ngSrc]="ind.image" [alt]="ind.name" fill referrerpolicy="no-referrer"
-                     class="object-cover transition-all duration-700 opacity-0 group-hover:opacity-40 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0">
-              </div>
+      <!-- High-Impact Thumbnail Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-4 sm:px-0">
+        @for (ind of industries; track ind.id) {
+          <a class="relative flex overflow-hidden cursor-pointer bg-[#050505] rounded-xl transition-all duration-500 hover:shadow-[0_0_40px_rgba(65,191,132,0.4)] hover:scale-[1.02] group border border-zinc-800 hover:border-[#41BF84] aspect-video z-0">
+            
+            <!-- Intense Background Glow (YouTube Style) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-[#41BF84]/30 via-transparent to-black opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-screen z-10 pointer-events-none"></div>
 
-              <!-- Text Area (Center aligned, slides up on hover) -->
-              <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-20">
-                <h4 class="glastor-h4 m-0 transition-transform duration-500 group-hover:-translate-y-2">{{ ind.name }}</h4>
-                <h5 class="glastor-h5 mt-3 transition-transform duration-500 group-hover:-translate-y-2 text-zinc-400">{{ ind.subtitle }}</h5>
-                
-                <!-- Reveal Link -->
-                <div class="absolute bottom-8 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                  <span class="text-[11px] font-mono tracking-widest text-white border-b border-white/30 pb-1 uppercase hover:border-white transition-colors">VER SOLUCIONES &rarr;</span>
-                </div>
-              </div>
-            </a>
-          }
+            <!-- The Image (Treated as dramatic background) -->
+            <div class="absolute inset-0 z-0">
+              <img [ngSrc]="ind.image" [alt]="ind.name" fill referrerpolicy="no-referrer"
+                   class="object-cover w-full h-full opacity-60 grayscale-[80%] contrast-125 transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-110">
+              
+              <!-- Vignette & Darkening overlay for text readability -->
+              <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+            </div>
 
-        </div>
+            <!-- Massive Impact Text Area -->
+            <div class="relative z-20 flex flex-col justify-end p-6 md:p-8 h-full w-full">
+              <!-- Subtitle Badge (Floating tag style) -->
+              <div class="mb-3 transform -skew-x-6 origin-left transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                <span class="bg-[#41BF84] text-black font-black uppercase tracking-widest text-[10px] md:text-xs px-3 py-1 shadow-[4px_4px_0px_rgba(0,0,0,1)]">{{ ind.subtitle }}</span>
+              </div>
+              
+              <!-- Main Title (Massive 3D text style) -->
+              <h4 class="text-2xl md:text-3xl xl:text-4xl font-black uppercase italic tracking-tighter text-white transform -skew-x-6 transition-all duration-500 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#b8f0d4] drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] leading-[0.9] group-hover:scale-105 origin-left">
+                {{ ind.name }}
+              </h4>
+            </div>
+            
+            <!-- Floating "Play" or Action Icon -->
+            <div class="absolute top-4 right-4 z-20 opacity-0 transform translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 delay-100">
+              <div class="w-10 h-10 rounded-full bg-[#41BF84] text-black flex items-center justify-center shadow-[0_0_20px_rgba(65,191,132,0.6)]">
+                <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </a>
+        }
       </div>
 
     </section>
   `
 })
-export class IndustriesSectionComponent implements OnInit {
-  
+export class IndustriesSectionComponent {
   industries = [
-    { id: 1, name: 'Logística', subtitle: 'Conectividad y Escaneo', image: 'assets/logos/logistica.webp', spanCols: 1, spanRows: 1 },
-    { id: 2, name: 'Manufactura', subtitle: 'Automatización', image: 'assets/logos/manufactura.webp', spanCols: 2, spanRows: 2 },
-    { id: 3, name: 'Retail', subtitle: 'Puntos de Venta POS', image: 'assets/logos/retail.webp', spanCols: 1, spanRows: 2 },
-    { id: 4, name: 'Agencia', subtitle: 'Creative Studios', image: 'assets/logos/agencia.webp', spanCols: 1, spanRows: 1 },
-    { id: 5, name: 'Corporativo', subtitle: 'Smart Workplaces', image: 'assets/logos/corporativo.webp', spanCols: 1, spanRows: 1 },
-    { id: 6, name: 'Construcción', subtitle: 'Equipos Robustos', image: 'assets/logos/construccion.webp', spanCols: 1, spanRows: 2 }
+    { id: 1, name: 'Logística', subtitle: 'Conectividad y Escaneo', image: 'assets/logos/logistica.webp' },
+    { id: 2, name: 'Manufactura', subtitle: 'Automatización', image: 'assets/logos/manufactura.webp' },
+    { id: 3, name: 'Retail', subtitle: 'Puntos de Venta POS', image: 'assets/logos/retail.webp' },
+    { id: 4, name: 'Agencia', subtitle: 'Creative Studios', image: 'assets/logos/agencia.webp' },
+    { id: 5, name: 'Corporativo', subtitle: 'Smart Workplaces', image: 'assets/logos/corporativo.webp' },
+    { id: 6, name: 'Construcción', subtitle: 'Equipos Robustos', image: 'assets/logos/construccion.webp' }
   ];
-
-  ngOnInit() {
-    this.randomizeGrid();
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    if (window.innerWidth <= 768) {
-      // Reset spans on mobile
-      this.industries = this.industries.map(ind => ({
-        ...ind,
-        spanCols: 1,
-        spanRows: 1
-      }));
-    }
-  }
-
-  randomizeGrid() {
-    if (window.innerWidth > 768) {
-      this.industries = this.industries.map(ind => {
-        // Randomize between 1 and 2 for columns, and 1 and 2 for rows to simulate the CodePen dense flow
-        const colSpan = 1 + Math.floor(Math.random() * 2);
-        const rowSpan = 1 + Math.floor(Math.random() * 2);
-        return {
-          ...ind,
-          spanCols: colSpan,
-          spanRows: rowSpan
-        };
-      });
-    }
-  }
 }
-

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Product } from '../../portal';
 import { HugeiconsIconComponent } from '@hugeicons/angular';
 import { FavouriteIcon, StarIcon, ViewIcon, ShoppingCart01Icon } from '@hugeicons/core-free-icons';
@@ -7,7 +7,7 @@ import { FavouriteIcon, StarIcon, ViewIcon, ShoppingCart01Icon } from '@hugeicon
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, HugeiconsIconComponent],
+  imports: [CommonModule, HugeiconsIconComponent, NgOptimizedImage],
   template: `
     <div [class]="'tilt-card-3d container-3d rounded-lg p-1.5 transition-all duration-300 hover:-translate-y-2 border hover:shadow-2xl ' + 
                    (isCinematicGlow 
@@ -16,9 +16,9 @@ import { FavouriteIcon, StarIcon, ViewIcon, ShoppingCart01Icon } from '@hugeicon
       <article [class]="(isCinematicGlow ? 'bg-[#050505] text-white' : 'bg-white text-zinc-900') + ' bezel-core rounded-lg overflow-hidden h-full flex flex-col text-left group'">
         
         <!-- Product image core frame -->
-        <div [class]="'relative aspect-square overflow-hidden shrink-0 ' + (isCinematicGlow ? 'bg-[#050505]' : 'bg-zinc-150')">
-          <img [src]="product.image" [alt]="product.name" referrerpolicy="no-referrer"
-               class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:opacity-90">
+        <div [class]="'relative aspect-video overflow-hidden shrink-0 ' + (isCinematicGlow ? 'bg-[#050505]' : 'bg-zinc-150')">
+          <img [ngSrc]="product.image" [alt]="product.name" width="400" height="225" referrerpolicy="no-referrer"
+               class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-90">
           <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           
           <!-- Wishlist Toggle overlay -->

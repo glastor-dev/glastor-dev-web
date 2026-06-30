@@ -32,34 +32,47 @@ import { Product } from '../../models';
       <app-hero-section (navigate)="navigate($event)"></app-hero-section>
 
       <!-- TRUST BRANDS (B2B Authority) -->
-      <app-trust-brands-section appScrollReveal></app-trust-brands-section>
+      @defer (on viewport) {
+        <app-trust-brands-section appScrollReveal></app-trust-brands-section>
+      } @placeholder {
+        <div class="h-[100px] w-full"></div>
+      }
       
       <!-- CURATED PIECES DISCOVER GRID -->
-      <app-icons-of-the-month-section class="block mt-24 sm:mt-32"
-        appScrollReveal
-        [appScrollReveal]="100"
-        [products]="iconsOfTheMonth()"
-        [wishlist]="wishlist()"
-        (navigate)="navigate($any($event.view), $event.id)"
-        (addToCart)="addToCart($event)"
-        (toggleWishlist)="toggleWishlist($event.id, $event.event)"
-      ></app-icons-of-the-month-section>
+      @defer (on viewport) {
+        <app-icons-of-the-month-section class="block mt-24 sm:mt-32"
+          appScrollReveal
+          [appScrollReveal]="100"
+          [products]="iconsOfTheMonth()"
+          [wishlist]="wishlist()"
+          (navigate)="navigate($any($event.view), $event.id)"
+          (addToCart)="addToCart($event)"
+          (toggleWishlist)="toggleWishlist($event.id, $event.event)"
+        ></app-icons-of-the-month-section>
+      } @placeholder {
+        <div class="h-[600px] w-full mt-24 sm:mt-32"></div>
+      }
 
       <!-- B2B INDUSTRIES GRID -->
-      <app-industries-section class="block mt-24 sm:mt-32" appScrollReveal></app-industries-section>
+      @defer (on viewport) {
+        <app-industries-section class="block mt-24 sm:mt-32" appScrollReveal></app-industries-section>
+      } @placeholder {
+        <div class="h-[800px] w-full mt-24 sm:mt-32"></div>
+      }
 
       <!-- I BUILD BECAUSE / STORIES SECTION -->
-      <app-builder-stories-section class="block mt-24 sm:mt-32"
-        appScrollReveal
-        [tools]="iconsOfTheMonth()"
-        [wishlist]="wishlist()"
-        (navigate)="navigate($any($event.view), $event.id)"
-        (addToCart)="addToCart($event)"
-        (toggleWishlist)="toggleWishlist($event.id, $event.event)"
-      ></app-builder-stories-section>
-
-      <!-- SCANDINAVIAN BRAND PILLARS -->
-      <app-pillars-section class="block mt-24 sm:mt-32" appScrollReveal [appScrollReveal]="100"></app-pillars-section>
+      @defer (on viewport) {
+        <app-builder-stories-section class="block mt-24 sm:mt-32"
+          appScrollReveal
+          [tools]="iconsOfTheMonth()"
+          [wishlist]="wishlist()"
+          (navigate)="navigate($any($event.view), $event.id)"
+          (addToCart)="addToCart($event)"
+          (toggleWishlist)="toggleWishlist($event.id, $event.event)"
+        ></app-builder-stories-section>
+      } @placeholder {
+        <div class="h-[800px] w-full mt-24 sm:mt-32"></div>
+      }
 
 
     </main>

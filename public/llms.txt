@@ -1,0 +1,9 @@
+# Glastor B2B
+
+Bienvenido al directorio de información estructurada para LLMs de Glastor.
+Somos una plataforma líder en soluciones de equipamiento industrial.
+
+## Enlaces
+
+- [Inicio de Glastor](https://glastor.xyz)
+- [Catálogo B2B](https://glastor.xyz/tienda)
